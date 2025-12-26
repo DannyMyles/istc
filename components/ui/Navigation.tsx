@@ -3,10 +3,31 @@
 
 import { useState, useTransition, useOptimistic, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Phone, ChevronDown, Shield, GraduationCap, Search, Mail, Clock } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, Shield, GraduationCap, Search, Mail, Clock, ChevronRight } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image'
+import Image from 'next/image';
 
+type NavItem = {
+  name: string;
+  href: string;
+  submenu?: SubMenuItem[];
+};
+
+type SubMenuItem = {
+  name: string;
+  href?: string;
+  subitems?: NestedMenuItem[];
+};
+
+type NestedMenuItem = {
+  name: string;
+  href: string;
+};
+
+// Type guard function
+const hasSubitems = (item: SubMenuItem): item is SubMenuItem & { subitems: NestedMenuItem[] } => {
+  return 'subitems' in item && Array.isArray((item as any).subitems);
+};
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,11 +47,34 @@ const Navigation = () => {
         name: 'Courses', 
         href: '/courses',
         submenu: [
-          { name: 'Occupational Safety', href: '/courses/occupational-safety' },
-          { name: 'Health & First Aid', href: '/courses/health-first-aid' },
-          { name: 'Environmental Protection', href: '/courses/environmental-protection' },
-          { name: 'Fire Safety', href: '/courses/fire-safety' },
-          { name: 'Construction Safety', href: '/courses/construction-safety' },
+          { 
+            name: 'Occupational Safety & Health', 
+            subitems: [
+              { name: 'Diploma Programme', href: '/courses/occupational-safety-health-diploma' },
+              { name: 'Certificate Programme', href: '/courses/occupational-safety-health-certificate' },
+            ]
+          },
+          { 
+            name: 'Fire Safety', 
+            subitems: [
+              { name: 'IFE Level 2 Diploma', href: '/courses/fire-safety-course-diploma' },
+              { name: 'Certificate Courses', href: '/courses/fire-safety-course-certificate' },
+            ]
+          },
+          { 
+            name: 'First Aid Training', 
+            subitems: [
+              { name: 'Occupational First Aid (3 Days)', href: '/courses/first-aid?course=occupational' },
+              { name: 'Basic First Aid (1 Day)', href: '/courses/first-aid?course=basic' },
+              { name: 'Paediatric First Aid', href: '/courses/first-aid?course=paediatric' },
+              { name: 'First Aid Refresher', href: '/courses/first-aid?course=refresher' },
+            ]
+          },
+          { name: 'Work at Height', href: '/courses/work-at-height' },
+          { name: 'Chemical Safety', href: '/courses/chemical-safety' },
+          { name: 'Disaster & Emergency Preparedness', href: '/courses/disaster-emergency-preparedness' },
+          { name: 'Road Safety', href: '/courses/road-safety' },
+          { name: 'All Courses', href: '/courses' },
         ]
       },
       { 
@@ -43,6 +87,7 @@ const Navigation = () => {
           { name: 'Certification', href: '/services/certification' },
         ]
       },
+      { name: 'Calendar', href: '/calendar' },
       { name: 'Testimonials', href: '/testimonials' },
       { name: 'Blog', href: '/blog' },
       { name: 'Contact', href: '/contact' },
@@ -133,7 +178,7 @@ const Navigation = () => {
       <header 
         className={`sticky top-0 z-50 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-adventure-lg glass-adventure border-b border-accent-100 ' 
+            ? 'bg-white/95 backdrop-blur-md shadow-adventure-lg glass-adventure border-b border-accent-100' 
             : 'bg-white'
         }`}
       >
@@ -144,7 +189,7 @@ const Navigation = () => {
               <div className="flex items-center justify-center w-12 h-12 bg-accent-800 rounded-xl group-hover:scale-105 transition-transform duration-300 shadow-adventure">
                 <Image
                   src="/istclogo.png" 
-                  alt="Source of Adventure Logo" 
+                  alt="ISTC Logo" 
                   width={88}
                   height={88}
                   className="object-contain"
@@ -170,17 +215,46 @@ const Navigation = () => {
                         {item.name}
                         <ChevronDown size={16} className="group-hover:rotate-180 transition-transform text-accent" />
                       </button>
-                      <div className="absolute left-0 top-full mt-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-accent-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top">
+                      <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-accent-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
                         <div className="p-2">
                           {item.submenu.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.href}
-                              className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors group/sub adventure-card"
-                            >
-                              <div className="w-2 h-2 rounded-full bg-accent group-hover/sub:scale-125 transition-transform animate-pulse-glow"></div>
-                              <span className="font-medium">{subItem.name}</span>
-                            </Link>
+                            hasSubitems(subItem) ? (
+                              // Nested submenu for items with subitems
+                              <div key={subItem.name} className="relative group/sub">
+                                <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-2 h-2 rounded-full bg-accent group-hover/sub:scale-125 transition-transform"></div>
+                                    <span className="font-medium">{subItem.name}</span>
+                                  </div>
+                                  <ChevronRight size={16} className="text-accent-400" />
+                                </div>
+                                {/* Second level submenu */}
+                                <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-accent-100 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
+                                  <div className="p-2">
+                                    {subItem.subitems.map((nestedItem) => (
+                                      <Link
+                                        key={nestedItem.name}
+                                        href={nestedItem.href}
+                                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors group/nested"
+                                      >
+                                        <div className="w-1.5 h-1.5 rounded-full bg-accent-400 group-hover/nested:scale-125 transition-transform"></div>
+                                        <span className="font-medium">{nestedItem.name}</span>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              // Regular submenu item
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href!}
+                                className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors group/sub adventure-card"
+                              >
+                                <div className="w-2 h-2 rounded-full bg-accent group-hover/sub:scale-125 transition-transform animate-pulse-glow"></div>
+                                <span className="font-medium">{subItem.name}</span>
+                              </Link>
+                            )
                           ))}
                         </div>
                       </div>
@@ -266,15 +340,40 @@ const Navigation = () => {
                         </summary>
                         <div className="pb-4">
                           {item.submenu.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.href}
-                              onClick={() => setIsMenuOpen(false)}
-                              className="flex items-center gap-3 py-3 px-4 text-gray-600 hover:text-accent-800 hover:bg-accent-50 rounded-lg transition-colors adventure-card"
-                            >
-                              <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-glow"></div>
-                              {subItem.name}
-                            </Link>
+                            hasSubitems(subItem) ? (
+                              <details key={subItem.name} className="group/sub ml-4">
+                                <summary className="flex items-center justify-between py-3 px-4 text-gray-600 hover:text-accent-800 cursor-pointer list-none">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                                    {subItem.name}
+                                  </div>
+                                  <ChevronRight size={16} className="text-accent-400 group-open/sub:rotate-90 transition-transform" />
+                                </summary>
+                                <div className="ml-4">
+                                  {subItem.subitems.map((nestedItem) => (
+                                    <Link
+                                      key={nestedItem.name}
+                                      href={nestedItem.href}
+                                      onClick={() => setIsMenuOpen(false)}
+                                      className="flex items-center gap-3 py-3 px-4 text-gray-600 hover:text-accent-800 hover:bg-accent-50 rounded-lg transition-colors"
+                                    >
+                                      <div className="w-1 h-1 rounded-full bg-accent-400"></div>
+                                      {nestedItem.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </details>
+                            ) : (
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href!}
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center gap-3 py-3 px-4 text-gray-600 hover:text-accent-800 hover:bg-accent-50 rounded-lg transition-colors"
+                              >
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-glow"></div>
+                                {subItem.name}
+                              </Link>
+                            )
                           ))}
                         </div>
                       </details>
@@ -306,11 +405,11 @@ const Navigation = () => {
                   Schedule Free Consultation
                 </Link>
                 <Link
-                  href="/enroll"
+                  href="/courses"
                   onClick={() => setIsMenuOpen(false)}
                   className="block w-full text-center btn-adventure-outline py-3.5"
                 >
-                  Enroll Now
+                  Browse Courses
                 </Link>
               </div>
             </div>

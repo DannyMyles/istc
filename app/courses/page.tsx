@@ -1,181 +1,184 @@
+// app/courses/page.tsx
 import CourseCard from '@/components/ui/CourseCard';
 import { Search, Filter, Clock, Users, Award, TrendingUp } from 'lucide-react';
 
 export default function CoursesPage() {
   const allCourses = [
+    // Occupational Safety & Health Courses
     {
-      title: 'Occupational Health & Safety Level 1',
-      description: 'Fundamental safety principles, hazard identification, and basic safety management.',
+      title: 'Occupational Safety & Health Diploma',
+      description: '12-month modularized distance learning programme in collaboration with Cambridge International College.',
+      duration: '12 Months',
+      participants: 'Distance Learning',
+      level: 'Advanced',
+      nextStart: 'April 15, 2024',
+      rating: 4.9,
+      price: 160000,
+      category: 'Occupational Safety',
+      href: '/courses/occupational-safety-health-diploma',
+      featured: true
+    },
+    {
+      title: 'Occupational Safety & Health Certificate',
+      description: 'Professional certificate for workplace safety, accident prevention, and legal compliance.',
+      duration: '3 Months',
+      participants: 'Max 25',
+      level: 'Beginner',
+      nextStart: 'March 18, 2024',
+      rating: 4.7,
+      price: 45000,
+      category: 'Occupational Safety',
+      href: '/courses/occupational-safety-health-certificate',
+      featured: false
+    },
+    // Fire Safety Courses
+    {
+      title: 'IFE Level 2 Fire Safety Diploma',
+      description: 'Fire Science, Operations and Safety certification from Institute of Fire Engineers.',
+      duration: '183 Hours',
+      participants: 'Max 20',
+      level: 'Advanced',
+      nextStart: 'April 2, 2024',
+      rating: 4.8,
+      price: 49000,
+      category: 'Fire Safety',
+      href: '/courses/fire-safety-course-diploma',
+      featured: true
+    },
+    {
+      title: 'Fire Safety Certificate Courses',
+      description: 'Basic fire safety and fire marshal training for workplace fire prevention.',
+      duration: '1-3 Days',
+      participants: 'Max 25',
+      level: 'Beginner',
+      nextStart: 'March 20, 2024',
+      rating: 4.6,
+      price: 15000,
+      category: 'Fire Safety',
+      href: '/courses/fire-safety-course-certificate',
+      featured: false
+    },
+    // First Aid Courses
+    {
+      title: 'Occupational First Aid',
+      description: '3-day comprehensive first aid training for workplace nominated first aiders.',
       duration: '3 Days',
       participants: 'Max 25',
       level: 'Beginner',
-      nextStart: 'Mar 15, 2024',
+      nextStart: 'March 15, 2024',
+      rating: 4.9,
+      price: 12000,
+      category: 'First Aid',
+      href: '/courses/first-aid?course=occupational',
+      featured: false
+    },
+    {
+      title: 'Basic First Aid',
+      description: '1-day basic lifesaving skills and emergency situation management.',
+      duration: '1 Day',
+      participants: 'Max 30',
+      level: 'Beginner',
+      nextStart: 'March 22, 2024',
+      rating: 4.8,
+      price: 6000,
+      category: 'First Aid',
+      href: '/courses/first-aid?course=basic',
+      featured: false
+    },
+    {
+      title: 'Paediatric First Aid',
+      description: 'Specialized first aid training for those working with or looking after children.',
+      duration: '1 Day',
+      participants: 'Max 25',
+      level: 'Beginner',
+      nextStart: 'March 25, 2024',
+      rating: 4.7,
+      price: 7000,
+      category: 'First Aid',
+      href: '/courses/first-aid?course=paediatric',
+      featured: false
+    },
+    {
+      title: 'First Aid Refresher',
+      description: 'Requalification course for workplace first aiders.',
+      duration: '1 Day',
+      participants: 'Max 20',
+      level: 'Intermediate',
+      nextStart: 'March 28, 2024',
+      rating: 4.8,
+      price: 8000,
+      category: 'First Aid',
+      href: '/courses/first-aid?course=refresher',
+      featured: false
+    },
+    // Specialized Safety Courses
+    {
+      title: 'Work at Height Safety',
+      description: 'Safety training for telecommunications, construction, and maintenance at height.',
+      duration: '2 Days',
+      participants: 'Max 15',
+      level: 'Intermediate',
+      nextStart: 'April 5, 2024',
       rating: 4.7,
       price: 18000,
-      category: 'Health & Safety',
-      href: '/courses/ohs-level1',
-      featured: false
-    },
-    {
-      title: 'Advanced Safety Management',
-      description: 'Advanced safety systems, risk assessment methodologies, and safety leadership.',
-      duration: '5 Days',
-      participants: 'Max 20',
-      level: 'Advanced',
-      nextStart: 'Mar 22, 2024',
-      rating: 4.9,
-      price: 35000,
-      category: 'Management',
-      href: '/courses/advanced-safety',
-      featured: true
-    },
-    {
-      title: 'First Aid & CPR Certification',
-      description: 'Emergency response, CPR techniques, wound care, and medical emergency management.',
-      duration: '2 Days',
-      participants: 'Max 25',
-      level: 'Beginner',
-      nextStart: 'Mar 18, 2024',
-      rating: 4.8,
-      price: 15000,
-      category: 'First Aid',
-      href: '/courses/first-aid',
-      featured: false
-    },
-    {
-      title: 'Fire Safety & Evacuation Training',
-      description: 'Fire prevention, evacuation procedures, firefighting equipment, and emergency planning.',
-      duration: '3 Days',
-      participants: 'Max 15',
-      level: 'Intermediate',
-      nextStart: 'Mar 20, 2024',
-      rating: 4.6,
-      price: 22000,
-      category: 'Fire Safety',
-      href: '/courses/fire-safety',
-      featured: false
-    },
-    {
-      title: 'Construction Site Safety',
-      description: 'Construction hazard identification, site safety management, and equipment safety.',
-      duration: '4 Days',
-      participants: 'Max 20',
-      level: 'Intermediate',
-      nextStart: 'Mar 25, 2024',
-      rating: 4.8,
-      price: 28000,
-      category: 'Construction',
-      href: '/courses/construction-safety',
-      featured: false
-    },
-    {
-      title: 'Environmental Management',
-      description: 'Environmental regulations, waste management, pollution control, and sustainability.',
-      duration: '3 Days',
-      participants: 'Max 20',
-      level: 'Intermediate',
-      nextStart: 'Mar 28, 2024',
-      rating: 4.7,
-      price: 24000,
-      category: 'Environmental',
-      href: '/courses/environmental',
-      featured: false
-    },
-    {
-      title: 'Workplace Risk Assessment',
-      description: 'Comprehensive risk assessment techniques and implementation strategies.',
-      duration: '2 Days',
-      participants: 'Max 15',
-      level: 'Intermediate',
-      nextStart: 'Apr 2, 2024',
-      rating: 4.9,
-      price: 20000,
-      category: 'Risk Management',
-      href: '/courses/risk-assessment',
-      featured: false
-    },
-    {
-      title: 'Safety Audit & Compliance',
-      description: 'Conducting safety audits, compliance checking, and regulatory requirements.',
-      duration: '3 Days',
-      participants: 'Max 12',
-      level: 'Advanced',
-      nextStart: 'Apr 5, 2024',
-      rating: 4.8,
-      price: 32000,
-      category: 'Audit',
-      href: '/courses/safety-audit',
-      featured: true
-    },
-    {
-      title: 'Electrical Safety Training',
-      description: 'Electrical hazards, safe work practices, and electrical equipment safety.',
-      duration: '2 Days',
-      participants: 'Max 15',
-      level: 'Intermediate',
-      nextStart: 'Apr 8, 2024',
-      rating: 4.6,
-      price: 19000,
-      category: 'Electrical',
-      href: '/courses/electrical-safety',
+      category: 'Construction Safety',
+      href: '/courses/work-at-height',
       featured: false
     },
     {
       title: 'Chemical Safety & Handling',
-      description: 'Chemical hazards, safe handling procedures, and emergency response for chemical incidents.',
-      duration: '3 Days',
+      description: 'Safe chemical handling, MSDS understanding, and PPE training.',
+      duration: '2 Days',
       participants: 'Max 15',
-      level: 'Advanced',
-      nextStart: 'Apr 12, 2024',
-      rating: 4.7,
-      price: 26000,
+      level: 'Intermediate',
+      nextStart: 'April 8, 2024',
+      rating: 4.6,
+      price: 15000,
       category: 'Chemical Safety',
       href: '/courses/chemical-safety',
       featured: false
     },
     {
-      title: 'Machine Safety & Guarding',
-      description: 'Machine hazards, safety guards, lockout/tagout procedures, and equipment safety.',
-      duration: '2 Days',
-      participants: 'Max 15',
+      title: 'Disaster & Emergency Preparedness',
+      description: 'Emergency planning, disaster response, and crisis management training.',
+      duration: '3 Days',
+      participants: 'Max 20',
       level: 'Intermediate',
-      nextStart: 'Apr 15, 2024',
+      nextStart: 'April 12, 2024',
       rating: 4.8,
-      price: 21000,
-      category: 'Machine Safety',
-      href: '/courses/machine-safety',
-      featured: false
+      price: 25000,
+      category: 'Emergency Management',
+      href: '/courses/disaster-emergency-preparedness',
+      featured: true
     },
     {
-      title: 'Corporate Safety Leadership',
-      description: 'Safety leadership skills, safety culture development, and strategic safety management.',
-      duration: '4 Days',
-      participants: 'Max 18',
-      level: 'Advanced',
-      nextStart: 'Apr 18, 2024',
-      rating: 4.9,
-      price: 38000,
-      category: 'Leadership',
-      href: '/courses/safety-leadership',
-      featured: true
+      title: 'Road Safety Training',
+      description: 'Transport safety management for drivers, supervisors, and logistics staff.',
+      duration: '2 Days',
+      participants: 'Max 25',
+      level: 'Intermediate',
+      nextStart: 'April 15, 2024',
+      rating: 4.7,
+      price: 12000,
+      category: 'Transport Safety',
+      href: '/courses/road-safety',
+      featured: false
     },
   ];
 
   const categories = [
     'All Courses',
-    'Health & Safety',
+    'Occupational Safety',
     'Fire Safety',
     'First Aid',
-    'Construction',
-    'Environmental',
-    'Management',
-    'Risk Management',
-    'Electrical',
+    'Construction Safety',
     'Chemical Safety',
+    'Emergency Management',
+    'Transport Safety',
   ];
 
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
-  const durations = ['1-2 Days', '3-4 Days', '5+ Days'];
+  const durations = ['1-2 Days', '3-5 Days', '1+ Month'];
 
   return (
     <div className="pt-20">
@@ -205,7 +208,7 @@ export default function CoursesPage() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-accent-800 mb-2">25+</div>
+                <div className="text-3xl font-bold text-accent-800 mb-2">{allCourses.length}+</div>
                 <div className="text-gray-600">Courses</div>
               </div>
               <div className="text-center">
@@ -217,8 +220,8 @@ export default function CoursesPage() {
                 <div className="text-gray-600">Completion Rate</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-accent-800 mb-2">24/7</div>
-                <div className="text-gray-600">Support</div>
+                <div className="text-3xl font-bold text-accent-800 mb-2">15K+</div>
+                <div className="text-gray-600">Trained Professionals</div>
               </div>
             </div>
           </div>

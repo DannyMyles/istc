@@ -4,6 +4,8 @@ import {
   Clock, Award, CheckCircle, ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
+import { Phone, Mail } from 'lucide-react';
+
 
 export default function ServicesPage() {
   const services = [
@@ -386,6 +388,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-// Import Phone and Mail icons for the services page
-import { Phone, Mail } from 'lucide-react';
