@@ -80,11 +80,37 @@ const Navigation = () => {
       { 
         name: 'Services', 
         href: '/services',
+        icon: Shield,
         submenu: [
-          { name: 'Consultancy', href: '/services/consultancy' },
-          { name: 'Training Programs', href: '/services/training' },
-          { name: 'Safety Audits', href: '/services/audits' },
-          { name: 'Certification', href: '/services/certification' },
+          { 
+            name: 'Safety Audits & Assessments', 
+            icon: Shield,
+            subitems: [
+              { name: 'Occupational Safety & Health Audit', href: '/services/occupational-safety-health-audit' },
+              { name: 'Fire Safety Audit', href: '/services/fire-safety-audit' },
+              { name: 'Risk Assessment', href: '/services/risk-assessment' },
+              { name: 'Ergonomics Audit', href: '/services/ergonomics-audit' },
+            ]
+          },
+          { 
+            name: 'Environmental Services', 
+            subitems: [
+              { name: 'Environmental Audit', href: '/services/environmental-audit' },
+              { name: 'Environmental Impact Assessment', href: '/services/environmental-impact-assessment' },
+              { name: 'Noise Measurement', href: '/services/noise-measurement' },
+              { name: 'Indoor Air Quality (IAQ)', href: '/services/indoor-air-quality-iaq' },
+            ]
+          },
+          { 
+            name: 'Consultancy Services', 
+            subitems: [
+              { name: 'Safety Compliance Consulting', href: '/services/consultancy' },
+              { name: 'Training Program Development', href: '/services/training' },
+              { name: 'Certification Support', href: '/services/certification' },
+              { name: 'Customized Safety Solutions', href: '/services/custom-solutions' },
+            ]
+          },
+          { name: 'All Services', href: '/services' },
         ]
       },
       { name: 'Calendar', href: '/calendar' },

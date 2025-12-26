@@ -58,31 +58,31 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <span className="w-1 h-1 bg-accent-light rounded-full"></span>
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/about" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <span className="w-1 h-1 bg-accent-light rounded-full"></span>
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/courses" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/courses" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <span className="w-1 h-1 bg-accent-light rounded-full"></span>
                   Courses
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/services" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <span className="w-1 h-1 bg-accent-light rounded-full"></span>
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/contact" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <span className="w-1 h-1 bg-accent-light rounded-full"></span>
                   Contact
                 </Link>
@@ -95,31 +95,31 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Popular Courses</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/courses/first-aid" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/courses/first-aid" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <GraduationCap size={16} />
                   First Aid Training
                 </Link>
               </li>
               <li>
-                <Link href="/courses/fire-safety" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/courses/fire-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <GraduationCap size={16} />
                   Fire Safety
                 </Link>
               </li>
               <li>
-                <Link href="/courses/construction-safety" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/courses/construction-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <GraduationCap size={16} />
                   Construction Safety
                 </Link>
               </li>
               <li>
-                <Link href="/courses/health-safety" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/courses/health-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <GraduationCap size={16} />
                   Health & Safety
                 </Link>
               </li>
               <li>
-                <Link href="/courses/environmental" className="text-accent-200 hover:text-white transition-colors flex items-center gap-2">
+                <Link href="/courses/environmental" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <GraduationCap size={16} />
                   Environmental Safety
                 </Link>
@@ -192,13 +192,13 @@ const Footer = () => {
               <p>© {currentYear} International Safety Training Centre. All rights reserved.</p>
             </div>
             <div className="flex items-center gap-6 text-sm">
-              <Link href="/privacy" className="text-accent-300 hover:text-white transition-colors">
+              <Link href="/privacy" className="text-accent-300 hover:text-[#039AC5] transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-accent-300 hover:text-white transition-colors">
+              <Link href="/terms" className="text-accent-300 hover:text-[#039AC5] transition-colors">
                 Terms & Conditions
               </Link>
-              <Link href="/sitemap" className="text-accent-300 hover:text-white transition-colors">
+              <Link href="/sitemap" className="text-accent-300 hover:text-[#039AC5] transition-colors">
                 Sitemap
               </Link>
             </div>
