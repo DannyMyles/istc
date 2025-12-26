@@ -139,6 +139,14 @@ const Navigation = () => {
     });
   };
 
+  // Helper function to check if a link is active
+  const isActiveLink = (href: string) => {
+    if (href === '/') {
+      return pathname === href;
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
     <>
       {/* Top Contact Bar with adventure styling */}
@@ -178,13 +186,13 @@ const Navigation = () => {
                   value={optimisticQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search courses..."
-                  className="pl-10 pr-4 py-1.5 rounded-lg text-accent-900 text-sm w-48 focus:w-64 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:shadow-glow-accent"
+                  className="pl-10 pr-4 py-1.5 rounded-lg text-accent-900 text-sm w-48 focus:w-64 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#039AC5] focus:shadow-[0_0_0_3px_rgba(3,154,197,0.1)]"
                   disabled={isPending}
                 />
-                <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-accent-500" />
+                <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#039AC5]" />
                 {isPending && (
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-accent"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#039AC5]"></div>
                   </div>
                 )}
               </form>
@@ -237,33 +245,47 @@ const Navigation = () => {
                 <div key={item.name} className="relative">
                   {item.submenu ? (
                     <div className="group">
-                      <button className="flex items-center gap-1 px-4 py-3 text-gray-700 hover:text-accent-800 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-gradient-to-r after:from-accent after:to-accent-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:rounded-full">
+                      <button className={`flex items-center gap-1 px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
+                        isActiveLink(item.href)
+                          ? 'text-[#039AC5] after:scale-x-100'
+                          : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
+                      }`}>
                         {item.name}
-                        <ChevronDown size={16} className="group-hover:rotate-180 transition-transform text-accent" />
+                        <ChevronDown size={16} className={`group-hover:rotate-180 transition-transform ${
+                          isActiveLink(item.href) ? 'text-[#039AC5]' : 'text-gray-500'
+                        }`} />
                       </button>
-                      <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-accent-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
+                      <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
                         <div className="p-2">
                           {item.submenu.map((subItem) => (
                             hasSubitems(subItem) ? (
                               // Nested submenu for items with subitems
                               <div key={subItem.name} className="relative group/sub">
-                                <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors cursor-pointer">
+                                <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5] rounded-lg transition-colors cursor-pointer">
                                   <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-accent group-hover/sub:scale-125 transition-transform"></div>
+                                    <div className={`w-2 h-2 rounded-full ${
+                                      isActiveLink(item.href) ? 'bg-[#039AC5]' : 'bg-gray-300'
+                                    } group-hover/sub:scale-125 transition-transform`}></div>
                                     <span className="font-medium">{subItem.name}</span>
                                   </div>
-                                  <ChevronRight size={16} className="text-accent-400" />
+                                  <ChevronRight size={16} className="text-[#039AC5]" />
                                 </div>
                                 {/* Second level submenu */}
-                                <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-accent-100 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
+                                <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
                                   <div className="p-2">
                                     {subItem.subitems.map((nestedItem) => (
                                       <Link
                                         key={nestedItem.name}
                                         href={nestedItem.href}
-                                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors group/nested"
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/nested ${
+                                          isActiveLink(nestedItem.href)
+                                            ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                            : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                        }`}
                                       >
-                                        <div className="w-1.5 h-1.5 rounded-full bg-accent-400 group-hover/nested:scale-125 transition-transform"></div>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${
+                                          isActiveLink(nestedItem.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
+                                        } group-hover/nested:scale-125 transition-transform`}></div>
                                         <span className="font-medium">{nestedItem.name}</span>
                                       </Link>
                                     ))}
@@ -275,9 +297,15 @@ const Navigation = () => {
                               <Link
                                 key={subItem.name}
                                 href={subItem.href!}
-                                className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-colors group/sub adventure-card"
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/sub ${
+                                  isActiveLink(subItem.href!)
+                                    ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                    : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                }`}
                               >
-                                <div className="w-2 h-2 rounded-full bg-accent group-hover/sub:scale-125 transition-transform animate-pulse-glow"></div>
+                                <div className={`w-2 h-2 rounded-full ${
+                                  isActiveLink(subItem.href!) ? 'bg-[#039AC5] animate-pulse' : 'bg-gray-300'
+                                } group-hover/sub:scale-125 transition-transform`}></div>
                                 <span className="font-medium">{subItem.name}</span>
                               </Link>
                             )
@@ -288,10 +316,10 @@ const Navigation = () => {
                   ) : (
                     <Link
                       href={item.href}
-                      className={`px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-gradient-to-r after:from-accent after:to-accent-600 after:transition-transform after:rounded-full ${
-                        pathname === item.href
-                          ? 'text-accent-800 after:scale-x-100'
-                          : 'text-gray-700 hover:text-accent-800 after:scale-x-0 hover:after:scale-x-100'
+                      className={`px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
+                        isActiveLink(item.href)
+                          ? 'text-[#039AC5] after:scale-x-100'
+                          : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
                       }`}
                     >
                       {item.name}
@@ -315,16 +343,16 @@ const Navigation = () => {
             {/* Enhanced Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-3 rounded-xl bg-accent-50 hover:bg-accent-100 transition-colors relative group"
+              className="lg:hidden p-3 rounded-xl bg-[#039AC5]/10 hover:bg-[#039AC5]/20 transition-colors relative group"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (
-                <X size={24} className="text-accent-800" />
+                <X size={24} className="text-[#039AC5]" />
               ) : (
-                <Menu size={24} className="text-accent-800 group-hover:scale-110 transition-transform" />
+                <Menu size={24} className="text-[#039AC5] group-hover:scale-110 transition-transform" />
               )}
               {!isMenuOpen && pathname !== '/' && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full animate-pulse-glow"></span>
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#039AC5] rounded-full animate-pulse"></span>
               )}
             </button>
           </div>
@@ -332,7 +360,7 @@ const Navigation = () => {
 
         {/* Enhanced Mobile Menu with animations */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-accent-100 animate-in slide-in-from-top duration-300">
+          <div className="lg:hidden bg-white border-t border-gray-200 animate-in slide-in-from-top duration-300">
             <div className="container mx-auto px-4 py-6">
               {/* Mobile Search */}
               <form onSubmit={handleSearch} className="mb-6">
@@ -342,13 +370,13 @@ const Navigation = () => {
                     value={optimisticQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search courses and resources..."
-                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-accent-200 focus:outline-none focus:ring-2 focus:ring-accent focus:shadow-glow-accent adventure-card"
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#039AC5] focus:border-transparent"
                     disabled={isPending}
                   />
-                  <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-accent-500" />
+                  <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#039AC5]" />
                   {isPending && (
                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-accent"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#039AC5]"></div>
                     </div>
                   )}
                 </div>
@@ -357,23 +385,35 @@ const Navigation = () => {
               {/* Mobile Navigation */}
               <div className="space-y-1">
                 {navigation.main.map((item) => (
-                  <div key={item.name} className="border-b border-accent-100 last:border-0">
+                  <div key={item.name} className="border-b border-gray-100 last:border-0">
                     {item.submenu ? (
                       <details className="group">
-                        <summary className="flex items-center justify-between py-4 text-gray-700 font-semibold cursor-pointer list-none hover:text-accent-800 transition-colors">
+                        <summary className={`flex items-center justify-between py-4 font-semibold cursor-pointer list-none transition-colors ${
+                          isActiveLink(item.href)
+                            ? 'text-[#039AC5]'
+                            : 'text-gray-700 hover:text-[#039AC5]'
+                        }`}>
                           {item.name}
-                          <ChevronDown size={20} className="text-accent-400 group-open:rotate-180 transition-transform" />
+                          <ChevronDown size={20} className={`group-open:rotate-180 transition-transform ${
+                            isActiveLink(item.href) ? 'text-[#039AC5]' : 'text-gray-500'
+                          }`} />
                         </summary>
                         <div className="pb-4">
                           {item.submenu.map((subItem) => (
                             hasSubitems(subItem) ? (
                               <details key={subItem.name} className="group/sub ml-4">
-                                <summary className="flex items-center justify-between py-3 px-4 text-gray-600 hover:text-accent-800 cursor-pointer list-none">
+                                <summary className="flex items-center justify-between py-3 px-4 cursor-pointer list-none">
                                   <div className="flex items-center gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
-                                    {subItem.name}
+                                    <div className={`w-1.5 h-1.5 rounded-full ${
+                                      isActiveLink(item.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
+                                    }`}></div>
+                                    <span className={`${
+                                      isActiveLink(item.href)
+                                        ? 'text-[#039AC5]'
+                                        : 'text-gray-600 hover:text-[#039AC5]'
+                                    }`}>{subItem.name}</span>
                                   </div>
-                                  <ChevronRight size={16} className="text-accent-400 group-open/sub:rotate-90 transition-transform" />
+                                  <ChevronRight size={16} className="text-[#039AC5] group-open/sub:rotate-90 transition-transform" />
                                 </summary>
                                 <div className="ml-4">
                                   {subItem.subitems.map((nestedItem) => (
@@ -381,9 +421,15 @@ const Navigation = () => {
                                       key={nestedItem.name}
                                       href={nestedItem.href}
                                       onClick={() => setIsMenuOpen(false)}
-                                      className="flex items-center gap-3 py-3 px-4 text-gray-600 hover:text-accent-800 hover:bg-accent-50 rounded-lg transition-colors"
+                                      className={`flex items-center gap-3 py-3 px-4 rounded-lg transition-colors ${
+                                        isActiveLink(nestedItem.href)
+                                          ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                          : 'text-gray-600 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                      }`}
                                     >
-                                      <div className="w-1 h-1 rounded-full bg-accent-400"></div>
+                                      <div className={`w-1 h-1 rounded-full ${
+                                        isActiveLink(nestedItem.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
+                                      }`}></div>
                                       {nestedItem.name}
                                     </Link>
                                   ))}
@@ -394,9 +440,15 @@ const Navigation = () => {
                                 key={subItem.name}
                                 href={subItem.href!}
                                 onClick={() => setIsMenuOpen(false)}
-                                className="flex items-center gap-3 py-3 px-4 text-gray-600 hover:text-accent-800 hover:bg-accent-50 rounded-lg transition-colors"
+                                className={`flex items-center gap-3 py-3 px-4 rounded-lg transition-colors ${
+                                  isActiveLink(subItem.href!)
+                                    ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                    : 'text-gray-600 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                }`}
                               >
-                                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-glow"></div>
+                                <div className={`w-1.5 h-1.5 rounded-full ${
+                                  isActiveLink(subItem.href!) ? 'bg-[#039AC5] animate-pulse' : 'bg-gray-400'
+                                }`}></div>
                                 {subItem.name}
                               </Link>
                             )
@@ -407,13 +459,15 @@ const Navigation = () => {
                       <Link
                         href={item.href}
                         onClick={() => setIsMenuOpen(false)}
-                        className={`flex items-center py-4 text-gray-700 font-semibold hover:text-accent-800 transition-colors ${
-                          pathname === item.href ? 'text-accent-800' : ''
+                        className={`flex items-center justify-between py-4 font-semibold transition-colors ${
+                          isActiveLink(item.href)
+                            ? 'text-[#039AC5]'
+                            : 'text-gray-700 hover:text-[#039AC5]'
                         }`}
                       >
                         {item.name}
-                        {pathname === item.href && (
-                          <div className="ml-2 w-2 h-2 rounded-full bg-accent animate-pulse-glow"></div>
+                        {isActiveLink(item.href) && (
+                          <div className="w-2 h-2 rounded-full bg-[#039AC5] animate-pulse"></div>
                         )}
                       </Link>
                     )}
@@ -426,14 +480,14 @@ const Navigation = () => {
                 <Link
                   href="/consultation"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block w-full text-center btn-adventure py-3.5"
+                  className="block w-full text-center bg-[#039AC5] text-white hover:bg-[#0284B4] transition-colors py-3.5 rounded-lg font-semibold"
                 >
                   Schedule Free Consultation
                 </Link>
                 <Link
                   href="/courses"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block w-full text-center btn-adventure-outline py-3.5"
+                  className="block w-full text-center border-2 border-[#039AC5] text-[#039AC5] hover:bg-[#039AC5] hover:text-white transition-colors py-3.5 rounded-lg font-semibold"
                 >
                   Browse Courses
                 </Link>
