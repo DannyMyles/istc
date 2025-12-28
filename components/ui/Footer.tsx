@@ -1,3 +1,4 @@
+// components/Footer.tsx
 'use client';
 
 import Link from 'next/link';
@@ -7,9 +8,17 @@ import {
   GraduationCap, Award, Users, Clock 
 } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith('/admin');
+
+  // Don't show footer on admin pages
+  if (isAdminRoute) {
+    return null;
+  }
 
   return (
     <footer className="bg-gradient-to-b from-accent-900 to-accent-950">

@@ -3,9 +3,13 @@
 
 import { useState, useTransition, useOptimistic, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Phone, ChevronDown, Shield, GraduationCap, Search, Mail, Clock, ChevronRight } from 'lucide-react';
+import { 
+  Menu, X, Phone, ChevronDown, Shield, GraduationCap, 
+  Search, Mail, Clock, ChevronRight, User, LogOut, KeyRound 
+} from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useSession, signOut } from 'next-auth/react';
 
 type NavItem = {
   name: string;
@@ -36,6 +40,10 @@ const Navigation = () => {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const router = useRouter();
+  
+  // NextAuth session
+  const { data: session, status } = useSession();
+  const isAdminRoute = pathname?.startsWith('/admin');
 
   const [optimisticQuery, setOptimisticQuery] = useOptimistic(searchQuery);
 
@@ -147,6 +155,11 @@ const Navigation = () => {
     return pathname.startsWith(href);
   };
 
+  // Don't show main navigation on admin pages
+  if (isAdminRoute) {
+    return null;
+  }
+
   return (
     <>
       {/* Top Contact Bar with adventure styling */}
@@ -196,13 +209,49 @@ const Navigation = () => {
                   </div>
                 )}
               </form>
-              <Link 
+              
+              {/* Authentication status in top bar */}
+              <div className="flex items-center gap-2">
+                {status === "loading" ? (
+                  <div className="h-8 w-20 bg-white/20 rounded animate-pulse"></div>
+                ) : session ? (
+                  <div className="flex items-center gap-2">
+                    {/* <span className="text-sm hidden lg:inline">
+                      Welcome, {session.user?.name || 'Admin'}
+                    </span> */}
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-1 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors"
+                    >
+                      <User size={14} />
+                      {/* <span className="hidden md:inline">Dashboard</span> */}
+                    </Link>
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="flex items-center gap-1 text-sm hover:bg-white/20 px-3 py-3 rounded-3xl transition-colors"
+                    >
+                      <LogOut size={14} />
+                      {/* <span className="hidden md:inline">Logout</span> */}
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors"
+                  >
+                    <KeyRound size={14} />
+                    {/* <span className="hidden md:inline">Admin Login</span> */}
+                  </Link>
+                )}
+              </div>
+              
+              {/* <Link 
                 href="/consultation" 
                 className="btn-adventure flex items-center gap-2"
               >
                 <Clock size={16} />
                 Schedule Consultation
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
@@ -331,6 +380,16 @@ const Navigation = () => {
 
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-4">
+              {/* Admin Dashboard Button when logged in */}
+              {session && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-2 px-3 py-3 bg-gradient-to-r from-[#039AC5] to-[#008DB8] text-white rounded-3xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"
+                >
+                  <User size={18} />
+                  {/* Admin Dashboard */}
+                </Link>
+              )}
               <Link
                 href="/courses"
                 className="btn-adventure flex items-center gap-2"
@@ -381,6 +440,54 @@ const Navigation = () => {
                   )}
                 </div>
               </form>
+
+              {/* Authentication section in mobile menu */}
+              {status === "loading" ? (
+                <div className="mb-4 p-3 bg-gray-100 rounded-lg animate-pulse">
+                  <div className="h-6 bg-gray-300 rounded"></div>
+                </div>
+              ) : session ? (
+                <div className="mb-4 p-3 bg-[#039AC5]/5 rounded-lg border border-[#039AC5]/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <User size={18} className="text-[#039AC5]" />
+                      <span className="font-medium text-[#039AC5]">
+                        Welcome, {session.user?.name?.split(' ')[0] || 'Admin'}
+                      </span>
+                    </div>
+                    <span className="text-xs bg-[#039AC5] text-white px-2 py-0.5 rounded-full">
+                      Admin
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Link
+                      href="/admin"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex-1 text-center bg-[#039AC5] text-white py-2 rounded-lg text-sm font-medium hover:bg-[#0284B4] transition-colors"
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        signOut({ callbackUrl: '/' });
+                      }}
+                      className="flex-1 text-center border border-[#039AC5] text-[#039AC5] py-2 rounded-lg text-sm font-medium hover:bg-[#039AC5]/5 transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="mb-4 flex items-center justify-center gap-2 w-full bg-[#039AC5]/10 text-[#039AC5] hover:bg-[#039AC5]/20 py-3 rounded-lg font-medium transition-colors"
+                >
+                  <KeyRound size={18} />
+                  Admin Login
+                </Link>
+              )}
 
               {/* Mobile Navigation */}
               <div className="space-y-1">
