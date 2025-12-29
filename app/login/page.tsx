@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -13,7 +13,8 @@ import {
   Loader2 
 } from 'lucide-react'
 
-export default function LoginPage() {
+// Create a separate component for the form that uses useSearchParams
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -51,6 +52,104 @@ export default function LoginPage() {
   }
 
   return (
+    <>
+      {/* Error Message */}
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-in slide-in-from-top duration-200">
+          <div className="flex items-center gap-2 text-red-700">
+            <AlertCircle className="h-5 w-5 flex-shrink-0" />
+            <p className="text-sm font-medium">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Login Form */}
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            Email Address
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition"
+              placeholder="admin@istc.co.ke"
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition"
+              placeholder="••••••••"
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              className="h-4 w-4 text-accent-500 focus:ring-accent-500 border-gray-300 rounded"
+            />
+            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+              Remember me
+            </label>
+          </div>
+          <button
+            type="button"
+            className="text-sm font-medium text-accent-600 hover:text-accent-500 transition-colors"
+          >
+            Forgot password?
+          </button>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-adventure w-full flex items-center justify-center py-3.5 px-4 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              'Sign in to Admin Portal'
+            )}
+          </button>
+        </div>
+      </form>
+    </>
+  )
+}
+
+export default function LoginPage() {
+  return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-accent-50/30 py-12 px-4">
       <div className="max-w-md w-full">
         {/* Back to Home Link */}
@@ -77,97 +176,15 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-in slide-in-from-top duration-200">
-              <div className="flex items-center gap-2 text-red-700">
-                <AlertCircle className="h-5 w-5 flex-shrink-0" />
-                <p className="text-sm font-medium">{error}</p>
-              </div>
+          {/* Suspense boundary for the form */}
+          <Suspense fallback={
+            <div className="flex flex-col items-center justify-center p-8 space-y-4">
+              <Loader2 className="h-8 w-8 text-accent-500 animate-spin" />
+              <p className="text-sm text-gray-600">Loading login form...</p>
             </div>
-          )}
-
-          {/* Login Form */}
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition"
-                  placeholder="admin@istc.co.ke"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition"
-                  placeholder="••••••••"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-accent-500 focus:ring-accent-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Remember me
-                </label>
-              </div>
-              <button
-                type="button"
-                className="text-sm font-medium text-accent-600 hover:text-accent-500 transition-colors"
-              >
-                Forgot password?
-              </button>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-adventure w-full flex items-center justify-center py-3.5 px-4 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Signing in...
-                  </>
-                ) : (
-                  'Sign in to Admin Portal'
-                )}
-              </button>
-            </div>
-          </form>
+          }>
+            <LoginForm />
+          </Suspense>
 
           {/* Security Notice */}
           <div className="mt-8 pt-6 border-t border-gray-200">
