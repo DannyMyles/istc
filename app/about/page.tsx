@@ -156,7 +156,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-accent-600 to-accent-700 text-white">
+      <section className="py-20 bg-gradient-to-r from-accent-600 to-accent-700 text-gray-700">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">
             Ready to Start Your Safety Journey?
@@ -167,13 +167,13 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/contact" 
-              className="bg-white text-accent-800 hover:bg-accent-50 px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
+              className="border bg-[#039AC5]  text-white hover:bg-accent-50 px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
             >
               Contact Us
             </Link>
             <Link 
               href="/courses" 
-              className="border-2 border-white hover:bg-white/10 px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
+              className="border border-[#039AC5] hover:bg-[#039AC5] hover:text-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
             >
               View Courses
             </Link>

@@ -1,5 +1,6 @@
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import { Star, Quote, TrendingUp, Users, Award } from 'lucide-react';
+import Link from 'next/link';
 
 export default function TestimonialsPage() {
   const allTestimonials = [
@@ -178,7 +179,7 @@ export default function TestimonialsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-accent-600 to-accent-700 text-white">
+      <section className="py-20 bg-gradient-to-r from-accent-600 to-accent-700 text-gray-700">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">
@@ -190,16 +191,16 @@ export default function TestimonialsPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="tel:+254700364722" 
-                className="bg-white text-accent-800 hover:bg-accent-50 px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
+                className="border bg-[#039AC5]  text-white hover:text-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
               >
                 Call to Enroll
               </a>
-              <a 
+              <Link 
                 href="/courses" 
-                className="border-2 border-white hover:bg-white/10 px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
+                className="border border-[#039AC5] hover:bg-[#039AC5] hover:text-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
               >
                 Browse Courses
-              </a>
+              </Link>
             </div>
           </div>
         </div>

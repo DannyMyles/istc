@@ -166,7 +166,8 @@ const Navigation = () => {
       <div className="bg-gradient-adventure text-white bg-[#008DB8]">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center py-3 text-sm">
-            <div className="flex flex-wrap items-center gap-4 mb-2 md:mb-0">
+            {/* Contact info - hidden on mobile, visible on md+ */}
+            <div className="hidden md:flex flex-wrap items-center gap-4 mb-2 md:mb-0">
               <div className="flex items-center gap-2">
                 <Phone size={14} className="text-accent-light" />
                 <a 
@@ -187,12 +188,15 @@ const Navigation = () => {
                 </a>
               </div>
               <div className="hidden md:block h-4 w-px bg-white/30"></div>
-              <div className="flex items-center gap-2 text-accent-light font-medium animate-pulse-glow">
+              <div className="hidden md:flex items-center gap-2 text-accent-light font-medium animate-pulse-glow">
                 <Clock size={14} />
                 24/7 Emergency Support Available
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            
+            {/* Mobile: Stack authentication at end, Desktop: Keep as before */}
+            <div className="w-full md:w-auto flex justify-between md:justify-normal items-center gap-4">
+              {/* Search form - hidden on mobile */}
               <form onSubmit={handleSearch} className="relative hidden md:block">
                 <input
                   type="text"
@@ -216,42 +220,29 @@ const Navigation = () => {
                   <div className="h-8 w-20 bg-white/20 rounded animate-pulse"></div>
                 ) : session ? (
                   <div className="flex items-center gap-2">
-                    {/* <span className="text-sm hidden lg:inline">
-                      Welcome, {session.user?.name || 'Admin'}
-                    </span> */}
                     <Link
                       href="/admin"
                       className="flex items-center gap-1 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors"
                     >
                       <User size={14} />
-                      {/* <span className="hidden md:inline">Dashboard</span> */}
                     </Link>
                     <button
                       onClick={() => signOut({ callbackUrl: '/' })}
                       className="flex items-center gap-1 text-sm hover:bg-white/20 px-3 py-3 rounded-3xl transition-colors"
                     >
                       <LogOut size={14} />
-                      {/* <span className="hidden md:inline">Logout</span> */}
                     </button>
                   </div>
                 ) : (
                   <Link
                     href="/login"
-                    className="flex items-center gap-2 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors"
+                    className="flex items-center gap-2 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors ml-auto md:ml-0"
                   >
                     <KeyRound size={14} />
                     {/* <span className="hidden md:inline">Admin Login</span> */}
                   </Link>
                 )}
               </div>
-              
-              {/* <Link 
-                href="/consultation" 
-                className="btn-adventure flex items-center gap-2"
-              >
-                <Clock size={16} />
-                Schedule Consultation
-              </Link> */}
             </div>
           </div>
         </div>

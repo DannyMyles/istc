@@ -1,6 +1,7 @@
 'use client';
 
-import { Play, Shield, Award, Users, Clock } from 'lucide-react';
+import { Play, Shield, Award, Users, Clock, Star } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const Hero = () => {
@@ -16,7 +17,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-20 md:py-32 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
-          {/* Left Content */}
+          {/* Left Content - Safety Training */}
           <div className="space-y-8">
             <div className="inline-flex items-center gap-3 bg-accent-100 text-accent-800 px-4 py-2 rounded-full text-sm font-semibold">
               <Shield size={16} />
@@ -36,99 +37,96 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
                 href="/courses" 
-                className="btn-adventure flex items-center justify-center gap-2 text-lg px-8 py-4"
+                className="btn-adventure flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-lg"
               >
                 <Award size={20} />
                 Explore Courses
               </Link>
-              <Link 
-                href="/consultation" 
-                className="btn-adventure-outline flex items-center justify-center gap-2 text-lg px-8 py-4"
+              <button
+                className="btn-adventure-outline flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-lg"
               >
                 <Play size={20} />
                 Watch Introduction
-              </Link>
+              </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-accent-800">15K+</div>
+            {/* Stats - Arranged like reference image */}
+            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200">
+              <div>
+                <div className="text-3xl font-bold text-gray-900">15K+</div>
                 <div className="text-sm text-gray-600">Trained Professionals</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-accent-800">98%</div>
-                <div className="text-sm text-gray-600">Success Rate</div>
+              <div className="border-l border-gray-200 pl-8">
+                <div className="text-lg font-semibold text-gray-900">First Aid Training</div>
+                <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                  <Clock size={14} />
+                  Next: March 15
+                </div>
+                <button className="mt-3 text-accent-600 font-semibold text-sm hover:text-accent-700">
+                  Join Now →
+                </button>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-accent-800">25+</div>
-                <div className="text-sm text-gray-600">Certified Courses</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-accent-800">16</div>
-                <div className="text-sm text-gray-600">Years Experience</div>
+              <div className="border-l border-gray-200 pl-8">
+                <div className="text-lg font-semibold text-gray-900">Our Success</div>
+                <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                  98% certification success rate with industry-leading...
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Right Content - Hero Image/Illustration */}
+          {/* Right Content - Safety Training Image with overlay elements */}
           <div className="relative">
-            <div className="relative z-10">
-              {/* Main Card */}
-              <div className="bg-white rounded-2xl shadow-adventure-lg p-8">
-                <div className="aspect-video bg-gradient-to-br from-accent-100 to-accent-200 rounded-xl mb-6 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-20 h-20 mx-auto mb-4 bg-white rounded-full flex items-center justify-center shadow-lg">
-                      <Shield size={40} className="text-accent-600" />
-                    </div>
-                    <h3 className="text-xl font-bold text-accent-800 mb-2">Safety First</h3>
-                    <p className="text-gray-600">Protecting lives through quality training</p>
+            {/* Main Image Container */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <div className="aspect-[4/3] relative">
+                <Image
+                  src="/images/landing.png" // Replace with your actual image
+                  alt="Online Learning Platform"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                {/* Overlay Stats Card - Top Right */}
+                <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg max-w-[180px]">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-900">15K+</div>
+                    <div className="text-sm text-gray-600">Professionals Trained</div>
                   </div>
                 </div>
                 
-                {/* Notification Cards */}
-                <div className="space-y-4">
-                  <div className="bg-accent-50 p-4 rounded-xl flex items-center gap-4">
-                    <div className="bg-accent-100 p-2 rounded-lg">
-                      <Users className="text-accent-600" size={24} />
+                {/* Overlay Class Card - Bottom Left */}
+                <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg max-w-[200px]">
+                  <div>
+                    <h4 className="font-semibold text-gray-900">First Aid Certification</h4>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                      <Clock size={14} />
+                      March 15, 10:00 AM
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-accent-800">Group Training Available</h4>
-                      <p className="text-sm text-gray-600">Corporate packages with discounts</p>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-green-50 p-4 rounded-xl flex items-center gap-4">
-                    <div className="bg-green-100 p-2 rounded-lg">
-                      <Clock className="text-green-600" size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-green-800">Next Course Starts Soon</h4>
-                      <p className="text-sm text-gray-600">First Aid Training - March 15</p>
-                    </div>
+                    <button className="mt-3 bg-accent-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-accent-700 transition-colors">
+                      Reserve Seat
+                    </button>
                   </div>
                 </div>
-              </div>
-              
-              {/* Floating Elements */}
-              <div className="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-adventure-lg">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-accent-800">4.9</div>
-                  <div className="text-sm text-gray-600">Rating</div>
-                  <div className="flex gap-1 mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                    ))}
+                
+                {/* Rating Badge - Bottom Right */}
+                <div className="absolute bottom-6 right-6 bg-white p-3 rounded-full shadow-lg">
+                  <div className="flex items-center gap-1">
+                    <Star size={20} className="fill-yellow-400 text-yellow-400" />
+                    <span className="font-bold text-gray-900">4.9</span>
                   </div>
                 </div>
               </div>
-              
-              <div className="absolute -bottom-6 -left-6 bg-accent-600 text-white p-4 rounded-xl shadow-adventure-lg">
-                <div className="text-center">
-                  <div className="text-2xl font-bold">25%</div>
-                  <div className="text-sm">Early Bird Discount</div>
-                </div>
-              </div>
+            </div>
+            
+            {/* Additional Success Info Card below the image */}
+            <div className="mt-6 bg-white rounded-xl p-6 shadow-lg">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Our Training Success</h3>
+              <p className="text-gray-600 text-sm">
+                With over 16 years of experience, we've certified more than 15,000 safety professionals 
+                across 25+ specialized courses. Our 98% certification success rate and industry partnerships 
+                ensure your team receives the highest quality safety training available.
+              </p>
             </div>
           </div>
         </div>
