@@ -12,20 +12,20 @@ import {
   DollarSign,
   Clock,
   Award,
-  Upload,
   X,
-  Check,
   AlertCircle
 } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { CreateTrainingRequest, trainingService } from '@/app/api_services/trainingService'
 
-interface TrainingSession {
-  startDate: string;
-  endDate: string;
+interface TrainingSessionInput {
+  startDate: string
+  endDate: string
   seats: {
-    total: number;
-  };
-  venue: string;
-  instructor?: string;
+    total: number
+  }
+  venue: string
+  instructor?: string
 }
 
 export default function CreateTrainingPage() {
@@ -34,33 +34,21 @@ export default function CreateTrainingPage() {
   const [error, setError] = useState('')
   
   // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateTrainingRequest>({
     title: '',
     description: '',
     targetGroup: '',
-    duration: {
-      value: 1,
-      unit: 'days',
-      display: '1 day'
-    },
-    cost: {
-      amount: 0,
-      currency: 'KSH',
-      display: '0 KSH',
-      taxInclusive: false
-    },
-    sessions: [] as TrainingSession[],
+    duration: '',
+    cost: '',
     category: 'safety',
-    modeOfStudy: [] as string[],
-    prerequisites: [] as string[],
-    learningOutcomes: [] as string[],
-    certification: '',
+    modeOfStudy: ['full-time'],
     isFeatured: false,
     registrationFee: 0,
-    requirements: [] as string[]
+    certification: '',
+    sessions: []
   })
 
-  const [newSession, setNewSession] = useState<TrainingSession>({
+  const [newSession, setNewSession] = useState<TrainingSessionInput>({
     startDate: '',
     endDate: '',
     seats: { total: 20 },
@@ -68,21 +56,21 @@ export default function CreateTrainingPage() {
     instructor: ''
   })
 
-  const [newPrerequisite, setNewPrerequisite] = useState('')
-  const [newOutcome, setNewOutcome] = useState('')
-  const [newRequirement, setNewRequirement] = useState('')
-
   const categories = [
     'safety', 'environmental', 'construction', 'health', 
     'management', 'technical', 'first-aid', 'fire-safety'
   ]
 
   const modeOptions = ['full-time', 'part-time', 'weekend', 'online', 'hybrid']
-  const durationUnits = ['hours', 'days', 'weeks', 'months']
 
   const handleAddSession = () => {
     if (!newSession.startDate || !newSession.endDate) {
-      alert('Please provide start and end dates')
+      toast.error('Please provide start and end dates')
+      return
+    }
+    
+    if (new Date(newSession.endDate) < new Date(newSession.startDate)) {
+      toast.error('End date must be after start date')
       return
     }
     
@@ -105,41 +93,6 @@ export default function CreateTrainingPage() {
     setFormData({ ...formData, sessions: updatedSessions })
   }
 
-  const handleAddPrerequisite = () => {
-    if (newPrerequisite.trim() && !formData.prerequisites.includes(newPrerequisite.trim())) {
-      setFormData({
-        ...formData,
-        prerequisites: [...formData.prerequisites, newPrerequisite.trim()]
-      })
-      setNewPrerequisite('')
-    }
-  }
-
-  const handleAddOutcome = () => {
-    if (newOutcome.trim() && !formData.learningOutcomes.includes(newOutcome.trim())) {
-      setFormData({
-        ...formData,
-        learningOutcomes: [...formData.learningOutcomes, newOutcome.trim()]
-      })
-      setNewOutcome('')
-    }
-  }
-
-  const handleAddRequirement = () => {
-    if (newRequirement.trim() && !formData.requirements.includes(newRequirement.trim())) {
-      setFormData({
-        ...formData,
-        requirements: [...formData.requirements, newRequirement.trim()]
-      })
-      setNewRequirement('')
-    }
-  }
-
-  const handleRemoveItem = (array: string[], index: number, field: keyof typeof formData) => {
-    const updatedArray = array.filter((_, i) => i !== index)
-    setFormData({ ...formData, [field]: updatedArray })
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -147,7 +100,7 @@ export default function CreateTrainingPage() {
 
     try {
       // Validate form
-      if (!formData.title || !formData.description) {
+      if (!formData.title.trim() || !formData.description.trim()) {
         throw new Error('Title and description are required')
       }
 
@@ -155,30 +108,43 @@ export default function CreateTrainingPage() {
         throw new Error('At least one training session is required')
       }
 
-      // Calculate display strings
-      const durationDisplay = `${formData.duration.value} ${formData.duration.unit}${formData.duration.value > 1 ? 's' : ''}`
-      const costDisplay = `${formData.cost.amount.toLocaleString()} ${formData.cost.currency}`
-      
-      const finalData = {
-        ...formData,
-        duration: { ...formData.duration, display: durationDisplay },
-        cost: { ...formData.cost, display: costDisplay }
+      if (!formData.certification.trim()) {
+        throw new Error('Certification name is required')
       }
 
-      // TODO: Replace with actual API call
-      console.log('Creating training:', finalData)
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      // Redirect on success
+      // Prepare data for API
+      const trainingData = {
+        ...formData,
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        targetGroup: formData.targetGroup.trim(),
+        certification: formData.certification.trim(),
+        // Format cost with KSH if not already included
+        cost: formData.cost.includes('KSH') ? formData.cost : `${formData.cost} KSH`,
+        // Ensure registration fee is a number
+        registrationFee: Number(formData.registrationFee) || 0
+      }
+
+      const response = await trainingService.createTraining(trainingData)
+      toast.success('Training created successfully!')
       router.push('/admin/trainings')
       
     } catch (err: any) {
-      setError(err.message || 'Failed to create training')
+      console.error('Error creating training:', err)
+      setError(err.message || 'Failed to create training. Please try again.')
+      toast.error(err.message || 'Failed to create training')
     } finally {
       setLoading(false)
     }
+  }
+
+  const calculateDuration = (startDate: string, endDate: string): string => {
+    if (!startDate || !endDate) return ''
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const diffTime = Math.abs(end.getTime() - start.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return `${diffDays} day${diffDays !== 1 ? 's' : ''}`
   }
 
   return (
@@ -201,7 +167,7 @@ export default function CreateTrainingPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="btn-adventure flex items-center gap-2 disabled:opacity-50"
+            className="btn-adventure flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -244,7 +210,7 @@ export default function CreateTrainingPage() {
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  placeholder="e.g., First Aid & CPR Certification"
+                  placeholder="e.g., Occupational Safety & Health"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   required
                 />
@@ -272,7 +238,7 @@ export default function CreateTrainingPage() {
                   type="text"
                   value={formData.targetGroup}
                   onChange={(e) => setFormData({...formData, targetGroup: e.target.value})}
-                  placeholder="e.g., Safety officers, Construction workers, All employees"
+                  placeholder="e.g., Members of Health & Safety Committees in organizations"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   required
                 />
@@ -281,31 +247,18 @@ export default function CreateTrainingPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Duration
+                    Duration *
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-gray-400" />
                     <input
-                      type="number"
-                      min="1"
-                      value={formData.duration.value}
-                      onChange={(e) => setFormData({
-                        ...formData, 
-                        duration: {...formData.duration, value: parseInt(e.target.value)}
-                      })}
-                      className="w-24 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    />
-                    <select
-                      value={formData.duration.unit}
-                      onChange={(e) => setFormData({
-                        ...formData, 
-                        duration: {...formData.duration, unit: e.target.value}
-                      })}
+                      type="text"
+                      value={formData.duration}
+                      onChange={(e) => setFormData({...formData, duration: e.target.value})}
+                      placeholder="e.g., 4 days"
                       className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    >
-                      {durationUnits.map(unit => (
-                        <option key={unit} value={unit}>{unit}</option>
-                      ))}
-                    </select>
+                      required
+                    />
                   </div>
                 </div>
 
@@ -313,47 +266,16 @@ export default function CreateTrainingPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Cost *
                   </label>
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <input
-                        type="number"
-                        min="0"
-                        value={formData.cost.amount}
-                        onChange={(e) => setFormData({
-                          ...formData, 
-                          cost: {...formData.cost, amount: parseFloat(e.target.value)}
-                        })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                        required
-                      />
-                    </div>
-                    <select
-                      value={formData.cost.currency}
-                      onChange={(e) => setFormData({
-                        ...formData, 
-                        cost: {...formData.cost, currency: e.target.value}
-                      })}
-                      className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    >
-                      <option value="KSH">KSH</option>
-                      <option value="USD">USD</option>
-                      <option value="EUR">EUR</option>
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={formData.cost.taxInclusive}
-                        onChange={(e) => setFormData({
-                          ...formData, 
-                          cost: {...formData.cost, taxInclusive: e.target.checked}
-                        })}
-                        className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                      />
-                      <span className="ml-2 text-sm text-gray-600">Tax inclusive</span>
-                    </label>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5 text-gray-400" />
+                    <input
+                      type="text"
+                      value={formData.cost}
+                      onChange={(e) => setFormData({...formData, cost: e.target.value})}
+                      placeholder="e.g., 16,000 KSH"
+                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                      required
+                    />
                   </div>
                 </div>
               </div>
@@ -381,7 +303,15 @@ export default function CreateTrainingPage() {
                     <input
                       type="date"
                       value={newSession.startDate}
-                      onChange={(e) => setNewSession({...newSession, startDate: e.target.value})}
+                      onChange={(e) => {
+                        setNewSession({...newSession, startDate: e.target.value})
+                        if (newSession.endDate) {
+                          const duration = calculateDuration(e.target.value, newSession.endDate)
+                          if (duration && !formData.duration) {
+                            setFormData({...formData, duration})
+                          }
+                        }
+                      }}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                     />
                   </div>
@@ -392,7 +322,15 @@ export default function CreateTrainingPage() {
                     <input
                       type="date"
                       value={newSession.endDate}
-                      onChange={(e) => setNewSession({...newSession, endDate: e.target.value})}
+                      onChange={(e) => {
+                        setNewSession({...newSession, endDate: e.target.value})
+                        if (newSession.startDate) {
+                          const duration = calculateDuration(newSession.startDate, e.target.value)
+                          if (duration && !formData.duration) {
+                            setFormData({...formData, duration})
+                          }
+                        }
+                      }}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                     />
                   </div>
@@ -400,16 +338,19 @@ export default function CreateTrainingPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Total Seats *
                     </label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={newSession.seats.total}
-                      onChange={(e) => setNewSession({
-                        ...newSession, 
-                        seats: {...newSession.seats, total: parseInt(e.target.value)}
-                      })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    />
+                    <div className="flex items-center gap-2">
+                      <Users className="h-5 w-5 text-gray-400" />
+                      <input
+                        type="number"
+                        min="1"
+                        value={newSession.seats.total}
+                        onChange={(e) => setNewSession({
+                          ...newSession, 
+                          seats: {...newSession.seats, total: parseInt(e.target.value)}
+                        })}
+                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -419,7 +360,7 @@ export default function CreateTrainingPage() {
                       type="text"
                       value={newSession.venue}
                       onChange={(e) => setNewSession({...newSession, venue: e.target.value})}
-                      placeholder="e.g., ISTC Main Campus"
+                      placeholder="e.g., ISTC Conference Hall"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                     />
                   </div>
@@ -431,7 +372,7 @@ export default function CreateTrainingPage() {
                       type="text"
                       value={newSession.instructor || ''}
                       onChange={(e) => setNewSession({...newSession, instructor: e.target.value})}
-                      placeholder="e.g., John Safety Expert"
+                      placeholder="e.g., Dr. Wafula Johnson"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                     />
                   </div>
@@ -450,39 +391,45 @@ export default function CreateTrainingPage() {
               {formData.sessions.length > 0 ? (
                 <div className="space-y-3">
                   <h4 className="font-medium text-gray-900">Scheduled Sessions</h4>
-                  {formData.sessions.map((session, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                          <Calendar className="h-5 w-5 text-gray-400" />
-                          <span className="font-medium">
-                            {new Date(session.startDate).toLocaleDateString()} - {new Date(session.endDate).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveSession(index)}
-                          className="p-1 hover:bg-red-50 rounded text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4" />
-                          <span>{session.seats.total} seats</span>
-                        </div>
-                        <div>
-                          <span className="font-medium">Venue:</span> {session.venue}
-                        </div>
-                        {session.instructor && (
-                          <div className="md:col-span-2">
-                            <span className="font-medium">Instructor:</span> {session.instructor}
+                  {formData.sessions.map((session, index) => {
+                    const duration = calculateDuration(session.startDate, session.endDate)
+                    return (
+                      <div key={index} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <Calendar className="h-5 w-5 text-gray-400" />
+                            <span className="font-medium">
+                              {new Date(session.startDate).toLocaleDateString()} - {new Date(session.endDate).toLocaleDateString()}
+                            </span>
+                            {duration && (
+                              <span className="text-sm text-gray-500">({duration})</span>
+                            )}
                           </div>
-                        )}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSession(index)}
+                            className="p-1 hover:bg-red-50 rounded text-red-600"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <Users className="h-4 w-4" />
+                            <span>{session.seats.total} seats</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">Venue:</span> {session.venue}
+                          </div>
+                          {session.instructor && (
+                            <div className="md:col-span-2">
+                              <span className="font-medium">Instructor:</span> {session.instructor}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-8 text-gray-500">
@@ -557,91 +504,10 @@ export default function CreateTrainingPage() {
                 type="text"
                 value={formData.certification}
                 onChange={(e) => setFormData({...formData, certification: e.target.value})}
-                placeholder="e.g., Certificate in First Aid & CPR"
+                placeholder="e.g., Certificate in Occupational Safety & Health"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                 required
               />
-            </div>
-          </div>
-
-          {/* Prerequisites */}
-          <div className="adventure-card">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Prerequisites</h3>
-            
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newPrerequisite}
-                  onChange={(e) => setNewPrerequisite(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddPrerequisite())}
-                  placeholder="Add a prerequisite..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent text-sm"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddPrerequisite}
-                  className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-              
-              <div className="space-y-2">
-                {formData.prerequisites.map((prereq, index) => (
-                  <div key={index} className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
-                    <span className="text-sm">{prereq}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveItem(formData.prerequisites, index, 'prerequisites')}
-                      className="text-gray-400 hover:text-red-500"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Learning Outcomes */}
-          <div className="adventure-card">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Learning Outcomes</h3>
-            
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newOutcome}
-                  onChange={(e) => setNewOutcome(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddOutcome())}
-                  placeholder="Add a learning outcome..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent text-sm"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddOutcome}
-                  className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-              
-              <div className="space-y-2">
-                {formData.learningOutcomes.map((outcome, index) => (
-                  <div key={index} className="flex items-start gap-2 bg-green-50 rounded-lg px-3 py-2">
-                    <Check className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm flex-1">{outcome}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveItem(formData.learningOutcomes, index, 'learningOutcomes')}
-                      className="text-gray-400 hover:text-red-500 flex-shrink-0"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
 
@@ -654,13 +520,16 @@ export default function CreateTrainingPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Registration Fee (KSH)
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.registrationFee}
-                  onChange={(e) => setFormData({...formData, registrationFee: parseFloat(e.target.value)})}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                />
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-gray-400" />
+                  <input
+                    type="number"
+                    min="0"
+                    value={formData.registrationFee}
+                    onChange={(e) => setFormData({...formData, registrationFee: parseFloat(e.target.value)})}
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">

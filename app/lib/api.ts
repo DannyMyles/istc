@@ -121,10 +121,10 @@ class ApiClient {
   admin = {
     users: {
       getAll: () => 
-        this.request('/api/v1/admin/users'),
+        this.request('/api/v1/users'),
       
       updateRole: (userId: string, role: string) =>
-        this.request(`/api/v1/admin/users/${userId}/role`, {
+        this.request(`/api/v1/users/${userId}/role`, {
           method: 'PUT',
           body: JSON.stringify({ role }),
         }),
@@ -132,22 +132,40 @@ class ApiClient {
     
     blog: {
       create: (data: any) =>
-        this.request('/api/v1/admin/blogs', {
+        this.request('/api/v1/blogs', {
           method: 'POST',
           body: JSON.stringify(data),
         }),
       
       update: (id: string, data: any) =>
-        this.request(`/api/v1/admin/blogs/${id}`, {
+        this.request(`/api/v1/blogs/${id}`, {
           method: 'PUT',
           body: JSON.stringify(data),
         }),
       
       delete: (id: string) =>
-        this.request(`/api/v1/admin/blogs/${id}`, {
+        this.request(`/api/v1/blogs/${id}`, {
           method: 'DELETE',
         }),
     },
+    training: {
+    create: (data: any) =>
+      this.request('/api/v1/trainings', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    
+    update: (id: string, data: any) =>
+      this.request(`/api/v1/trainings/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    
+    delete: (id: string) =>
+      this.request(`/api/v1/trainings/${id}`, {
+        method: 'DELETE',
+      }),
+  },
   }
 }
 
