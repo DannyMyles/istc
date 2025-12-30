@@ -467,7 +467,8 @@ export default function TrainingsManagementPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 font-medium">
-                        <DollarSign className="h-4 w-4 text-gray-400" />
+                        {/* <DollarSign className="h-4 w-4 text-gray-400" /> */}
+                        {/* Ksh. */}
                         {training.cost}
                       </div>
                       {training.registrationFee > 0 && (
