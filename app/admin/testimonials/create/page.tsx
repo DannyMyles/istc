@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
   ArrowLeft, 
@@ -17,14 +17,19 @@ import {
   Sparkles,
   CheckCircle
 } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { CreateTestimonialRequest, testimonialService } from '@/app/api_services/testimonialService'
+import { Training, trainingService } from '@/app/api_services/trainingService'
 
 export default function CreateTestimonialPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [trainings, setTrainings] = useState<Training[]>([])
+  const [loadingTrainings, setLoadingTrainings] = useState(false)
   
   // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateTestimonialRequest>({
     name: '',
     role: '',
     company: '',
@@ -33,21 +38,8 @@ export default function CreateTestimonialPage() {
     avatarColor: '#3b82f6',
     featured: true,
     trainingId: '',
-    trainingName: '',
-    status: 'published' as 'published' | 'pending' | 'draft',
-    verified: true,
-    approved: true
+    trainingName: ''
   })
-
-  // Mock trainings for dropdown
-  const [trainings] = useState([
-    { id: '6950f329db84ee4a3d1b5820', name: 'Occupational Safety & Health' },
-    { id: '6950f329db84ee4a3d1b5821', name: 'Construction Safety' },
-    { id: '6950f329db84ee4a3d1b5822', name: 'Fire Safety Management' },
-    { id: '6950f329db84ee4a3d1b5823', name: 'First Aid & CPR' },
-    { id: '6950f329db84ee4a3d1b5824', name: 'Risk Management' },
-    { id: '6950f329db84ee4a3d1b5825', name: 'Healthcare Safety' },
-  ])
 
   const avatarColors = [
     '#3b82f6', // Blue
@@ -61,6 +53,23 @@ export default function CreateTestimonialPage() {
     '#84cc16', // Lime
     '#f97316', // Orange
   ]
+
+  useEffect(() => {
+    fetchTrainings()
+  }, [])
+
+  const fetchTrainings = async () => {
+    try {
+      setLoadingTrainings(true)
+      const response = await trainingService.getAllTrainings()
+      setTrainings(response.trainings)
+    } catch (error) {
+      console.error('Error fetching trainings:', error)
+      toast.error('Failed to load trainings')
+    } finally {
+      setLoadingTrainings(false)
+    }
+  }
 
   const renderStars = (rating: number) => {
     return (
@@ -83,19 +92,12 @@ export default function CreateTestimonialPage() {
     )
   }
 
-  const getInitials = (name: string) => {
-    if (!name.trim()) return 'JD'
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
-  }
-
   const validateForm = () => {
     if (!formData.name.trim()) {
       throw new Error('Name is required')
+    }
+    if (!formData.role.trim()) {
+      throw new Error('Role is required')
     }
     if (!formData.content.trim()) {
       throw new Error('Testimonial content is required')
@@ -120,21 +122,22 @@ export default function CreateTestimonialPage() {
       // Prepare data for API
       const testimonialData = {
         ...formData,
-        // Generate image initials if no image provided
-        image: getInitials(formData.name)
+        // Generate image initials if not provided
+        image: testimonialService.getInitials(formData.name),
+        // Ensure trainingName is set if trainingId is selected
+        trainingName: formData.trainingId 
+          ? trainings.find(t => t.id === formData.trainingId)?.title 
+          : undefined
       }
 
-      // TODO: Replace with actual API call
-      console.log('Creating testimonial:', testimonialData)
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      // Redirect on success
+      const response = await testimonialService.createTestimonial(testimonialData)
+      toast.success('Testimonial created successfully!')
       router.push('/admin/testimonials')
       
     } catch (err: any) {
+      console.error('Error creating testimonial:', err)
       setError(err.message || 'Failed to create testimonial')
+      toast.error(err.message || 'Failed to create testimonial')
     } finally {
       setLoading(false)
     }
@@ -160,7 +163,7 @@ export default function CreateTestimonialPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="btn-adventure flex items-center gap-2 disabled:opacity-50"
+            className="btn-adventure flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -231,7 +234,7 @@ export default function CreateTestimonialPage() {
                   <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
-                    value={formData.company}
+                    value={formData.company || ''}
                     onChange={(e) => setFormData({...formData, company: e.target.value})}
                     placeholder="Precision Manufacturing Ltd"
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
@@ -305,28 +308,34 @@ export default function CreateTestimonialPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Associated Training
                 </label>
-                <select
-                  value={formData.trainingId}
-                  onChange={(e) => {
-                    const selectedTraining = trainings.find(t => t.id === e.target.value)
-                    setFormData({
-                      ...formData,
-                      trainingId: e.target.value,
-                      trainingName: selectedTraining?.name || ''
-                    })
-                  }}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                >
-                  <option value="">Select a training (optional)</option>
-                  {trainings.map(training => (
-                    <option key={training.id} value={training.id}>
-                      {training.name}
-                    </option>
-                  ))}
-                </select>
+                {loadingTrainings ? (
+                  <div className="flex items-center justify-center p-4">
+                    <div className="h-6 w-6 border-2 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={formData.trainingId}
+                    onChange={(e) => {
+                      const selectedTraining = trainings.find(t => t.id === e.target.value)
+                      setFormData({
+                        ...formData,
+                        trainingId: e.target.value,
+                        trainingName: selectedTraining?.title || ''
+                      })
+                    }}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  >
+                    <option value="">Select a training (optional)</option>
+                    {trainings.map(training => (
+                      <option key={training.id} value={training.id}>
+                        {training.code ? `${training.code} - ` : ''}{training.title}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
-              {formData.trainingName && (
+              {formData.trainingId && (
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -359,7 +368,7 @@ export default function CreateTestimonialPage() {
                   className="h-24 w-24 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg"
                   style={{ backgroundColor: formData.avatarColor }}
                 >
-                  {getInitials(formData.name || 'JD')}
+                  {testimonialService.getInitials(formData.name || 'JD')}
                 </div>
               </div>
 
@@ -402,32 +411,6 @@ export default function CreateTestimonialPage() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">Publication Settings</h3>
             
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Status
-                </label>
-                <div className="space-y-2">
-                  {(['published', 'pending', 'draft'] as const).map((status) => (
-                    <label key={status} className="flex items-center">
-                      <input
-                        type="radio"
-                        name="status"
-                        value={status}
-                        checked={formData.status === status}
-                        onChange={(e) => setFormData({...formData, status: e.target.value as any})}
-                        className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                      />
-                      <span className="ml-2 capitalize">{status}</span>
-                      {status === 'published' && (
-                        <span className="ml-auto text-green-600">
-                          <CheckCircle className="h-4 w-4" />
-                        </span>
-                      )}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
               <div className="space-y-3">
                 <label className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -442,31 +425,6 @@ export default function CreateTestimonialPage() {
                   <Sparkles className={`h-4 w-4 ${formData.featured ? 'text-accent-600' : 'text-gray-300'}`} />
                 </label>
                 <p className="text-xs text-gray-500">Featured testimonials appear prominently on the homepage</p>
-
-                <label className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.verified}
-                      onChange={(e) => setFormData({...formData, verified: e.target.checked})}
-                      className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">Verified Customer</span>
-                  </div>
-                  <CheckCircle className={`h-4 w-4 ${formData.verified ? 'text-blue-600' : 'text-gray-300'}`} />
-                </label>
-
-                <label className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.approved}
-                      onChange={(e) => setFormData({...formData, approved: e.target.checked})}
-                      className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">Approved for Display</span>
-                  </div>
-                </label>
               </div>
             </div>
           </div>
@@ -485,17 +443,11 @@ export default function CreateTestimonialPage() {
                     className="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold"
                     style={{ backgroundColor: formData.avatarColor }}
                   >
-                    {getInitials(formData.name || 'JD')}
+                    {testimonialService.getInitials(formData.name || 'JD')}
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">
                       {formData.name || 'John Doe'}
-                      {formData.verified && (
-                        <span className="ml-2 inline-flex items-center text-xs text-blue-600">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Verified
-                        </span>
-                      )}
                     </p>
                     <p className="text-sm text-gray-600">
                       {formData.role || 'Position'}{formData.company && `, ${formData.company}`}
@@ -535,25 +487,6 @@ export default function CreateTestimonialPage() {
                     </span>
                   </div>
                 )}
-              </div>
-              
-              <div className="text-xs text-gray-500 space-y-1">
-                <div className="flex justify-between">
-                  <span>Status:</span>
-                  <span className={`font-medium capitalize ${
-                    formData.status === 'published' ? 'text-green-600' :
-                    formData.status === 'pending' ? 'text-yellow-600' :
-                    'text-gray-600'
-                  }`}>
-                    {formData.status}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Approved:</span>
-                  <span className={`font-medium ${formData.approved ? 'text-green-600' : 'text-yellow-600'}`}>
-                    {formData.approved ? 'Yes' : 'Pending'}
-                  </span>
-                </div>
               </div>
             </div>
           </div>

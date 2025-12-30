@@ -101,6 +101,14 @@ class ApiClient {
       getOne: (id: string) => 
         this.request(`/api/v1/trainings/${id}`, { requiresAuth: false }),
     },
+
+    testimonials: {
+    getAll: () => 
+      this.request('/api/v1/testimonials', { requiresAuth: false }),
+    
+    getOne: (id: string) => 
+      this.request(`/api/v1/testimonials/${id}`, { requiresAuth: false }),
+  },
   }
 
   // Protected endpoints (requires auth)
@@ -164,6 +172,30 @@ class ApiClient {
     delete: (id: string) =>
       this.request(`/api/v1/trainings/${id}`, {
         method: 'DELETE',
+      }),
+  },
+   testimonial: {
+    create: (data: any) =>
+      this.request('/api/v1/testimonials', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    
+    update: (id: string, data: any) =>
+      this.request(`/api/v1/testimonials/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    
+    delete: (id: string) =>
+      this.request(`/api/v1/testimonials/${id}`, {
+        method: 'DELETE',
+      }),
+    
+    updateStatus: (id: string, data: { isActive: boolean }) =>
+      this.request(`/api/v1/testimonials/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
       }),
   },
   }
