@@ -369,7 +369,7 @@ export default function CalendarPage() {
                   {/* Quick Actions */}
                   <div className="space-y-3">
                     {/* PDF Download Button */}
-                    <div className="border-t pt-4">
+                    <div className="border-t pt-4 text-[#039AC5]">
                       <PDFDownloadLink
                         document={
                           <TrainingCalendarPDF
