@@ -2,11 +2,11 @@
 
 import { getSession } from "next-auth/react"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com'
 
 interface ApiOptions extends RequestInit {
   requiresAuth?: boolean
-}
+} 
 
 class ApiClient {
   private async request<T = any>(
