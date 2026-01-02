@@ -121,7 +121,7 @@ const Navigation = () => {
           { name: 'All Services', href: '/services' },
         ]
       },
-      { name: 'Calendar', href: '/calendar' },
+      { name: 'Training Calendar', href: '/calendar' },
       { name: 'Testimonials', href: '/testimonials' },
       { name: 'Blog', href: '/blog' },
       { name: 'Contact', href: '/contact' },

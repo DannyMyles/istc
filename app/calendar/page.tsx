@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MapPin, CreditCard, CheckCircle, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin, CreditCard, ChevronLeft, ChevronRight, Filter, Download, Mail, Phone, CheckCircle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import { Training, TrainingResponse, trainingService } from '../api_services/trainingService';
 
 interface TrainingSession {
   id: string;
@@ -21,208 +22,195 @@ interface TrainingSession {
 }
 
 export default function CalendarPage() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [trainings, setTrainings] = useState<Training[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedLevel, setSelectedLevel] = useState('all');
-  const [selectedMonth, setSelectedMonth] = useState(selectedDate.getMonth());
-  const [selectedYear, setSelectedYear] = useState(selectedDate.getFullYear());
-  const [selectedSession, setSelectedSession] = useState<string | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null); // Changed to null to show all
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [expandedTraining, setExpandedTraining] = useState<string | null>(null);
+  const [showAllCourses, setShowAllCourses] = useState(true); // New state to track show all
 
-  const trainingSessions: TrainingSession[] = [
-    {
-      id: '1',
-      courseTitle: 'Occupational Health & Safety Level 1',
-      courseCategory: 'Health & Safety',
-      date: '2024-03-15',
-      time: '09:00',
-      duration: '5 Days',
-      seats: 20,
-      availableSeats: 8,
-      location: 'ISTC Main Campus, Westlands',
-      price: 25000,
-      instructor: 'Dr. Sarah Johnson',
-      level: 'Beginner',
-      isFeatured: true
-    },
-    {
-      id: '2',
-      courseTitle: 'First Aid & CPR Certification',
-      courseCategory: 'First Aid',
-      date: '2024-03-18',
-      time: '08:30',
-      duration: '2 Days',
-      seats: 25,
-      availableSeats: 15,
-      location: 'ISTC Main Campus, Westlands',
-      price: 15000,
-      instructor: 'Michael Chen',
-      level: 'Beginner',
-      isFeatured: false
-    },
-    {
-      id: '3',
-      courseTitle: 'Fire Safety & Evacuation Training',
-      courseCategory: 'Fire Safety',
-      date: '2024-03-20',
-      time: '09:00',
-      duration: '3 Days',
-      seats: 15,
-      availableSeats: 3,
-      location: 'ISTC Fire Training Center',
-      price: 22000,
-      instructor: 'Robert Kimani',
-      level: 'Intermediate',
-      isFeatured: true
-    },
-    {
-      id: '4',
-      courseTitle: 'Construction Site Safety',
-      courseCategory: 'Construction',
-      date: '2024-03-25',
-      time: '08:00',
-      duration: '4 Days',
-      seats: 20,
-      availableSeats: 12,
-      location: 'ISTC Construction Yard',
-      price: 28000,
-      instructor: 'James Omondi',
-      level: 'Intermediate',
-      isFeatured: false
-    },
-    {
-      id: '5',
-      courseTitle: 'Environmental Safety Management',
-      courseCategory: 'Environmental',
-      date: '2024-03-28',
-      time: '09:30',
-      duration: '3 Days',
-      seats: 20,
-      availableSeats: 18,
-      location: 'ISTC Main Campus, Westlands',
-      price: 24000,
-      instructor: 'Grace Akinyi',
-      level: 'Intermediate',
-      isFeatured: false
-    },
-    {
-      id: '6',
-      courseTitle: 'Advanced Safety Management',
-      courseCategory: 'Management',
-      date: '2024-04-02',
-      time: '09:00',
-      duration: '5 Days',
-      seats: 18,
-      availableSeats: 5,
-      location: 'ISTC Executive Center',
-      price: 35000,
-      instructor: 'Dr. Sarah Johnson',
-      level: 'Advanced',
-      isFeatured: true
-    },
-    {
-      id: '7',
-      courseTitle: 'Electrical Safety Training',
-      courseCategory: 'Electrical',
-      date: '2024-04-08',
-      time: '08:30',
-      duration: '2 Days',
-      seats: 15,
-      availableSeats: 10,
-      location: 'ISTC Technical Center',
-      price: 19000,
-      instructor: 'Peter Mwiti',
-      level: 'Intermediate',
-      isFeatured: false
-    },
-    {
-      id: '8',
-      courseTitle: 'Chemical Safety & Handling',
-      courseCategory: 'Chemical Safety',
-      date: '2024-04-12',
-      time: '09:00',
-      duration: '3 Days',
-      seats: 15,
-      availableSeats: 7,
-      location: 'ISTC Chemical Lab',
-      price: 26000,
-      instructor: 'Lucy Wanjiru',
-      level: 'Advanced',
-      isFeatured: false
-    },
+  // Fetch trainings from API
+  useEffect(() => {
+    fetchTrainings();
+  }, []);
+
+  const fetchTrainings = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response: TrainingResponse = await trainingService.getAllTrainings();
+      setTrainings(response.trainings);
+    } catch (err) {
+      console.error('Error fetching trainings:', err);
+      setError('Failed to load training calendar. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Extract categories from trainings
+  const categories = ['All Courses', ...trainingService.getUniqueCategories(trainings)];
+
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June', 
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  const categories = ['All Categories', 'Health & Safety', 'First Aid', 'Fire Safety', 'Construction', 'Environmental', 'Management', 'Electrical', 'Chemical Safety'];
-  const levels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  const filteredSessions = trainingSessions.filter(session => {
-    const sessionDate = new Date(session.date);
-    const matchesCategory = selectedCategory === 'all' || session.courseCategory === selectedCategory;
-    const matchesLevel = selectedLevel === 'all' || session.level === selectedLevel;
-    const matchesMonth = sessionDate.getMonth() === selectedMonth;
-    const matchesYear = sessionDate.getFullYear() === selectedYear;
+  // Filter trainings based on selected filters
+  const filteredTrainings = trainings.filter(training => {
+    // Filter by category
+    if (selectedCategory !== 'all' && training.category !== selectedCategory) {
+      return false;
+    }
     
-    return matchesCategory && matchesLevel && matchesMonth && matchesYear;
+    // If selectedMonth is null, show all courses regardless of month
+    if (selectedMonth === null) {
+      return true;
+    }
+    
+    // Filter by month - check if any session is in the selected month
+    if (training.sessions) {
+      const hasSessionInMonth = training.sessions.some(session => {
+        const sessionDate = new Date(session.startDate);
+        return sessionDate.getMonth() === selectedMonth && 
+               sessionDate.getFullYear() === selectedYear;
+      });
+      return hasSessionInMonth;
+    }
+    
+    return false;
   });
 
+  // Format month and year for display
+  const formatMonthYear = () => {
+    if (selectedMonth === null) {
+      return "All Months";
+    }
+    return `${months[selectedMonth]} ${selectedYear}`;
+  };
+
+  // Format currency
+  const formatCurrency = (cost: string) => {
+    return cost.replace('KSH', 'Kshs');
+  };
+
+  // Get sessions for specific month (or all sessions if selectedMonth is null)
+  const getSessionsForDisplay = (training: Training) => {
+    if (!training.sessions) return [];
+    
+    if (selectedMonth === null) {
+      // Show all upcoming sessions when showing all courses
+      const now = new Date();
+      return training.sessions.filter(session => {
+        const sessionDate = new Date(session.startDate);
+        return sessionDate >= now; // Only show future sessions
+      }).sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    }
+    
+    // Show sessions for specific month
+    return training.sessions.filter(session => {
+      const sessionDate = new Date(session.startDate);
+      return sessionDate.getMonth() === selectedMonth && 
+             sessionDate.getFullYear() === selectedYear;
+    });
+  };
+
+  // Handle month navigation
   const handlePrevMonth = () => {
-    if (selectedMonth === 0) {
+    if (selectedMonth === null) {
+      // If showing all, set to current month
+      const currentMonth = new Date().getMonth();
+      setSelectedMonth(currentMonth);
+      setShowAllCourses(false);
+    } else if (selectedMonth === 0) {
       setSelectedMonth(11);
       setSelectedYear(prev => prev - 1);
     } else {
-      setSelectedMonth(prev => prev - 1);
+      setSelectedMonth(prev => prev! - 1);
     }
   };
 
   const handleNextMonth = () => {
-    if (selectedMonth === 11) {
+    if (selectedMonth === null) {
+      // If showing all, set to current month
+      const currentMonth = new Date().getMonth();
+      setSelectedMonth(currentMonth);
+      setShowAllCourses(false);
+    } else if (selectedMonth === 11) {
       setSelectedMonth(0);
       setSelectedYear(prev => prev + 1);
     } else {
-      setSelectedMonth(prev => prev + 1);
+      setSelectedMonth(prev => prev! + 1);
     }
   };
 
-  const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate();
+  // Toggle training expansion
+  const toggleTrainingExpansion = (trainingId: string) => {
+    setExpandedTraining(expandedTraining === trainingId ? null : trainingId);
   };
 
-  const getFirstDayOfMonth = (year: number, month: number) => {
-    return new Date(year, month, 1).getDay();
+  // Show all courses
+  const handleShowAllCourses = () => {
+    setSelectedMonth(null);
+    setShowAllCourses(true);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      day: 'numeric', 
-      month: 'short',
-      year: 'numeric'
-    });
+  // Show current month
+  const handleShowCurrentMonth = () => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    setSelectedMonth(currentMonth);
+    setSelectedYear(currentYear);
+    setShowAllCourses(false);
   };
 
-  const generateCalendarDays = () => {
-    const daysInMonth = getDaysInMonth(selectedYear, selectedMonth);
-    const firstDay = getFirstDayOfMonth(selectedYear, selectedMonth);
-    const days = [];
-
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < firstDay; i++) {
-      days.push(null);
-    }
-
-    // Add days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateStr = `${selectedYear}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      const hasSessions = trainingSessions.some(session => session.date === dateStr);
-      days.push({ day, dateStr, hasSessions });
-    }
-
-    return days;
+  // Download PDF
+  const handleDownloadCalendar = () => {
+    // This would typically download the actual PDF file
+    const link = document.createElement('a');
+    link.href = '/TRAINING_CALENDAR_2026.pdf';
+    link.download = 'ISTC_Training_Calendar_2026.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
-  const calendarDays = generateCalendarDays();
-  const sessionsForSelectedDate = trainingSessions.filter(session => session.date === selectedSession);
+  // Render loading state
+  if (loading) {
+    return (
+      <div className="pt-20">
+        <div className="container mx-auto px-4 py-20">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold mb-4">Loading Training Calendar...</h1>
+            <p className="text-gray-600">Please wait while we fetch the latest training schedule.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render error state
+  if (error && trainings.length === 0) {
+    return (
+      <div className="pt-20">
+        <div className="container mx-auto px-4 py-20">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold mb-4 text-red-600">Oops!</h1>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <button
+              onClick={fetchTrainings}
+              className="bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent-700 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-20">
@@ -232,10 +220,10 @@ export default function CalendarPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Training Schedule & Booking
+                2026 Training Calendar
               </h1>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                View available training dates, check seat availability, and book your safety training sessions.
+                Professional safety training programs with scheduled dates, durations, and costs. All courses are available for both individuals and corporate clients.
               </p>
             </div>
 
@@ -243,27 +231,27 @@ export default function CalendarPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="bg-white adventure-card text-center p-6">
                 <div className="text-2xl font-bold text-accent-800 mb-2">
-                  {trainingSessions.length}
+                  {trainings.length}
+                </div>
+                <div className="text-gray-600">Available Courses</div>
+              </div>
+              <div className="bg-white adventure-card text-center p-6">
+                <div className="text-2xl font-bold text-accent-800 mb-2">
+                  {trainings.reduce((sum, t) => sum + trainingService.getUpcomingSessionsCount(t), 0)}
                 </div>
                 <div className="text-gray-600">Upcoming Sessions</div>
               </div>
               <div className="bg-white adventure-card text-center p-6">
                 <div className="text-2xl font-bold text-accent-800 mb-2">
-                  {trainingSessions.filter(s => s.availableSeats > 0).length}
-                </div>
-                <div className="text-gray-600">Available Now</div>
-              </div>
-              <div className="bg-white adventure-card text-center p-6">
-                <div className="text-2xl font-bold text-accent-800 mb-2">
-                  {trainingSessions.filter(s => s.isFeatured).length}
+                  {trainings.filter(t => t.isFeatured).length}
                 </div>
                 <div className="text-gray-600">Featured Courses</div>
               </div>
               <div className="bg-white adventure-card text-center p-6">
                 <div className="text-2xl font-bold text-accent-800 mb-2">
-                  5
+                  {trainingService.getUniqueCategories(trainings).length}
                 </div>
-                <div className="text-gray-600">Training Locations</div>
+                <div className="text-gray-600">Categories</div>
               </div>
             </div>
           </div>
@@ -274,50 +262,30 @@ export default function CalendarPage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               {/* Filters Sidebar */}
               <div className="lg:col-span-1">
                 <div className="bg-white adventure-card sticky top-24">
                   <div className="flex items-center gap-3 mb-6">
                     <Filter size={20} className="text-accent-600" />
-                    <h3 className="text-lg font-semibold">Filters</h3>
+                    <h3 className="text-lg font-semibold">Filter Courses</h3>
                   </div>
 
-                  {/* Categories */}
+                  {/* Categories Filter */}
                   <div className="mb-8">
                     <h4 className="font-medium text-gray-900 mb-4">Course Category</h4>
                     <div className="space-y-2">
                       {categories.map((category) => (
                         <button
                           key={category}
-                          onClick={() => setSelectedCategory(category === 'All Categories' ? 'all' : category)}
+                          onClick={() => setSelectedCategory(category === 'All Courses' ? 'all' : category.toLowerCase())}
                           className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                            selectedCategory === (category === 'All Categories' ? 'all' : category)
+                            selectedCategory === (category === 'All Courses' ? 'all' : category.toLowerCase())
                               ? 'bg-accent-100 text-accent-800 font-medium'
                               : 'text-gray-600 hover:bg-gray-50'
                           }`}
                         >
                           {category}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Levels */}
-                  <div className="mb-8">
-                    <h4 className="font-medium text-gray-900 mb-4">Skill Level</h4>
-                    <div className="space-y-2">
-                      {levels.map((level) => (
-                        <button
-                          key={level}
-                          onClick={() => setSelectedLevel(level === 'All Levels' ? 'all' : level.toLowerCase())}
-                          className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                            selectedLevel === (level === 'All Levels' ? 'all' : level.toLowerCase())
-                              ? 'bg-accent-100 text-accent-800 font-medium'
-                              : 'text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          {level}
                         </button>
                       ))}
                     </div>
@@ -334,7 +302,7 @@ export default function CalendarPage() {
                         <ChevronLeft size={20} />
                       </button>
                       <div className="text-lg font-semibold">
-                        {months[selectedMonth]} {selectedYear}
+                        {formatMonthYear()}
                       </div>
                       <button
                         onClick={handleNextMonth}
@@ -347,7 +315,10 @@ export default function CalendarPage() {
                       {months.slice(0, 6).map((month, index) => (
                         <button
                           key={month}
-                          onClick={() => setSelectedMonth(index)}
+                          onClick={() => {
+                            setSelectedMonth(index);
+                            setShowAllCourses(false);
+                          }}
                           className={`px-3 py-2 text-sm rounded-lg transition-colors ${
                             selectedMonth === index
                               ? 'bg-accent-600 text-white'
@@ -360,7 +331,10 @@ export default function CalendarPage() {
                       {months.slice(6, 12).map((month, index) => (
                         <button
                           key={month}
-                          onClick={() => setSelectedMonth(index + 6)}
+                          onClick={() => {
+                            setSelectedMonth(index + 6);
+                            setShowAllCourses(false);
+                          }}
                           className={`px-3 py-2 text-sm rounded-lg transition-colors ${
                             selectedMonth === index + 6
                               ? 'bg-accent-600 text-white'
@@ -371,229 +345,300 @@ export default function CalendarPage() {
                         </button>
                       ))}
                     </div>
+                    
+                    {/* Show All Courses Button */}
+                    <button
+                      onClick={handleShowAllCourses}
+                      className={`w-full mt-4 px-4 py-2 rounded-lg transition-colors ${
+                        showAllCourses
+                          ? 'bg-accent-600 text-white font-medium'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      Show All Courses
+                    </button>
                   </div>
 
                   {/* Quick Actions */}
                   <div className="space-y-3">
+                    <button
+                      onClick={handleDownloadCalendar}
+                      className="w-full flex items-center justify-center gap-2 text-accent-600 hover:text-accent-800 font-medium py-2"
+                    >
+                      <Download size={18} />
+                      Download PDF Calendar
+                    </button>
                     <Link
                       href="/courses"
-                      className="block text-center text-accent-600 hover:text-accent-800 font-medium"
+                      className="block text-center text-accent-600 hover:text-accent-800 font-medium py-2"
                     >
-                      View All Courses →
-                    </Link>
-                    <Link
-                      href="/contact"
-                      className="block text-center btn-adventure-outline py-2"
-                    >
-                      Request Custom Date
+                      View All Course Details →
                     </Link>
                   </div>
                 </div>
               </div>
 
-              {/* Calendar & Sessions */}
-              <div className="lg:col-span-2">
-                {/* Calendar View */}
-                <div className="bg-white adventure-card mb-8">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-semibold text-gray-900">Calendar View</h3>
-                    <button
-                      onClick={() => {
-                        setSelectedMonth(new Date().getMonth());
-                        setSelectedYear(new Date().getFullYear());
-                      }}
-                      className="text-sm text-accent-600 hover:text-accent-800 font-medium"
-                    >
-                      Go to Today
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-7 gap-2 mb-4">
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                      <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
-                        {day}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="grid grid-cols-7 gap-2">
-                    {calendarDays.map((dayInfo, index) => {
-                      if (!dayInfo) {
-                        return <div key={`empty-${index}`} className="h-12"></div>;
-                      }
-
-                      const isToday = new Date().toDateString() === new Date(dayInfo.dateStr).toDateString();
-                      const isSelected = selectedSession === dayInfo.dateStr;
-
-                      return (
-                        <button
-                          key={dayInfo.dateStr}
-                          onClick={() => setSelectedSession(dayInfo.dateStr)}
-                          className={`h-12 rounded-lg flex flex-col items-center justify-center transition-all ${
-                            isSelected
-                              ? 'bg-accent-600 text-white'
-                              : isToday
-                              ? 'bg-accent-100 text-accent-800'
-                              : dayInfo.hasSessions
-                              ? 'bg-accent-50 text-gray-900 hover:bg-accent-100'
-                              : 'text-gray-400 hover:bg-gray-50'
-                          }`}
-                        >
-                          <div className="text-sm font-medium">{dayInfo.day}</div>
-                          {dayInfo.hasSessions && !isSelected && (
-                            <div className="w-1.5 h-1.5 bg-accent-400 rounded-full mt-1"></div>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-center gap-6">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-accent-400 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Training Available</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-accent-100 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Today</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sessions for Selected Date */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                    {selectedSession ? `Sessions on ${formatDate(selectedSession)}` : 'Select a date to view sessions'}
-                  </h3>
-
-                  {selectedSession ? (
-                    sessionsForSelectedDate.length > 0 ? (
-                      <div className="space-y-6">
-                        {sessionsForSelectedDate.map((session) => (
-                          <div key={session.id} className="bg-white adventure-card hover:shadow-adventure-lg transition-all duration-300">
-                            <div className="p-6">
-                              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
-                                {/* Course Info */}
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-3 mb-4">
-                                    <span className="bg-accent-100 text-accent-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                      {session.courseCategory}
-                                    </span>
-                                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                                      session.level === 'Beginner' 
-                                        ? 'bg-green-100 text-green-800'
-                                        : session.level === 'Intermediate'
-                                        ? 'bg-yellow-100 text-yellow-800'
-                                        : 'bg-purple-100 text-purple-800'
-                                    }`}>
-                                      {session.level}
-                                    </span>
-                                    {session.isFeatured && (
-                                      <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                        Featured
-                                      </span>
-                                    )}
-                                  </div>
-
-                                  <h4 className="text-xl font-bold text-gray-900 mb-3">
-                                    {session.courseTitle}
-                                  </h4>
-
-                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                    <div className="flex items-center gap-2">
-                                      <Clock size={16} className="text-accent-600" />
-                                      <div>
-                                        <div className="font-medium text-gray-900">{session.time}</div>
-                                        <div className="text-sm text-gray-500">{session.duration}</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <Users size={16} className="text-accent-600" />
-                                      <div>
-                                        <div className="font-medium text-gray-900">
-                                          {session.availableSeats}/{session.seats}
-                                        </div>
-                                        <div className="text-sm text-gray-500">Seats</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <MapPin size={16} className="text-accent-600" />
-                                      <div>
-                                        <div className="font-medium text-gray-900">Location</div>
-                                        <div className="text-sm text-gray-500">{session.location}</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <CreditCard size={16} className="text-accent-600" />
-                                      <div>
-                                        <div className="font-medium text-gray-900">
-                                          Ksh {session.price.toLocaleString()}
-                                        </div>
-                                        <div className="text-sm text-gray-500">Per person</div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex items-center gap-4">
-                                    <div className="text-sm text-gray-600">
-                                      <span className="font-medium">Instructor:</span> {session.instructor}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* Action Buttons */}
-                                <div className="lg:w-48 space-y-3">
-                                  {session.availableSeats > 0 ? (
-                                    <>
-                                      <button className="w-full btn-adventure">
-                                        Book Now
-                                      </button>
-                                      <button className="w-full btn-adventure-outline">
-                                        Add to Cart
-                                      </button>
-                                    </>
-                                  ) : (
-                                    <div className="text-center">
-                                      <div className="text-red-600 font-semibold mb-2">Fully Booked</div>
-                                      <button className="w-full btn-adventure-outline">
-                                        Join Waitlist
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="bg-gray-50 rounded-2xl p-12 text-center">
-                        <Calendar size={48} className="text-gray-400 mx-auto mb-4" />
-                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                          No sessions scheduled for this date
-                        </h4>
-                        <p className="text-gray-600 mb-6">
-                          Try selecting a different date or contact us for custom scheduling.
-                        </p>
-                        <Link
-                          href="/contact"
-                          className="btn-adventure inline-flex items-center gap-2"
-                        >
-                          Request Custom Date
-                        </Link>
-                      </div>
-                    )
-                  ) : (
-                    <div className="bg-gray-50 rounded-2xl p-12 text-center">
-                      <Calendar size={48} className="text-accent-400 mx-auto mb-4" />
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                        Select a date from the calendar
-                      </h4>
-                      <p className="text-gray-600">
-                        Click on any date with available training sessions to view details and book.
+              {/* Training Calendar Table */}
+              <div className="lg:col-span-3">
+                {/* Calendar Header */}
+                <div className="bg-white adventure-card mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900">
+                        {showAllCourses ? "All Upcoming Training Sessions" : `${formatMonthYear()} Training Schedule`}
+                      </h3>
+                      <p className="text-gray-600 mt-1">
+                        {showAllCourses 
+                          ? `Showing ${filteredTrainings.length} courses with upcoming sessions` 
+                          : `Showing ${filteredTrainings.length} courses with sessions in ${months[selectedMonth!]}`}
                       </p>
                     </div>
-                  )}
+                    <button
+                      onClick={handleShowCurrentMonth}
+                      className="text-sm text-accent-600 hover:text-accent-800 font-medium"
+                    >
+                      Show Current Month
+                    </button>
+                  </div>
+                </div>
+
+                {/* Training Calendar Table */}
+                <div className="bg-white adventure-card overflow-hidden">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-12 bg-accent-50 border-b border-gray-200">
+                    <div className="col-span-4 p-4 font-semibold text-gray-900">
+                      COURSE TITLE
+                    </div>
+                    <div className="col-span-2 p-4 font-semibold text-gray-900">
+                      DURATION
+                    </div>
+                    <div className="col-span-3 p-4 font-semibold text-gray-900">
+                      {showAllCourses ? "UPCOMING DATES" : "DATES"}
+                    </div>
+                    <div className="col-span-2 p-4 font-semibold text-gray-900 text-right">
+                      COST (KSH)
+                    </div>
+                    <div className="col-span-1 p-4"></div>
+                  </div>
+
+                  {/* Table Body */}
+                  <div className="divide-y divide-gray-100">
+                    {filteredTrainings.length > 0 ? (
+                      filteredTrainings.map((training) => {
+                        const sessions = getSessionsForDisplay(training);
+                        const isExpanded = expandedTraining === training.id;
+                        
+                        return (
+                          <div key={training.id}>
+                            {/* Main Row */}
+                            <div 
+                              className="grid grid-cols-12 hover:bg-gray-50 cursor-pointer transition-colors"
+                              onClick={() => toggleTrainingExpansion(training.id)}
+                            >
+                              <div className="col-span-4 p-4">
+                                <div className="font-semibold text-gray-900">
+                                  {training.title}
+                                </div>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  {training.targetGroup}
+                                </div>
+                                {training.isFeatured && (
+                                  <span className="inline-block mt-2 bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-semibold">
+                                    Featured
+                                  </span>
+                                )}
+                              </div>
+                              
+                              <div className="col-span-2 p-4">
+                                <div className="flex items-center gap-2 text-gray-700">
+                                  <Clock size={14} className="text-accent-500" />
+                                  {training.duration}
+                                </div>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  {training.modeOfStudy.join(', ')}
+                                </div>
+                              </div>
+                              
+                              <div className="col-span-3 p-4">
+                                {sessions.length > 0 ? (
+                                  <div className="space-y-1">
+                                    {sessions.slice(0, 1).map((session, index) => (
+                                      <div key={session._id} className="text-gray-700">
+                                        {session.formattedDates}
+                                      </div>
+                                    ))}
+                                    {sessions.length > 1 && (
+                                      <div className="text-sm text-accent-600">
+                                        +{sessions.length - 1} more session{sessions.length - 1 > 1 ? 's' : ''}
+                                      </div>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <div className="text-gray-400">
+                                    {showAllCourses ? "No upcoming sessions" : "No sessions this month"}
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="col-span-2 p-4 text-right">
+                                <div className="font-semibold text-gray-900">
+                                  {formatCurrency(training.cost)}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  Excl. VAT
+                                </div>
+                              </div>
+                              
+                              <div className="col-span-1 p-4 flex items-center justify-center">
+                                <ChevronRight 
+                                  size={20} 
+                                  className={`text-gray-400 transition-transform ${
+                                    isExpanded ? 'rotate-90' : ''
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                            
+                            {/* Expanded Details */}
+                            {isExpanded && (
+                              <div className="bg-accent-25 border-t border-gray-100">
+                                <div className="p-6">
+                                  {/* Course Description */}
+                                  <div className="mb-6">
+                                    <h4 className="font-semibold text-gray-900 mb-2">
+                                      Course Description
+                                    </h4>
+                                    <p className="text-gray-600">
+                                      {training.description}
+                                    </p>
+                                    <div className="mt-3 flex items-center gap-4 text-sm text-gray-600">
+                                      <div className="flex items-center gap-1">
+                                        <BookOpen size={14} />
+                                        <span>Certification: {training.certification}</span>
+                                      </div>
+                                      <div className="flex items-center gap-1">
+                                        <CreditCard size={14} />
+                                        <span>Registration Fee: Kshs {training.registrationFee.toLocaleString()}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Available Sessions */}
+                                  {sessions.length > 0 && (
+                                    <div className="mb-6">
+                                      <h4 className="font-semibold text-gray-900 mb-3">
+                                        {showAllCourses ? "All Upcoming Sessions" : `Available Sessions in ${months[selectedMonth!]}`}
+                                      </h4>
+                                      <div className="space-y-3">
+                                        {sessions.map((session) => (
+                                          <div 
+                                            key={session._id} 
+                                            className="bg-white rounded-lg p-4 border border-gray-200"
+                                          >
+                                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                              <div>
+                                                <div className="text-sm text-gray-500">Dates</div>
+                                                <div className="font-medium">{session.formattedDates}</div>
+                                              </div>
+                                              <div>
+                                                <div className="text-sm text-gray-500">Venue</div>
+                                                <div className="font-medium">{session.venue}</div>
+                                              </div>
+                                              <div>
+                                                <div className="text-sm text-gray-500">Seats Available</div>
+                                                <div className="font-medium">
+                                                  {session.seats.available || 0} / {session.seats.total}
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <div className="text-sm text-gray-500">Instructor</div>
+                                                <div className="font-medium">
+                                                  {session.instructor || 'TBD'}
+                                                </div>
+                                              </div>
+                                            </div>
+                                            
+                                            <div className="mt-4 flex justify-end space-x-3">
+                                              <button className="text-sm text-accent-600 hover:text-accent-800 font-medium">
+                                                View Details
+                                              </button>
+                                              <button className="text-sm bg-accent-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-accent-700 transition-colors">
+                                                Register Now
+                                              </button>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Action Buttons */}
+                                  <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
+                                    <button className="flex-1 min-w-[200px] btn-adventure">
+                                      {/* <Calendar size={18} className="mr-2" /> */}
+                                      Register for Course
+                                    </button>
+                                    <button className="flex-1 min-w-[200px] btn-adventure-outline">
+                                      Download Course Outline
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="p-12 text-center">
+                        <Calendar size={48} className="text-gray-400 mx-auto mb-4" />
+                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                          No training sessions found
+                        </h4>
+                        <p className="text-gray-600 mb-6">
+                          Try selecting a different month or category to view available training sessions.
+                        </p>
+                        <button
+                          onClick={handleShowAllCourses}
+                          className="btn-adventure inline-flex items-center gap-2"
+                        >
+                          Show All Courses
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Important Notes */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-white adventure-card p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <CheckCircle className="text-green-500" size={24} />
+                      <h4 className="font-semibold text-gray-900">Confirmation & Payment</h4>
+                    </div>
+                    <p className="text-gray-600 text-sm">
+                      Registration includes a non-refundable fee of Kshs 1,000 payable at least two weeks before course commencement.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-white adventure-card p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Users className="text-blue-500" size={24} />
+                      <h4 className="font-semibold text-gray-900">Corporate Training</h4>
+                    </div>
+                    <p className="text-gray-600 text-sm">
+                      We offer customized on-site training programs for corporate clients. Contact us for tailored solutions.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-white adventure-card p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <BookOpen className="text-purple-500" size={24} />
+                      <h4 className="font-semibold text-gray-900">Diploma Programme</h4>
+                    </div>
+                    <p className="text-gray-600 text-sm">
+                      Registration for Diploma in Occupational Safety & Health ongoing. Intakes in May and December.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -601,69 +646,147 @@ export default function CalendarPage() {
         </div>
       </section>
 
-      {/* Quick Booking CTA */}
+      {/* Registration & Contact Section */}
       <section className="py-20 bg-gradient-to-r from-accent-600 to-accent-700 text-gray-700">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">
-              Need Help Choosing a Date?
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Our training coordinators can help you find the perfect schedule for your team.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="tel:+254700364722" 
-                className="border bg-[#039AC5]  text-white hover:text-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
-              >
-                Call for Assistance
-              </a>
-              <Link 
-                href="/contact" 
-                className="border border-[#039AC5] hover:bg-[#039AC5] hover:text-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors"
-              >
-                Email Your Requirements
-              </Link>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Registration Info */}
+              <div>
+                <h2 className="text-3xl font-bold mb-6">How to Register</h2>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-white/20 rounded-full p-2">
+                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                        <span className="text-accent-600 font-bold">1</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">Download Registration Form</h4>
+                      <p className="opacity-90">
+                        Visit our website www.istc.co.ke to download the registration form
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="bg-white/20 rounded-full p-2">
+                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                        <span className="text-accent-600 font-bold">2</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">Fill & Submit</h4>
+                      <p className="opacity-90">
+                        Complete the form and email it to hsetraining@istc.co.ke
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="bg-white/20 rounded-full p-2">
+                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                        <span className="text-accent-600 font-bold">3</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">Confirmation & Payment</h4>
+                      <p className="opacity-90">
+                        Receive confirmation and make payment to secure your seat
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Contact Info */}
+              <div>
+                <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
+                <div className="space-y-6">
+                  <a 
+                    href="tel:+254700364722" 
+                    className="flex items-center gap-4 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-colors group"
+                  >
+                    <div className="bg-white/20 rounded-full p-3 group-hover:scale-110 transition-transform">
+                      <Phone size={24} />
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold">Call Us</div>
+                      <div className="text-xl">+254 700 364 722</div>
+                    </div>
+                  </a>
+                  
+                  <a 
+                    href="mailto:hsetraining@istc.co.ke" 
+                    className="flex items-center gap-4 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-colors group"
+                  >
+                    <div className="bg-white/20 rounded-full p-3 group-hover:scale-110 transition-transform">
+                      <Mail size={24} />
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold">Email Us</div>
+                      <div className="text-xl">hsetraining@istc.co.ke</div>
+                    </div>
+                  </a>
+                  
+                  <Link 
+                    href="/courses" 
+                    className="flex items-center gap-4 p-4 bg-white text-accent-600 rounded-xl hover:bg-gray-100 transition-colors group"
+                  >
+                    <div className="bg-accent-100 rounded-full p-3 group-hover:scale-110 transition-transform">
+                      <BookOpen size={24} />
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold">Browse All Courses</div>
+                      <div className="opacity-80">View complete course catalog</div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Important Notes */}
-      <section className="py-12 bg-gray-50">
+      {/* Other Available Courses */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">
-              Important Booking Information
+          <div className="max-w-6xl mx-auto">
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-12">
+              Other Courses Available on Demand
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white p-6 rounded-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <CheckCircle className="text-green-500" size={24} />
-                  <h4 className="font-semibold text-gray-900">Confirmation</h4>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {[
+                'Accident/Incident Investigation',
+                'Food Safety',
+                'Gender and Inclusion',
+                'Stress Management',
+                'Security Management Training',
+                'Road & Transport Safety',
+                'Forklift Safety',
+                'Confined Space Entry',
+                'Gender Sensitive OSH Practice',
+                'Safe Use of Chemicals',
+                'Disaster and Emergency Preparedness',
+                'Industrial Hygiene',
+                'Occupational Audiometry',
+                'Behavioral Based Safety'
+              ].map((course, index) => (
+                <div 
+                  key={index}
+                  className="bg-white p-4 rounded-lg text-center hover:shadow-md transition-shadow"
+                >
+                  <div className="text-sm text-gray-700">{course}</div>
                 </div>
-                <p className="text-gray-600 text-sm">
-                  You will receive email confirmation within 24 hours of booking.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <CreditCard className="text-accent-500" size={24} />
-                  <h4 className="font-semibold text-gray-900">Payment</h4>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Secure online payment or invoice option for corporate bookings.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <Users className="text-blue-500" size={24} />
-                  <h4 className="font-semibold text-gray-900">Group Discounts</h4>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  10% discount for groups of 5+, 15% for groups of 10+.
-                </p>
-              </div>
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <Link 
+                href="/contact" 
+                className="btn-adventure-outline inline-flex items-center gap-2"
+              >
+                Request Custom Training
+              </Link>
             </div>
           </div>
         </div>
