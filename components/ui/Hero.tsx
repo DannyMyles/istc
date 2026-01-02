@@ -124,9 +124,7 @@ const Hero = () => {
             <div className="mt-4 md:mt-6 bg-white rounded-xl p-4 md:p-6 shadow-lg">
               <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">Our Training Success</h3>
               <p className="text-gray-600 text-xs md:text-sm">
-                With over 16 years of experience, we've certified more than 15,000 safety professionals 
-                across 25+ specialized courses. Our 98% certification success rate and industry partnerships 
-                ensure your team receives the highest quality safety training available.
+                With 10+ years of experience, we’ve certified 15,000+ professionals across 25+ safety courses, achieving a 98% success rate through strong industry partnership
               </p>
             </div>
           </div>

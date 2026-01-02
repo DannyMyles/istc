@@ -163,7 +163,7 @@ const Footer = () => {
                 <div>
                   <p className="text-sm text-accent-200">Address</p>
                   <p className="font-medium">
-                    Westlands, Nairobi, Kenya
+                    Occidental House, Baricho Road, Nairobi
                   </p>
                 </div>
               </li>
