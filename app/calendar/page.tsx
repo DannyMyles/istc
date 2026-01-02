@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { Calendar, Clock, Users, MapPin, CreditCard, ChevronLeft, ChevronRight, Filter, Download, Mail, Phone, CheckCircle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { Training, TrainingResponse, trainingService } from '../api_services/trainingService';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { TrainingCalendarPDF, generatePDFFileName } from '@/utils/trainingPdfGenerator';
 
 interface TrainingSession {
   id: string;
@@ -26,10 +28,11 @@ export default function CalendarPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null); // Changed to null to show all
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [expandedTraining, setExpandedTraining] = useState<string | null>(null);
-  const [showAllCourses, setShowAllCourses] = useState(true); // New state to track show all
+  const [showAllCourses, setShowAllCourses] = useState(true);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Fetch trainings from API
   useEffect(() => {
@@ -167,15 +170,19 @@ export default function CalendarPage() {
     setShowAllCourses(false);
   };
 
-  // Download PDF
-  const handleDownloadCalendar = () => {
-    // This would typically download the actual PDF file
-    const link = document.createElement('a');
-    link.href = '/TRAINING_CALENDAR_2026.pdf';
-    link.download = 'ISTC_Training_Calendar_2026.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Handle PDF generation start
+  const handlePDFGenerationStart = () => {
+    setIsGeneratingPDF(true);
+  };
+
+  // Handle PDF generation complete
+  const handlePDFGenerationComplete = () => {
+    setIsGeneratingPDF(false);
+  };
+
+  // Generate filename for PDF
+  const getPDFFileName = () => {
+    return generatePDFFileName(selectedMonth, selectedYear, selectedCategory, categories);
   };
 
   // Render loading state
@@ -361,13 +368,36 @@ export default function CalendarPage() {
 
                   {/* Quick Actions */}
                   <div className="space-y-3">
-                    <button
-                      onClick={handleDownloadCalendar}
-                      className="w-full flex items-center justify-center gap-2 text-accent-600 hover:text-accent-800 font-medium py-2"
-                    >
-                      <Download size={18} />
-                      Download PDF Calendar
-                    </button>
+                    {/* PDF Download Button */}
+                    <div className="border-t pt-4">
+                      <PDFDownloadLink
+                        document={
+                          <TrainingCalendarPDF
+                            trainings={trainings}
+                            selectedMonth={selectedMonth}
+                            selectedYear={selectedYear}
+                            selectedCategory={selectedCategory}
+                            categories={categories}
+                          />
+                        }
+                        fileName={getPDFFileName()}
+                        className="w-full flex items-center justify-center gap-2 text-accent-600 hover:text-accent-800 font-medium py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {({ loading, error }) => (
+                          <>
+                            <Download size={18} />
+                            {loading ? 'Generating PDF...' : 'Download Calendar'}
+                          </>
+                        )}
+                      </PDFDownloadLink>
+                      
+                      {isGeneratingPDF && (
+                        <div className="text-xs text-gray-500 mt-1 text-center">
+                          Please wait while we generate your PDF...
+                        </div>
+                      )}
+                    </div>
+                    
                     <Link
                       href="/courses"
                       className="block text-center text-accent-600 hover:text-accent-800 font-medium py-2"
@@ -393,12 +423,36 @@ export default function CalendarPage() {
                           : `Showing ${filteredTrainings.length} courses with sessions in ${months[selectedMonth!]}`}
                       </p>
                     </div>
-                    <button
-                      onClick={handleShowCurrentMonth}
-                      className="text-sm text-accent-600 hover:text-accent-800 font-medium"
-                    >
-                      Show Current Month
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={handleShowCurrentMonth}
+                        className="text-sm text-accent-600 hover:text-accent-800 font-medium"
+                      >
+                        Show Current Month
+                      </button>
+                      <div className="hidden sm:block">
+                        <PDFDownloadLink
+                          document={
+                            <TrainingCalendarPDF
+                              trainings={trainings}
+                              selectedMonth={selectedMonth}
+                              selectedYear={selectedYear}
+                              selectedCategory={selectedCategory}
+                              categories={categories}
+                            />
+                          }
+                          fileName={getPDFFileName()}
+                          className="flex items-center gap-2 px-4 py-2 bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {({ loading, error }) => (
+                            <>
+                              <Download size={16} />
+                              {loading ? 'Generating...' : 'Download PDF'}
+                            </>
+                          )}
+                        </PDFDownloadLink>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -578,9 +632,10 @@ export default function CalendarPage() {
                                       {/* <Calendar size={18} className="mr-2" /> */}
                                       Register for Course
                                     </button>
-                                    <button className="flex-1 min-w-[200px] btn-adventure-outline">
+                                    {/* <button className="flex-1 min-w-[200px] btn-adventure-outline">
                                       Download Course Outline
-                                    </button>
+                                    </button> */}
+                                    
                                   </div>
                                 </div>
                               </div>
