@@ -7,15 +7,8 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       name: "credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "admin@example.com",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
 
       async authorize(credentials) {
@@ -24,17 +17,12 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Email and password are required")
           }
 
-          // Use process.env.BACKEND_URL instead of NEXT_PUBLIC_BACKEND_URL
-          const backendBaseUrl = process.env.BACKEND_URL || 'http://localhost:8080'
+          const backendBaseUrl = process.env.BACKEND_URL || 'https://istc-admin.onrender.com'
           const backendUrl = `${backendBaseUrl}/api/v1/auth/login`
           
-          console.log('Attempting login to:', backendUrl) // For debugging
-
           const response = await fetch(backendUrl, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
@@ -42,43 +30,25 @@ export const authOptions: NextAuthOptions = {
           })
 
           if (!response.ok) {
-            let errorData: any
+            const errorText = await response.text()
+            let errorData
             try {
-              errorData = await response.json()
+              errorData = JSON.parse(errorText)
             } catch {
-              console.error('Failed to parse error response')
-              throw new Error(`Login failed with status: ${response.status}`)
+              throw new Error(`Login failed: ${response.status}`)
             }
-            throw new Error(
-              errorData.message ||
-              errorData.error ||
-              "Authentication failed"
-            )
+            throw new Error(errorData.message || "Authentication failed")
           }
 
           const data = await response.json()
-          console.log('Login response:', data) // For debugging
-          
           const userData = data.user || data
-
-          if (!userData.id && !userData._id) {
-            throw new Error("Invalid user data received from server")
-          }
 
           return {
             id: userData.id || userData._id,
             email: userData.email || credentials.email,
-            name:
-              userData.name ||
-              userData.username ||
-              userData.fullName ||
-              "User",
-            role: userData.role || userData.userType || "user",
-            accessToken:
-              data.accessToken ||
-              data.token ||
-              userData.accessToken ||
-              userData.token,
+            name: userData.name || userData.username || "User",
+            role: userData.role || "user",
+            accessToken: data.accessToken || data.token,
           }
         } catch (error: any) {
           console.error("Authorization error:", error.message)
@@ -88,7 +58,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   
-  // ... rest of your configuration remains the same
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -103,11 +72,11 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id
-        session.user.email = token.email
-        session.user.name = token.name
-        session.user.role = token.role
-        session.user.accessToken = token.accessToken
+        session.user.id = token.id as string
+        session.user.email = token.email as string
+        session.user.name = token.name as string
+        session.user.role = token.role as string
+        session.user.accessToken = token.accessToken as string
       }
       return session
     },
@@ -121,7 +90,7 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 24 hours
+    maxAge: 24 * 60 * 60,
   },
 
   secret: process.env.NEXTAUTH_SECRET,

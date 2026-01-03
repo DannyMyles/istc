@@ -1,6 +1,6 @@
 'use client'
 
-import { getSession } from "next-auth/react"
+import { getSession, signOut } from "next-auth/react"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com'
 
@@ -23,24 +23,34 @@ class ApiClient {
     // Add authorization header if required
     if (requiresAuth) {
       const session = await getSession()
-      const accessToken = (session?.user as any)?.accessToken
       
-      if (!accessToken) {
-        throw new Error('No authentication token found')
+      if (!session?.user?.accessToken) {
+        // Try to get the token from session
+        const accessToken = (session?.user as any)?.accessToken
+        
+        if (!accessToken) {
+          // Redirect to login if not authenticated
+          signOut({ callbackUrl: '/login' })
+          throw new Error('No authentication token found')
+        }
+        
+        headers['Authorization'] = `Bearer ${accessToken}`
+      } else {
+        headers['Authorization'] = `Bearer ${session.user.accessToken}`
       }
-      
-      headers['Authorization'] = `Bearer ${accessToken}`
     }
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...fetchOptions,
       headers,
+      credentials: 'include',
     })
 
     if (!response.ok) {
       // Handle specific HTTP errors
       if (response.status === 401) {
         // Token expired or invalid
+        signOut({ callbackUrl: '/login' })
         throw new Error('Session expired. Please sign in again.')
       }
       
@@ -103,12 +113,12 @@ class ApiClient {
     },
 
     testimonials: {
-    getAll: () => 
-      this.request('/api/v1/testimonials', { requiresAuth: false }),
-    
-    getOne: (id: string) => 
-      this.request(`/api/v1/testimonials/${id}`, { requiresAuth: false }),
-  },
+      getAll: () => 
+        this.request('/api/v1/testimonials', { requiresAuth: false }),
+      
+      getOne: (id: string) => 
+        this.request(`/api/v1/testimonials/${id}`, { requiresAuth: false }),
+    },
   }
 
   // Protected endpoints (requires auth)
@@ -156,48 +166,50 @@ class ApiClient {
           method: 'DELETE',
         }),
     },
+    
     training: {
-    create: (data: any) =>
-      this.request('/api/v1/trainings', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
+      create: (data: any) =>
+        this.request('/api/v1/trainings', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }),
+      
+      update: (id: string, data: any) =>
+        this.request(`/api/v1/trainings/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        }),
+      
+      delete: (id: string) =>
+        this.request(`/api/v1/trainings/${id}`, {
+          method: 'DELETE',
+        }),
+    },
     
-    update: (id: string, data: any) =>
-      this.request(`/api/v1/trainings/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      }),
-    
-    delete: (id: string) =>
-      this.request(`/api/v1/trainings/${id}`, {
-        method: 'DELETE',
-      }),
-  },
-   testimonial: {
-    create: (data: any) =>
-      this.request('/api/v1/testimonials', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
-    
-    update: (id: string, data: any) =>
-      this.request(`/api/v1/testimonials/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      }),
-    
-    delete: (id: string) =>
-      this.request(`/api/v1/testimonials/${id}`, {
-        method: 'DELETE',
-      }),
-    
-    updateStatus: (id: string, data: { isActive: boolean }) =>
-      this.request(`/api/v1/testimonials/${id}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify(data),
-      }),
-  },
+    testimonial: {
+      create: (data: any) =>
+        this.request('/api/v1/testimonials', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }),
+      
+      update: (id: string, data: any) =>
+        this.request(`/api/v1/testimonials/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        }),
+      
+      delete: (id: string) =>
+        this.request(`/api/v1/testimonials/${id}`, {
+          method: 'DELETE',
+        }),
+      
+      updateStatus: (id: string, data: { isActive: boolean }) =>
+        this.request(`/api/v1/testimonials/${id}/status`, {
+          method: 'PATCH',
+          body: JSON.stringify(data),
+        }),
+    },
   }
 }
 

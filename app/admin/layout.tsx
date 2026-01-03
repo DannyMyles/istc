@@ -4,6 +4,8 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Admin Panel | ISTC',
   description: 'International Safety Training Centre Admin Panel',

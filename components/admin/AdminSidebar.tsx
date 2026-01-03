@@ -44,7 +44,7 @@ const navigation = [
     children: [
       { name: 'All Trainings', href: '/admin/trainings' },
       { name: 'Add New', href: '/admin/trainings/create' },
-      { name: 'Categories', href: '/admin/trainings/categories' },
+      // { name: 'Categories', href: '/admin/trainings/categories' },
     ]
   },
   { 
