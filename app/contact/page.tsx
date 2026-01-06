@@ -1,20 +1,64 @@
 'use client';
 
-import { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, AlertCircle, User, Building, MessageSquare } from 'lucide-react';
+import { contactService, CreateContactRequest } from '../api_services/contactService';
+
+// Types - Updated to use CreateContactRequest
+interface ContactFormData extends Omit<CreateContactRequest, 'category'> {
+  phone: string;
+  company: string;
+  category: CreateContactRequest['category'];
+}
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     phone: '',
     company: '',
     subject: '',
-    message: ''
+    message: '',
+    category: 'general'
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isRateLimited, setIsRateLimited] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
+
+  // Check rate limit on email change
+  useEffect(() => {
+    if (formData.email) {
+      const isLimited = !contactService.checkRateLimit(formData.email);
+      setIsRateLimited(isLimited);
+      
+      if (isLimited) {
+        const remaining = contactService.getRemainingWaitTime(formData.email);
+        setRemainingTime(remaining);
+      }
+    }
+  }, [formData.email]);
+
+  // Update countdown timer
+  useEffect(() => {
+    if (!isRateLimited || remainingTime <= 0) return;
+
+    const timer = setInterval(() => {
+      setRemainingTime(prev => {
+        const newTime = prev - 1000;
+        if (newTime <= 0) {
+          setIsRateLimited(false);
+          return 0;
+        }
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isRateLimited, remainingTime]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -25,27 +69,63 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check rate limit
+    if (isRateLimited) {
+      setSubmitStatus('error');
+      setErrorMessage(`Please wait ${contactService.formatRemainingTime(remainingTime)} minutes before submitting again.`);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setErrorMessage('');
+    setSuccessMessage('');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // In a real app, you would send the data to your backend
-      console.log('Form submitted:', formData);
-      
+      // Validate form data using service
+      const validation = contactService.validateContactForm(formData);
+      if (!validation.isValid) {
+        const firstError = Object.values(validation.errors)[0];
+        throw new Error(firstError);
+      }
+
+      // Prepare data for API
+      const contactData: CreateContactRequest = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        phone: formData.phone.trim() || undefined,
+        company: formData.company.trim() || undefined,
+        category: formData.category
+      };
+
+      // Submit using service
+      const response = await contactService.submitContactForm(contactData);
+
+      // Success
       setSubmitStatus('success');
+      setSuccessMessage(response.message || 'Thank you for contacting us. We will get back to you soon.');
+      
+      // Set rate limit
+      contactService.setRateLimit(formData.email);
+      
+      // Reset form
       setFormData({
         name: '',
         email: '',
         phone: '',
         company: '',
         subject: '',
-        message: ''
+        message: '',
+        category: 'general'
       });
-    } catch (error) {
+
+    } catch (error: any) {
       setSubmitStatus('error');
+      setErrorMessage(error.message || 'An unexpected error occurred. Please try again.');
+      console.error('Contact form error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +148,7 @@ export default function ContactPage() {
       icon: MapPin,
       title: 'Office Location',
       details: ['Westlands, Nairobi', 'Kenya'],
-      action: 'https://maps.google.com'
+      action: 'https://maps.google.com/?q=Westlands+Nairobi+Kenya'
     },
     {
       icon: Clock,
@@ -87,6 +167,16 @@ export default function ContactPage() {
     'Partnership Opportunity',
     'Complaint/Feedback',
     'Other'
+  ];
+
+  const categories = [
+    { value: 'general', label: 'General Inquiry' },
+    { value: 'support', label: 'Support' },
+    { value: 'feedback', label: 'Feedback' },
+    { value: 'complaint', label: 'Complaint' },
+    { value: 'partnership', label: 'Partnership' },
+    { value: 'business', label: 'Business Inquiry' },
+    { value: 'other', label: 'Other' }
   ];
 
   return (
@@ -131,6 +221,8 @@ export default function ContactPage() {
                             <a 
                               href={info.action} 
                               className="text-gray-600 hover:text-accent-800 transition-colors"
+                              target={info.title === 'Office Location' ? '_blank' : '_self'}
+                              rel={info.title === 'Office Location' ? 'noopener noreferrer' : ''}
                             >
                               {detail}
                             </a>
@@ -166,7 +258,7 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <div className="bg-white adventure-card">
+              <div className="bg-white adventure-card p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h2>
                 
                 {submitStatus === 'success' && (
@@ -175,7 +267,7 @@ export default function ContactPage() {
                       <CheckCircle className="text-green-600" size={24} />
                       <div>
                         <h3 className="font-semibold text-green-800">Message Sent Successfully!</h3>
-                        <p className="text-green-700">Thank you for contacting us. We'll get back to you within 24 hours.</p>
+                        <p className="text-green-700">{successMessage}</p>
                       </div>
                     </div>
                   </div>
@@ -187,7 +279,21 @@ export default function ContactPage() {
                       <AlertCircle className="text-red-600" size={24} />
                       <div>
                         <h3 className="font-semibold text-red-800">Error Sending Message</h3>
-                        <p className="text-red-700">Please try again or contact us directly via phone.</p>
+                        <p className="text-red-700">{errorMessage}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {isRateLimited && (
+                  <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <AlertCircle className="text-yellow-600" size={24} />
+                      <div>
+                        <h3 className="font-semibold text-yellow-800">Submission Limit Reached</h3>
+                        <p className="text-yellow-700">
+                          Please wait {contactService.formatRemainingTime(remainingTime)} before submitting again.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -196,7 +302,8 @@ export default function ContactPage() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                        <User size={16} />
                         Full Name *
                       </label>
                       <input
@@ -205,12 +312,14 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
                         placeholder="Enter your name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                        <Mail size={16} />
                         Email Address *
                       </label>
                       <input
@@ -219,7 +328,8 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
                         placeholder="Enter your email"
                       />
                     </div>
@@ -227,7 +337,8 @@ export default function ContactPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                        <Phone size={16} />
                         Phone Number
                       </label>
                       <input
@@ -235,12 +346,14 @@ export default function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
                         placeholder="Enter your phone number"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                        <Building size={16} />
                         Company/Organization
                       </label>
                       <input
@@ -248,34 +361,57 @@ export default function ContactPage() {
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
                         placeholder="Enter company name"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Subject *
-                    </label>
-                    <select
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-                    >
-                      <option value="">Select a subject</option>
-                      {subjects.map((subject) => (
-                        <option key={subject} value={subject}>
-                          {subject}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Subject *
+                      </label>
+                      <select
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        required
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
+                      >
+                        <option value="">Select a subject</option>
+                        {subjects.map((subject) => (
+                          <option key={subject} value={subject}>
+                            {subject}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Category
+                      </label>
+                      <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
+                      >
+                        {categories.map((category) => (
+                          <option key={category.value} value={category.value}>
+                            {category.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                      <MessageSquare size={16} />
                       Message *
                     </label>
                     <textarea
@@ -284,16 +420,21 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       rows={6}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent resize-none"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent resize-none disabled:bg-gray-50 disabled:cursor-not-allowed"
                       placeholder="Tell us about your safety training needs..."
+                      maxLength={2000}
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Maximum 2000 characters ({formData.message.length}/2000)
+                    </p>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-between">
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="btn-adventure flex items-center gap-2 px-8 py-3"
+                      disabled={isSubmitting || isRateLimited}
+                      className="btn-adventure flex items-center gap-2 px-8 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Send size={20} />
                       {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -359,7 +500,7 @@ export default function ContactPage() {
                   Visit our state-of-the-art training facility
                 </p>
                 <a 
-                  href="https://maps.google.com" 
+                  href="https://maps.google.com/?q=Westlands+Nairobi+Kenya" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-block mt-4 btn-adventure"

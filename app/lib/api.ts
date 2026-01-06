@@ -6,7 +6,27 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.
 
 interface ApiOptions extends RequestInit {
   requiresAuth?: boolean
-} 
+}
+
+interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  phone?: string;
+  category?: 'general' | 'support' | 'feedback' | 'complaint' | 'partnership' | 'other';
+  company?: string;
+}
+
+interface ContactResponse {
+  message: string;
+  contactId: string;
+}
+
+interface ApiError {
+  error: string;
+  message?: string;
+}
 
 class ApiClient {
   private async request<T = any>(
@@ -17,6 +37,7 @@ class ApiClient {
     
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       ...(fetchOptions.headers as Record<string, string> || {}),
     }
 
@@ -46,7 +67,16 @@ class ApiClient {
       credentials: 'include',
     })
 
+    let data: T | ApiError;
+    try {
+      data = await response.json();
+    } catch (error) {
+      throw new Error('Invalid JSON response from server');
+    }
+
     if (!response.ok) {
+      const errorData = data as ApiError;
+      
       // Handle specific HTTP errors
       if (response.status === 401) {
         // Token expired or invalid
@@ -58,24 +88,14 @@ class ApiClient {
         throw new Error('You do not have permission to perform this action.')
       }
       
-      let errorMessage = `Request failed with status ${response.status}`
-      try {
-        const errorData = await response.json()
-        errorMessage = errorData.message || errorData.error || errorMessage
-      } catch {
-        // Not JSON response
+      if (response.status === 429) {
+        throw new Error('Too many requests. Please try again later.')
       }
       
-      throw new Error(errorMessage)
+      throw new Error(errorData.error || errorData.message || `Request failed with status ${response.status}`)
     }
 
-    // Handle empty responses
-    const contentType = response.headers.get('content-type')
-    if (contentType && contentType.includes('application/json')) {
-      return response.json()
-    }
-    
-    return {} as T
+    return data as T;
   }
 
   // Public endpoints (no auth required)
@@ -88,8 +108,46 @@ class ApiClient {
           requiresAuth: false,
         }),
       
-      register: (data: any) =>
+      register: (data: {
+        name: string;
+        username: string;
+        email: string;
+        password: string;
+        roleName?: string;
+      }) =>
         this.request('/api/v1/auth/register', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          requiresAuth: false,
+        }),
+
+      forgotPassword: (email: string) =>
+        this.request('/api/v1/auth/forgot-password', {
+          method: 'POST',
+          body: JSON.stringify({ email }),
+          requiresAuth: false,
+        }),
+
+      resetPassword: (data: {
+        token: string;
+        newPassword: string;
+        confirmPassword: string;
+      }) =>
+        this.request('/api/v1/auth/reset-password', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          requiresAuth: false,
+        }),
+
+      verifyResetToken: (token: string) =>
+        this.request(`/api/v1/auth/verify-reset-token/${token}`, {
+          requiresAuth: false,
+        }),
+    },
+    
+    contact: {
+      submit: (data: ContactFormData): Promise<ContactResponse> =>
+        this.request('/api/v1/auth/contact', {
           method: 'POST',
           body: JSON.stringify(data),
           requiresAuth: false,
@@ -123,6 +181,36 @@ class ApiClient {
 
   // Protected endpoints (requires auth)
   protected = {
+    auth: {
+      logout: () => 
+        this.request('/api/v1/auth/logout', {
+          method: 'POST',
+        }),
+
+      getCurrentUser: () => 
+        this.request('/api/v1/auth/me'),
+
+      updateProfile: (data: {
+        name?: string;
+        username?: string;
+        email?: string;
+      }) =>
+        this.request('/api/v1/auth/profile', {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        }),
+
+      changePassword: (data: {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+      }) =>
+        this.request('/api/v1/auth/change-password', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }),
+    },
+
     user: {
       getProfile: () => 
         this.request('/api/v1/users/profile'),
@@ -210,7 +298,31 @@ class ApiClient {
           body: JSON.stringify(data),
         }),
     },
+
+    contacts: {
+      getAll: () =>
+        this.request('/api/v1/contacts'),
+      
+      getOne: (id: string) =>
+        this.request(`/api/v1/contacts/${id}`),
+      
+      updateStatus: (id: string, data: {
+        status: 'pending' | 'read' | 'replied' | 'resolved' | 'spam';
+        response?: {
+          message: string;
+        };
+      }) =>
+        this.request(`/api/v1/contacts/${id}/status`, {
+          method: 'PATCH',
+          body: JSON.stringify(data),
+        }),
+      
+      delete: (id: string) =>
+        this.request(`/api/v1/contacts/${id}`, {
+          method: 'DELETE',
+        }),
+    },
   }
 }
 
-export const api = new ApiClient()
+export const api = new ApiClient();
