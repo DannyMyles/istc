@@ -4,6 +4,8 @@ import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
 import AuthProvider from "@/app/providers/AuthProvider";
+import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
+
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -13,8 +15,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "International Safety Training Centre | Professional Safety Training & Certification",
-  description: "ISTC offers comprehensive safety training, certification, and consultancy services in occupational safety, health, and environmental protection.",
-  keywords: "safety training, certification, occupational safety, health training, environmental protection, fire safety, construction safety",
+  description: "ISTC offers comprehensive safety training, certification, and consultancy services...",
 };
 
 export default function RootLayout({
@@ -35,6 +36,10 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          
+          {/* 2. Add the Widget here */}
+          <WhatsAppWidget />
+
         </AuthProvider>
       </body>
     </html>
