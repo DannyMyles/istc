@@ -1,16 +1,18 @@
+// app/admin/blog/page.tsx
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Filter, MoreVertical, Edit, Trash2, Eye, Calendar, X } from 'lucide-react'
+import { Plus, Search, Filter, MoreVertical, Edit, Trash2, Eye, Calendar, X, RefreshCw } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Blog, blogService } from '@/app/api_services/blogService'
 
 interface BlogStats {
-  totalPosts: number
-  published: number
-  totalViews: number
-  avgEngagement: number
+  totalBlogs: number
+  blogsWithImages: number
+  totalImageSize: number
+  avgImageSize: number
+  maxImageSize: number
 }
 
 export default function BlogManagementPage() {
@@ -18,11 +20,13 @@ export default function BlogManagementPage() {
   const [filter, setFilter] = useState('all')
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const [stats, setStats] = useState<BlogStats>({
-    totalPosts: 0,
-    published: 0,
-    totalViews: 0,
-    avgEngagement: 0
+    totalBlogs: 0,
+    blogsWithImages: 0,
+    totalImageSize: 0,
+    avgImageSize: 0,
+    maxImageSize: 0
   })
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null)
@@ -31,6 +35,7 @@ export default function BlogManagementPage() {
 
   useEffect(() => {
     fetchBlogs()
+    fetchStats()
   }, [])
 
   // Close modal when clicking outside
@@ -53,28 +58,33 @@ export default function BlogManagementPage() {
   const fetchBlogs = async () => {
     try {
       setLoading(true)
-      const response = await blogService.getAllBlogs()
-      setBlogs(response.blogs)
-      
-      // Calculate stats
-      const totalViews = response.blogs.reduce((sum, blog) => sum + blog.views, 0)
-      const totalLikes = response.blogs.reduce((sum, blog) => sum + blog.likes, 0)
-      const avgEngagement = response.blogs.length > 0 
-        ? Math.round((totalLikes / response.blogs.length) * 100) / 100
-        : 0
-      
-      setStats({
-        totalPosts: response.pagination.totalBlogs,
-        published: response.blogs.length,
-        totalViews,
-        avgEngagement
+      const response = await blogService.getAllBlogs({
+        limit: 50, // Show more blogs in admin
+        sort: '-createdAt'
       })
+      setBlogs(response.blogs)
     } catch (error: any) {
       console.error('Error fetching blogs:', error)
       toast.error(error.message || 'Failed to load blogs')
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
+  }
+
+  const fetchStats = async () => {
+    try {
+      const statsData = await blogService.getBlogStats()
+      setStats(statsData)
+    } catch (error: any) {
+      console.error('Error fetching stats:', error)
+    }
+  }
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    fetchBlogs()
+    fetchStats()
   }
 
   const handleDeleteClick = (blog: Blog) => {
@@ -89,7 +99,10 @@ export default function BlogManagementPage() {
     try {
       await blogService.deleteBlog(blogToDelete.id)
       toast.success('Blog deleted successfully')
-      fetchBlogs() // Refresh the list
+      // Update local state immediately
+      setBlogs(prev => prev.filter(blog => blog.id !== blogToDelete.id))
+      // Refresh stats
+      fetchStats()
     } catch (error: any) {
       console.error('Error deleting blog:', error)
       toast.error(error.message || 'Failed to delete blog')
@@ -108,12 +121,24 @@ export default function BlogManagementPage() {
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          blog.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         blog.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+                         blog.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                         blog.author.toLowerCase().includes(searchQuery.toLowerCase())
+    
     const matchesFilter = filter === 'all' || 
-                         (filter === 'published' && blogService.getBlogStatus(blog.date) === 'published') ||
-                         (filter === 'featured' && blog.featured)
+                         (filter === 'featured' && blog.featured) ||
+                         (filter === 'published' && blog.published !== false) ||
+                         (filter === 'draft' && blog.published === false)
+    
     return matchesSearch && matchesFilter
   })
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
 
   if (loading) {
     return (
@@ -162,6 +187,29 @@ export default function BlogManagementPage() {
             </div>
             
             <div className="space-y-4">
+              {blogToDelete && (
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    {blogToDelete.imageInfo?.hasImage ? (
+                      <div 
+                        className="h-16 w-16 rounded-lg bg-cover bg-center flex-shrink-0"
+                        style={{ backgroundImage: `url(${blogService.getBlogImageUrl(blogToDelete)})` }}
+                      />
+                    ) : (
+                      <div className="h-16 w-16 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
+                        <Eye className="h-8 w-8 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-gray-900 truncate">{blogToDelete.title}</h4>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {blogToDelete.category} • {blogToDelete.views} views • {blogToDelete.likes} likes
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -180,7 +228,7 @@ export default function BlogManagementPage() {
                 <button
                   onClick={handleDeleteCancel}
                   disabled={deleting}
-                  className="flex-1 px-4 py-3 border bg-[#039AC5]  text-white hover:bg-accent-50 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-4 py-3 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
@@ -213,34 +261,53 @@ export default function BlogManagementPage() {
           <h1 className="text-3xl font-bold text-gray-900">Blog Management</h1>
           <p className="mt-1 text-gray-600">Create and manage blog posts</p>
         </div>
-        <Link
-          href="/admin/blog/create"
-          className="btn-adventure flex items-center gap-2 w-fit"
-        >
-          <Plus className="h-5 w-5" />
-          New Blog Post
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Refresh"
+          >
+            <RefreshCw className={`h-5 w-5 text-gray-600 ${refreshing ? 'animate-spin' : ''}`} />
+          </button>
+          <Link
+            href="/admin/blog/create"
+            className="btn-adventure flex items-center gap-2 w-fit"
+          >
+            <Plus className="h-5 w-5" />
+            New Blog Post
+          </Link>
+        </div>
       </div>
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="adventure-card">
           <p className="text-sm text-gray-600">Total Posts</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">{stats.totalPosts}</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{stats.totalBlogs}</p>
         </div>
         <div className="adventure-card">
-          <p className="text-sm text-gray-600">Published</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">{stats.published}</p>
-        </div>
-        <div className="adventure-card">
-          <p className="text-sm text-gray-600">Total Views</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">
-            {stats.totalViews.toLocaleString()}
+          <p className="text-sm text-gray-600">With Images</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{stats.blogsWithImages}</p>
+          <p className="text-xs text-gray-500 mt-1">
+            {stats.blogsWithImages > 0 ? Math.round((stats.blogsWithImages / stats.totalBlogs) * 100) : 0}% coverage
           </p>
         </div>
         <div className="adventure-card">
-          <p className="text-sm text-gray-600">Avg. Engagement</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">{stats.avgEngagement}%</p>
+          <p className="text-sm text-gray-600">Total Images</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{formatFileSize(stats.totalImageSize)}</p>
+        </div>
+        <div className="adventure-card">
+          <p className="text-sm text-gray-600">Avg. Image Size</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">
+            {stats.avgImageSize > 0 ? formatFileSize(stats.avgImageSize) : '0 Bytes'}
+          </p>
+        </div>
+        <div className="adventure-card">
+          <p className="text-sm text-gray-600">Max Image Size</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">
+            {stats.maxImageSize > 0 ? formatFileSize(stats.maxImageSize) : '0 Bytes'}
+          </p>
         </div>
       </div>
 
@@ -253,8 +320,9 @@ export default function BlogManagementPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search blog posts by title, category, or tags..."
+              placeholder="Search blog posts by title, category, author, or tags..."
               className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+              disabled={refreshing}
             />
           </div>
         </div>
@@ -263,12 +331,17 @@ export default function BlogManagementPage() {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+            disabled={refreshing}
           >
             <option value="all">All Posts</option>
-            <option value="published">Published</option>
             <option value="featured">Featured</option>
+            <option value="published">Published</option>
+            <option value="draft">Drafts</option>
           </select>
-          <button className="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+          <button 
+            className="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            disabled={refreshing}
+          >
             <Filter className="h-5 w-5 text-gray-600" />
           </button>
         </div>
@@ -276,7 +349,12 @@ export default function BlogManagementPage() {
 
       {/* Blog Posts Table */}
       <div className="bg-white rounded-xl shadow-adventure border border-gray-200 overflow-hidden">
-        {filteredBlogs.length === 0 && blogs.length > 0 ? (
+        {refreshing ? (
+          <div className="p-8 text-center">
+            <div className="inline-block h-8 w-8 border-4 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-gray-600">Refreshing blog posts...</p>
+          </div>
+        ) : filteredBlogs.length === 0 && blogs.length > 0 ? (
           <div className="p-8 text-center">
             <p className="text-gray-500">No blog posts match your search criteria</p>
             <button
@@ -305,10 +383,11 @@ export default function BlogManagementPage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Title</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 min-w-[250px]">Title</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Category</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Image</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Views</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Engagement</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Published</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Actions</th>
                 </tr>
@@ -317,14 +396,16 @@ export default function BlogManagementPage() {
                 {filteredBlogs.map((blog) => (
                   <tr key={blog.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4">
-                      <div>
-                        <p className="font-medium text-gray-900">{blog.title}</p>
-                        <p className="text-sm text-gray-500 mt-1">By {blog.author}</p>
-                        {blog.featured && (
-                          <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-yellow-50 text-yellow-700 rounded">
-                            Featured
-                          </span>
-                        )}
+                      <div className="min-w-0">
+                        <p className="font-medium text-gray-900 truncate">{blog.title}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm text-gray-500 truncate">By {blog.author}</p>
+                          {blog.featured && (
+                            <span className="inline-block px-2 py-0.5 text-xs font-medium bg-yellow-50 text-yellow-700 rounded flex-shrink-0">
+                              Featured
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -333,30 +414,53 @@ export default function BlogManagementPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        {blog.imageInfo?.hasImage ? (
+                          <>
+                            <div 
+                              className="h-8 w-8 rounded bg-cover bg-center flex-shrink-0"
+                              style={{ backgroundImage: `url(${blogService.getBlogImageUrl(blog)})` }}
+                            />
+                            <span className="text-xs text-gray-500 truncate max-w-[100px]">
+                              {blog.imageInfo.filename || 'Image'}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-xs text-gray-400">No image</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
                       <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
-                        blogService.getBlogStatus(blog.date) === 'published'
+                        blog.published !== false
                           ? 'bg-green-50 text-green-700'
-                          : 'bg-yellow-50 text-yellow-700'
+                          : 'bg-gray-100 text-gray-700'
                       }`}>
-                        {blogService.getBlogStatus(blog.date).charAt(0).toUpperCase() + 
-                         blogService.getBlogStatus(blog.date).slice(1)}
+                        {blog.published !== false ? 'Published' : 'Draft'}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <Eye className="h-4 w-4 text-gray-400" />
-                        <span className="font-medium">{blog.views.toLocaleString()}</span>
-                        {blog.likes > 0 && (
-                          <span className="text-sm text-gray-500">
-                            ({blog.likes} likes)
-                          </span>
-                        )}
+                      <div className="flex items-center gap-4">
+                        <div className="text-center">
+                          <div className="flex items-center gap-1">
+                            <Eye className="h-3 w-3 text-gray-400" />
+                            <span className="font-medium text-sm">{blog.views.toLocaleString()}</span>
+                          </div>
+                          <span className="text-xs text-gray-500">views</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="flex items-center gap-1">
+                            <span className="text-red-500">❤️</span>
+                            <span className="font-medium text-sm">{blog.likes}</span>
+                          </div>
+                          <span className="text-xs text-gray-500">likes</span>
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-gray-600">
                         <Calendar className="h-4 w-4" />
-                        {blogService.formatDate(blog.date)}
+                        {blogService.formatDate(blog.createdAt)}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -372,6 +476,7 @@ export default function BlogManagementPage() {
                           onClick={() => handleDeleteClick(blog)}
                           className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600"
                           title="Delete"
+                          disabled={deleting}
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -389,6 +494,25 @@ export default function BlogManagementPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Pagination Info */}
+        {filteredBlogs.length > 0 && (
+          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <div>
+                Showing <span className="font-medium">{filteredBlogs.length}</span> of{' '}
+                <span className="font-medium">{blogs.length}</span> blog posts
+              </div>
+              <div>
+                {blogs.length > filteredBlogs.length && (
+                  <span className="text-gray-400">
+                    ({blogs.length - filteredBlogs.length} hidden by filters)
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

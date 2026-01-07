@@ -1,8 +1,9 @@
+// app/admin/blog/create/page.tsx
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Eye, Upload, X } from 'lucide-react'
+import { ArrowLeft, Save, Eye, Upload, X, Image as ImageIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { blogService, CreateBlogRequest } from '@/app/api_services/blogService'
 
@@ -14,23 +15,25 @@ export default function CreateBlogPage() {
     content: '',
     category: '',
     author: '',
-    image: '',
     readTime: '5 min read',
     featured: false,
     tags: [],
     metaTitle: '',
-    metaDescription: ''
+    metaDescription: '',
+    imageFile: null,
+    imageUrl: ''
   })
   const [tagInput, setTagInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const handleAddTag = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && tagInput.trim()) {
       e.preventDefault()
-      if (!formData.tags.includes(tagInput.trim())) {
+      if (!formData.tags?.includes(tagInput.trim())) {
         setFormData({
           ...formData,
-          tags: [...formData.tags, tagInput.trim()]
+          tags: [...(formData.tags || []), tagInput.trim()]
         })
       }
       setTagInput('')
@@ -40,8 +43,57 @@ export default function CreateBlogPage() {
   const handleRemoveTag = (tagToRemove: string) => {
     setFormData({
       ...formData,
-      tags: formData.tags.filter(tag => tag !== tagToRemove)
+      tags: (formData.tags || []).filter(tag => tag !== tagToRemove)
     })
+  }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+      if (!validTypes.includes(file.type)) {
+        toast.error('Please upload a valid image file (JPEG, PNG, GIF, WebP)')
+        return
+      }
+
+      // Validate file size (16MB limit based on your API)
+      if (file.size > 16 * 1024 * 1024) {
+        toast.error('Image size must be less than 16MB')
+        return
+      }
+
+      setFormData({
+        ...formData,
+        imageFile: file,
+        imageUrl: '' // Clear URL if uploading file
+      })
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleImageUrlChange = (url: string) => {
+    setFormData({
+      ...formData,
+      imageUrl: url,
+      imageFile: null // Clear file if using URL
+    })
+    setImagePreview(url)
+  }
+
+  const removeImage = () => {
+    setFormData({
+      ...formData,
+      imageFile: null,
+      imageUrl: ''
+    })
+    setImagePreview(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,13 +109,14 @@ export default function CreateBlogPage() {
 
     try {
       // Prepare data for API
-      const blogData = {
+      const blogData: CreateBlogRequest = {
         ...formData,
         author: formData.author.trim() || 'Admin',
-        excerpt: formData.excerpt.trim() || 'A brief summary or introduction to your blog post...',
-        metaTitle: (formData.metaTitle?.trim()) || formData.title.trim(),
-        metaDescription: (formData.metaDescription?.trim()) || formData.excerpt.trim() || formData.title.trim(),
-        tags: formData.tags.map(tag => tag.toLowerCase().trim())
+        excerpt: formData.excerpt.trim() || formData.title.slice(0, 150) + '...',
+        metaTitle: formData.metaTitle?.trim() || formData.title.trim(),
+        metaDescription: formData.metaDescription?.trim() || formData.excerpt.trim(),
+        tags: (formData.tags || []).map(tag => tag.toLowerCase().trim()),
+        readTime: blogService.estimateReadTime(formData.content)
       }
 
       await blogService.createBlog(blogData)
@@ -105,6 +158,7 @@ export default function CreateBlogPage() {
           <button
             onClick={() => router.back()}
             className="p-2 hover:bg-accent-50 rounded-lg transition-colors"
+            disabled={loading}
           >
             <ArrowLeft className="h-5 w-5 text-accent-600" />
           </button>
@@ -144,6 +198,7 @@ export default function CreateBlogPage() {
               placeholder="Enter blog post title..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent text-lg font-medium"
               required
+              disabled={loading}
             />
           </div>
 
@@ -158,9 +213,13 @@ export default function CreateBlogPage() {
               placeholder="A brief summary or introduction to your blog post..."
               rows={3}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent resize-none"
+              disabled={loading}
             />
             <p className="mt-2 text-sm text-gray-500">
-              This will be shown in blog listings and search results
+              This will be shown in blog listings and search results (max 300 characters)
+            </p>
+            <p className="mt-1 text-xs text-gray-400">
+              {formData.excerpt.length}/300 characters
             </p>
           </div>
 
@@ -178,14 +237,17 @@ export default function CreateBlogPage() {
             <textarea
               value={formData.content}
               onChange={(e) => handleChange('content', e.target.value)}
-              placeholder="Write your blog post content here (HTML or Markdown supported)..."
+              placeholder="Write your blog post content here..."
               rows={15}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent resize-none font-mono"
               required
+              disabled={loading}
             />
             <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
               <span>{formData.content.length} characters</span>
-              <span>HTML/Markdown supported</span>
+              <span>
+                Read time: {blogService.estimateReadTime(formData.content)}
+              </span>
             </div>
           </div>
         </div>
@@ -195,34 +257,69 @@ export default function CreateBlogPage() {
           {/* Featured Image */}
           <div className="adventure-card">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Featured Image URL
+              Featured Image
             </label>
+            
+            {/* Image Upload Area */}
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4">
+              {imagePreview ? (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                    disabled={loading}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-sm text-gray-600 mb-3">Upload an image or enter URL</p>
+                  <div className="flex gap-2">
+                    <label className="flex-1 cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        disabled={loading}
+                      />
+                      <div className="bg-accent-50 text-accent-700 py-2 px-4 rounded-lg hover:bg-accent-100 transition-colors text-center">
+                        Upload File
+                      </div>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => document.getElementById('imageUrlInput')?.focus()}
+                      className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Use URL
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Image URL Input */}
             <input
+              id="imageUrlInput"
               type="url"
-              value={formData.image}
-              onChange={(e) => handleChange('image', e.target.value)}
+              value={formData.imageUrl}
+              onChange={(e) => handleImageUrlChange(e.target.value)}
               placeholder="https://example.com/image.jpg"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+              disabled={loading || !!formData.imageFile}
             />
-            {formData.image && (
-              <div className="mt-4 relative">
-                <img
-                  src={formData.image}
-                  alt="Featured preview"
-                  className="w-full h-48 object-cover rounded-lg"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://via.placeholder.com/400x200?text=Image+Not+Found'
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => handleChange('image', '')}
-                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            )}
+            <p className="mt-2 text-xs text-gray-500">
+              Supports JPG, PNG, GIF, WebP (max 16MB) or external URL
+            </p>
           </div>
 
           {/* Category */}
@@ -235,6 +332,7 @@ export default function CreateBlogPage() {
               onChange={(e) => handleChange('category', e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
               required
+              disabled={loading}
             >
               <option value="">Select a category</option>
               {categories.map((cat) => (
@@ -254,6 +352,7 @@ export default function CreateBlogPage() {
               onChange={(e) => handleChange('author', e.target.value)}
               placeholder="John Doe"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+              disabled={loading}
             />
           </div>
 
@@ -262,18 +361,29 @@ export default function CreateBlogPage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Read Time
             </label>
-            <select
-              value={formData.readTime}
-              onChange={(e) => handleChange('readTime', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-            >
-              <option value="1 min read">1 min read</option>
-              <option value="3 min read">3 min read</option>
-              <option value="5 min read">5 min read</option>
-              <option value="7 min read">7 min read</option>
-              <option value="10 min read">10 min read</option>
-              <option value="15+ min read">15+ min read</option>
-            </select>
+            <div className="flex items-center gap-2">
+              <select
+                value={formData.readTime}
+                onChange={(e) => handleChange('readTime', e.target.value)}
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                disabled={loading}
+              >
+                <option value="1 min read">1 min read</option>
+                <option value="3 min read">3 min read</option>
+                <option value="5 min read">5 min read</option>
+                <option value="7 min read">7 min read</option>
+                <option value="10 min read">10 min read</option>
+                <option value="15+ min read">15+ min read</option>
+              </select>
+              <button
+                type="button"
+                onClick={() => handleChange('readTime', blogService.estimateReadTime(formData.content))}
+                className="px-3 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                disabled={loading}
+              >
+                Auto
+              </button>
+            </div>
           </div>
 
           {/* Tags */}
@@ -282,7 +392,7 @@ export default function CreateBlogPage() {
               Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-3">
-              {formData.tags.map((tag) => (
+              {(formData.tags || []).map((tag) => (
                 <span
                   key={tag}
                   className="inline-flex items-center gap-1 px-3 py-1 bg-accent-50 text-accent-700 rounded-full text-sm"
@@ -292,6 +402,7 @@ export default function CreateBlogPage() {
                     type="button"
                     onClick={() => handleRemoveTag(tag)}
                     className="hover:text-accent-900"
+                    disabled={loading}
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -305,6 +416,7 @@ export default function CreateBlogPage() {
               onKeyDown={handleAddTag}
               placeholder="Type and press Enter to add tags..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+              disabled={loading}
             />
             <p className="mt-2 text-sm text-gray-500">
               Use relevant tags like: web-development, safety, training, etc.
@@ -319,6 +431,7 @@ export default function CreateBlogPage() {
                 checked={formData.featured}
                 onChange={(e) => handleChange('featured', e.target.checked)}
                 className="h-4 w-4 text-accent-500 focus:ring-accent-500"
+                disabled={loading}
               />
               <span className="text-sm font-medium text-gray-700">
                 Mark as Featured Post
@@ -339,11 +452,15 @@ export default function CreateBlogPage() {
               </label>
               <input
                 type="text"
-                value={formData.metaTitle}
+                value={formData.metaTitle || ''}
                 onChange={(e) => handleChange('metaTitle', e.target.value)}
                 placeholder="SEO title for search engines"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                disabled={loading}
               />
+              <p className="mt-1 text-xs text-gray-400">
+                {formData.metaTitle?.length || 0}/200 characters
+              </p>
             </div>
             
             <div>
@@ -351,12 +468,16 @@ export default function CreateBlogPage() {
                 Meta Description
               </label>
               <textarea
-                value={formData.metaDescription}
+                value={formData.metaDescription || ''}
                 onChange={(e) => handleChange('metaDescription', e.target.value)}
                 placeholder="SEO description for search engines"
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-only focus:ring-2 focus:ring-accent-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent resize-none"
+                disabled={loading}
               />
+              <p className="mt-1 text-xs text-gray-400">
+                {formData.metaDescription?.length || 0}/160 characters
+              </p>
             </div>
           </div>
         </div>

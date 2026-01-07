@@ -1,3 +1,5 @@
+// blogService.ts - Complete implementation
+
 import { api } from "../lib/api"
 
 export interface Blog {
@@ -5,15 +7,34 @@ export interface Blog {
   title: string
   slug: string
   excerpt: string
+  content: string
   category: string
   author: string
+  authorId?: string
+  authorDetails?: {
+    name?: string
+    email?: string
+  }
   date: string
   readTime: string
   image: string
+  imageInfo: {
+    hasImage: boolean
+    type?: 'uploaded' | 'external'
+    contentType?: string
+    filename?: string
+    size?: number
+    url: string
+  }
   featured: boolean
   views: number
   likes: number
   tags: string[]
+  metaTitle?: string
+  metaDescription?: string
+  createdAt: string
+  updatedAt: string
+  published: boolean
 }
 
 export interface BlogResponse {
@@ -27,45 +48,156 @@ export interface BlogResponse {
   }
 }
 
+export interface Category {
+  name: string
+  count: number
+}
+
+export interface BlogStats {
+  totalBlogs: number
+  blogsWithImages: number
+  totalImageSize: number
+  avgImageSize: number
+  maxImageSize: number
+}
+
 export interface CreateBlogRequest {
   title: string
   excerpt: string
   content: string
   category: string
   author: string
-  image: string
-  readTime: string
-  featured: boolean
-  tags: string[]
+  readTime?: string
+  featured?: boolean
+  tags?: string[]
   metaTitle?: string
   metaDescription?: string
+  imageFile?: File | null
+  imageUrl?: string
+  published?: boolean 
 }
 
+export interface UpdateBlogRequest extends Partial<CreateBlogRequest> {}
+
 export const blogService = {
-  // Get all blogs (public - no auth required)
-  getAllBlogs: async (): Promise<BlogResponse> => {
+  // Get all blogs with pagination and filters
+  getAllBlogs: async (params?: {
+    page?: number
+    limit?: number
+    category?: string
+    featured?: boolean
+    search?: string
+    sort?: string
+  }): Promise<BlogResponse> => {
     try {
-      return await api.public.blog.getAll()
+      return await api.public.blog.getAll(params)
     } catch (error) {
       console.error('Error fetching blogs:', error)
       throw error
     }
   },
 
-  // Get single blog (public - no auth required)
+  // Get blog by slug
+  getBlogBySlug: async (slug: string): Promise<Blog> => {
+    try {
+      const response = await api.public.blog.getBySlug(slug)
+      return response.blog
+    } catch (error) {
+      console.error(`Error fetching blog by slug ${slug}:`, error)
+      throw error
+    }
+  },
+
+  // Get blog by ID
   getBlogById: async (id: string): Promise<Blog> => {
     try {
-      return await api.public.blog.getOne(id)
+      const response = await api.public.blog.getById(id)
+      return response.blog
     } catch (error) {
       console.error(`Error fetching blog ${id}:`, error)
       throw error
     }
   },
 
+  // Get featured blogs
+  getFeaturedBlogs: async (): Promise<Blog[]> => {
+    try {
+      const response = await api.public.blog.getFeatured()
+      return response.blogs
+    } catch (error) {
+      console.error('Error fetching featured blogs:', error)
+      throw error
+    }
+  },
+
+  // Get blog categories
+  getBlogCategories: async (): Promise<Category[]> => {
+    try {
+      const response = await api.public.blog.getCategories()
+      return response.categories
+    } catch (error) {
+      console.error('Error fetching blog categories:', error)
+      throw error
+    }
+  },
+
+  // Get blog statistics
+  getBlogStats: async (): Promise<BlogStats> => {
+    try {
+      const response = await api.public.blog.getStats()
+      return response.stats
+    } catch (error) {
+      console.error('Error fetching blog stats:', error)
+      throw error
+    }
+  },
+
+  // Like a blog
+  likeBlog: async (id: string): Promise<{ likes: number }> => {
+    try {
+      const response = await api.public.blog.like(id)
+      return response
+    } catch (error) {
+      console.error(`Error liking blog ${id}:`, error)
+      throw error
+    }
+  },
+
+  // Get blog image URL
+  getBlogImageUrl: (blog: Blog): string => {
+    if (blog.imageInfo?.url) {
+      return blog.imageInfo.url.startsWith('http')
+        ? blog.imageInfo.url
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com'}${blog.imageInfo.url}`
+    }
+    return blog.image || 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0'
+  },
+
   // Create blog (admin only)
   createBlog: async (data: CreateBlogRequest): Promise<Blog> => {
     try {
-      return await api.admin.blog.create(data)
+      const formData = new FormData()
+      
+      // Add text fields
+      formData.append('title', data.title)
+      formData.append('excerpt', data.excerpt)
+      formData.append('content', data.content)
+      formData.append('category', data.category)
+      formData.append('author', data.author)
+      
+      if (data.readTime) formData.append('readTime', data.readTime)
+      if (data.featured !== undefined) formData.append('featured', data.featured.toString())
+      if (data.tags) formData.append('tags', JSON.stringify(data.tags))
+      if (data.metaTitle) formData.append('metaTitle', data.metaTitle)
+      if (data.metaDescription) formData.append('metaDescription', data.metaDescription)
+      if (data.imageUrl) formData.append('imageUrl', data.imageUrl)
+      
+      // Add image file if present
+      if (data.imageFile) {
+        formData.append('image', data.imageFile)
+      }
+      
+      return await api.admin.blog.create(formData)
     } catch (error) {
       console.error('Error creating blog:', error)
       throw error
@@ -73,9 +205,29 @@ export const blogService = {
   },
 
   // Update blog (admin only)
-  updateBlog: async (id: string, data: Partial<CreateBlogRequest>): Promise<Blog> => {
+  updateBlog: async (id: string, data: UpdateBlogRequest): Promise<Blog> => {
     try {
-      return await api.admin.blog.update(id, data)
+      const formData = new FormData()
+      
+      // Add text fields
+      if (data.title) formData.append('title', data.title)
+      if (data.excerpt) formData.append('excerpt', data.excerpt)
+      if (data.content) formData.append('content', data.content)
+      if (data.category) formData.append('category', data.category)
+      if (data.author) formData.append('author', data.author)
+      if (data.readTime) formData.append('readTime', data.readTime)
+      if (data.featured !== undefined) formData.append('featured', data.featured.toString())
+      if (data.tags) formData.append('tags', JSON.stringify(data.tags))
+      if (data.metaTitle) formData.append('metaTitle', data.metaTitle)
+      if (data.metaDescription) formData.append('metaDescription', data.metaDescription)
+      if (data.imageUrl) formData.append('imageUrl', data.imageUrl)
+      
+      // Add image file if present
+      if (data.imageFile) {
+        formData.append('image', data.imageFile)
+      }
+      
+      return await api.admin.blog.update(id, formData)
     } catch (error) {
       console.error(`Error updating blog ${id}:`, error)
       throw error
@@ -92,7 +244,7 @@ export const blogService = {
     }
   },
 
-  // Format date for display
+  // Helper function to format date
   formatDate: (dateString: string): string => {
     try {
       const date = new Date(dateString)
@@ -106,17 +258,11 @@ export const blogService = {
     }
   },
 
-  // Get blog status based on date (for display purposes)
-  getBlogStatus: (dateString: string): 'published' | 'scheduled' | 'draft' => {
-    try {
-      const blogDate = new Date(dateString)
-      const now = new Date()
-      
-      if (blogDate > now) return 'scheduled'
-      return 'published'
-    } catch {
-      return 'published'
-    }
+  // Get reading time estimate from content
+  estimateReadTime: (content: string): string => {
+    const wordsPerMinute = 200
+    const words = content.split(/\s+/).length
+    const minutes = Math.ceil(words / wordsPerMinute)
+    return `${minutes} min read`
   }
 }
-

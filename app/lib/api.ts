@@ -155,11 +155,53 @@ class ApiClient {
     },
     
     blog: {
-      getAll: () => 
-        this.request('/api/v1/blogs', { requiresAuth: false }),
+      getAll: (params?: {
+        page?: number;
+        limit?: number;
+        category?: string;
+        featured?: boolean;
+        search?: string;
+        sort?: string;
+      }) => {
+        const queryParams = new URLSearchParams();
+        if (params) {
+          Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+              queryParams.append(key, String(value));
+            }
+          });
+        }
+        const queryString = queryParams.toString();
+        const url = `/api/v1/blogs${queryString ? `?${queryString}` : ''}`;
+        return this.request(url, { requiresAuth: false });
+      },
       
-      getOne: (id: string) => 
+      getBySlug: (slug: string) => 
+        this.request(`/api/v1/blogs/slug/${slug}`, { requiresAuth: false }),
+      
+      getById: (id: string) => 
         this.request(`/api/v1/blogs/${id}`, { requiresAuth: false }),
+      
+      getFeatured: () => 
+        this.request('/api/v1/blogs/featured', { requiresAuth: false }),
+      
+      getCategories: () => 
+        this.request('/api/v1/blogs/categories', { requiresAuth: false }),
+      
+      getStats: () => 
+        this.request('/api/v1/blogs/stats', { requiresAuth: false }),
+      
+      like: (id: string) => 
+        this.request(`/api/v1/blogs/${id}/like`, {
+          method: 'POST',
+          requiresAuth: false,
+        }),
+      
+      getImage: (id: string) => 
+        this.request(`/api/v1/blogs/${id}/image`, { requiresAuth: false }),
+      
+      getImageInfo: (id: string) => 
+        this.request(`/api/v1/blogs/${id}/image-info`, { requiresAuth: false }),
     },
     
     trainings: {
@@ -236,17 +278,19 @@ class ApiClient {
         }),
     },
     
-    blog: {
-      create: (data: any) =>
+      blog: {
+      create: (data: FormData) => 
         this.request('/api/v1/blogs', {
           method: 'POST',
-          body: JSON.stringify(data),
+          body: data,
+          headers: {},
         }),
       
-      update: (id: string, data: any) =>
+      update: (id: string, data: FormData) =>
         this.request(`/api/v1/blogs/${id}`, {
           method: 'PUT',
-          body: JSON.stringify(data),
+          body: data,
+          headers: {},
         }),
       
       delete: (id: string) =>
