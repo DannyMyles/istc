@@ -164,14 +164,28 @@ export const blogService = {
   },
 
   // Get blog image URL
-  getBlogImageUrl: (blog: Blog): string => {
-    if (blog.imageInfo?.url) {
-      return blog.imageInfo.url.startsWith('http')
-        ? blog.imageInfo.url
-        : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com'}${blog.imageInfo.url}`
+  // Update in blogService.ts
+getBlogImageUrl: (blog: Blog): string => {
+  if (blog.imageInfo?.url) {
+    // Check if it's already a full URL
+    if (blog.imageInfo.url.startsWith('http')) {
+      return blog.imageInfo.url;
     }
-    return blog.image || 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0'
-  },
+    
+    // For local development, use relative path to avoid CORS
+    if (process.env.NODE_ENV === 'development') {
+      // Use relative path to the API server
+      return `/api/v1/blogs/${blog.id}/image`;
+    }
+    
+    // For production, construct full URL
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com';
+    return `${baseUrl}${blog.imageInfo.url}`;
+  }
+  
+  // Fallback image
+  return 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0';
+},
 
   // Create blog (admin only)
   createBlog: async (data: CreateBlogRequest): Promise<Blog> => {
