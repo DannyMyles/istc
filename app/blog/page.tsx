@@ -825,34 +825,6 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-12 bg-gradient-to-r from-accent-50 to-blue-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Want to contribute to our blog?
-            </h2>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              Share your safety expertise and insights with our community of professionals.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="bg-accent text-white px-8 py-3 rounded-lg hover:bg-accent-700 transition-colors font-medium"
-              >
-                Submit an Article
-              </Link>
-              <Link
-                href="/blog/guidelines"
-                className="bg-white text-gray-700 px-8 py-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors font-medium"
-              >
-                View Guidelines
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
