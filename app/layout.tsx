@@ -3,8 +3,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
-import AuthProvider from "@/app/providers/AuthProvider";
 import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
+import AuthProviderWrapper from "@/app/providers/AuthProvider";
 
 
 const montserrat = Montserrat({
@@ -30,7 +30,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className="min-h-screen bg-gradient-to-b from-white to-accent-50/30">
-        <AuthProvider>
+        <AuthProviderWrapper>
           <Navigation />
           <main className="min-h-screen">
             {children}
@@ -40,7 +40,7 @@ export default function RootLayout({
           {/* 2. Add the Widget here */}
           <WhatsAppWidget />
 
-        </AuthProvider>
+        </AuthProviderWrapper>
       </body>
     </html>
   );

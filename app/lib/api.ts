@@ -1,8 +1,11 @@
 'use client'
 
-import { getSession, signOut } from "next-auth/react"
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { getSession, signOut, useSession } from "next-auth/react"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com'
+// Use relative paths to leverage Next.js rewrites/proxy in next.config.ts
+// This avoids CORS issues by making requests go through the same origin
+const API_BASE_URL = ''
 
 interface ApiOptions extends RequestInit {
   requiresAuth?: boolean
@@ -26,46 +29,175 @@ interface ContactResponse {
 interface ApiError {
   error: string;
   message?: string;
+  statusCode?: number;
 }
 
+// Extended session user type
+interface SessionUser {
+  id?: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string;
+  accessToken?: string;
+}
+
+// Hook to get authentication status with loading state
+export function useAuth() {
+  const { data: session, status, update } = useSession()
+  
+  const getAccessToken = useCallback(async (): Promise<string | null> => {
+    // First try to get from current session
+    const token = (session?.user as SessionUser)?.accessToken
+    if (token) {
+      return token
+    }
+    
+    // If not in current session, try to fetch fresh session
+    const freshSession = await getSession()
+    const freshToken = (freshSession?.user as SessionUser)?.accessToken
+    if (freshToken) {
+      return freshToken
+    }
+    
+    return null
+  }, [session])
+
+  return {
+    session,
+    status,
+    getAccessToken,
+    isAuthenticated: status === 'authenticated',
+    isLoading: status === 'loading',
+    updateSession: update,
+  }
+}
+
+// Utility to extract token from any session format
+async function getAuthToken(): Promise<string | null> {
+  try {
+    const session = await getSession()
+    
+    if (!session?.user) {
+      return null
+    }
+
+    // Try different ways to access the token
+    const user = session.user as SessionUser
+    
+    // Check for direct accessToken property
+    if (user.accessToken) {
+      return user.accessToken
+    }
+    
+    // Check if it's in the session directly (not nested in user)
+    const sessionAny = session as any
+    if (sessionAny.accessToken) {
+      return sessionAny.accessToken
+    }
+    
+    // Check in jwt token
+    if (sessionAny.token) {
+      return sessionAny.token
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Error getting auth token:', error)
+    return null
+  }
+}
+
+// API client for client-side components
 class ApiClient {
+  private refreshTokenPromise: Promise<string> | null = null
+
+  private async getAuthHeaders(): Promise<Record<string, string>> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    }
+
+    try {
+      const token = await getAuthToken()
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+    } catch (error) {
+      console.error('Error getting auth headers:', error)
+    }
+
+    return headers
+  }
+
   private async request<T = any>(
     endpoint: string, 
     options: ApiOptions = {}
   ): Promise<T> {
     const { requiresAuth = true, ...fetchOptions } = options
     
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+    const headers = await this.getAuthHeaders()
+
+    // Add additional headers from options
+    const allHeaders: Record<string, string> = {
+      ...headers,
       ...(fetchOptions.headers as Record<string, string> || {}),
     }
 
-    // Add authorization header if required
+    // For authenticated requests, verify we have a token
     if (requiresAuth) {
-      const session = await getSession()
+      const authHeader = allHeaders['Authorization']
       
-      if (!session?.user?.accessToken) {
-        // Try to get the token from session
-        const accessToken = (session?.user as any)?.accessToken
+      if (!authHeader) {
+        // Try one more time to get session
+        const token = await getAuthToken()
         
-        if (!accessToken) {
-          // Redirect to login if not authenticated
+        if (!token) {
+          // No token available - redirect to login
           signOut({ callbackUrl: '/login' })
-          throw new Error('No authentication token found')
+          throw new Error('No authentication token found. Please log in again.')
         }
         
-        headers['Authorization'] = `Bearer ${accessToken}`
-      } else {
-        headers['Authorization'] = `Bearer ${session.user.accessToken}`
+        allHeaders['Authorization'] = `Bearer ${token}`
       }
     }
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...fetchOptions,
-      headers,
+      headers: allHeaders,
       credentials: 'include',
     })
+
+    // Handle 401 Unauthorized
+    if (response.status === 401) {
+      // Try to refresh token
+      try {
+        const newToken = await this.refreshAccessToken()
+        if (newToken) {
+          // Retry the request with new token
+          allHeaders['Authorization'] = `Bearer ${newToken}`
+          const retryResponse = await fetch(`${API_BASE_URL}${endpoint}`, {
+            ...fetchOptions,
+            headers: allHeaders,
+            credentials: 'include',
+          })
+          
+          if (retryResponse.ok) {
+            const data = await retryResponse.json()
+            return data as T
+          }
+        }
+      } catch (refreshError) {
+        // Refresh failed, redirect to login
+        signOut({ callbackUrl: '/login' })
+        throw new Error('Session expired. Please sign in again.')
+      }
+      
+      // If we got here, refresh didn't work or wasn't attempted
+      signOut({ callbackUrl: '/login' })
+      throw new Error('Session expired. Please sign in again.')
+    }
 
     let data: T | ApiError;
     try {
@@ -78,12 +210,6 @@ class ApiClient {
       const errorData = data as ApiError;
       
       // Handle specific HTTP errors
-      if (response.status === 401) {
-        // Token expired or invalid
-        signOut({ callbackUrl: '/login' })
-        throw new Error('Session expired. Please sign in again.')
-      }
-      
       if (response.status === 403) {
         throw new Error('You do not have permission to perform this action.')
       }
@@ -92,10 +218,63 @@ class ApiClient {
         throw new Error('Too many requests. Please try again later.')
       }
       
+      if (response.status === 404) {
+        throw new Error('The requested resource was not found.')
+      }
+      
+      if (response.status >= 500) {
+        throw new Error('Server error. Please try again later.')
+      }
+      
       throw new Error(errorData.error || errorData.message || `Request failed with status ${response.status}`)
     }
 
     return data as T;
+  }
+
+  // Token refresh mechanism
+  private async refreshAccessToken(): Promise<string | null> {
+    // Prevent multiple simultaneous refresh requests
+    if (this.refreshTokenPromise) {
+      return this.refreshTokenPromise
+    }
+
+    this.refreshTokenPromise = (async () => {
+      try {
+        const refreshToken = await getAuthToken()
+        
+        if (!refreshToken) {
+          return null
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/refresh`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ refreshToken }),
+        })
+
+        if (!response.ok) {
+          return null
+        }
+
+        const data = await response.json()
+        
+        if (data.accessToken || data.token) {
+          return data.accessToken || data.token
+        }
+        
+        return null
+      } catch (error) {
+        console.error('Token refresh failed:', error)
+        return null
+      } finally {
+        this.refreshTokenPromise = null
+      }
+    })()
+
+    return this.refreshTokenPromise
   }
 
   // Public endpoints (no auth required)
@@ -271,14 +450,41 @@ class ApiClient {
       getAll: () => 
         this.request('/api/v1/users'),
       
-      updateRole: (userId: string, role: string) =>
-        this.request(`/api/v1/users/${userId}/role`, {
+      getById: (id: string) => 
+        this.request(`/api/v1/users/${id}`),
+      
+      create: (data: {
+        name: string;
+        username: string;
+        email: string;
+        password: string;
+        roleId: string;
+      }) =>
+        this.request('/api/v1/users', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }),
+      
+      update: (id: string, data: {
+        name?: string;
+        username?: string;
+        email?: string;
+        password?: string;
+        roleId?: string;
+        isActive?: boolean;
+      }) =>
+        this.request(`/api/v1/users/${id}`, {
           method: 'PUT',
-          body: JSON.stringify({ role }),
+          body: JSON.stringify(data),
+        }),
+      
+      delete: (id: string) =>
+        this.request(`/api/v1/users/${id}`, {
+          method: 'DELETE',
         }),
     },
     
-      blog: {
+    blog: {
       create: (data: FormData) => 
         this.request('/api/v1/blogs', {
           method: 'POST',
@@ -370,3 +576,4 @@ class ApiClient {
 }
 
 export const api = new ApiClient();
+

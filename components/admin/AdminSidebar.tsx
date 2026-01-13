@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 import { 
   LayoutDashboard, 
   FileText, 
@@ -18,7 +19,9 @@ import {
   Home,
   Award,
   UserPlus,
-  PlusSquare
+  PlusSquare,
+  LogOut,
+  User
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -44,7 +47,6 @@ const navigation = [
     children: [
       { name: 'All Trainings', href: '/admin/trainings' },
       { name: 'Add New', href: '/admin/trainings/create' },
-      // { name: 'Categories', href: '/admin/trainings/categories' },
     ]
   },
   { 
@@ -64,38 +66,9 @@ const navigation = [
     children: [
       { name: 'All Users', href: '/admin/users' },
       { name: 'Add New', href: '/admin/users/create' },
-      { name: 'Roles', href: '/admin/users/roles' },
+      // { name: 'Roles', href: '/admin/users/roles' },
     ]
   },
-  // { 
-  //   name: 'Certifications', 
-  //   href: '/admin/certifications', 
-  //   icon: Award,
-  //   children: [
-  //     { name: 'All Certifications', href: '/admin/certifications' },
-  //     { name: 'Issue New', href: '/admin/certifications/issue' },
-  //   ]
-  // },
-  // { 
-  //   name: 'Enrollments', 
-  //   href: '/admin/enrollments', 
-  //   icon: UserPlus,
-  //   children: [
-  //     { name: 'All Enrollments', href: '/admin/enrollments' },
-  //     { name: 'Pending', href: '/admin/enrollments?status=pending' },
-  //     { name: 'Approved', href: '/admin/enrollments?status=approved' },
-  //   ]
-  // },
-  // { 
-  //   name: 'Analytics', 
-  //   href: '/admin/analytics', 
-  //   icon: BarChart3,
-  //   children: [
-  //     { name: 'Overview', href: '/admin/analytics' },
-  //     { name: 'Reports', href: '/admin/analytics/reports' },
-  //     { name: 'Export Data', href: '/admin/analytics/export' },
-  //   ]
-  // },
   { 
     name: 'Settings', 
     href: '/admin/settings', 
@@ -111,7 +84,9 @@ const navigation = [
 export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const [expandedItems, setExpandedItems] = useState<string[]>([])
+  const [showUserMenu, setShowUserMenu] = useState(false)
   const pathname = usePathname()
+  const { data: session } = useSession()
 
   const toggleExpand = (name: string) => {
     if (expandedItems.includes(name)) {
@@ -134,6 +109,17 @@ export default function AdminSidebar() {
     
     return false
   }
+
+  // Get user data from session
+  const user = session?.user
+  const userName = user?.name || 'Admin'
+  const userEmail = user?.email || 'admin@istc.co.ke'
+  const userInitials = userName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
 
   return (
     <>
@@ -307,20 +293,72 @@ export default function AdminSidebar() {
             )}
           </Link>
           
-          {/* User Profile - Only show when not collapsed */}
-          {!collapsed && (
-            <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <div className="h-8 w-8 bg-[#008DB8] rounded-full flex items-center justify-center text-white font-medium text-sm">
-                A
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
-                <p className="text-xs text-gray-500 truncate">admin@istc.co.ke</p>
-              </div>
-              <button className="p-1 hover:bg-gray-200 rounded">
+          {/* User Profile - Dynamic based on session */}
+          {!collapsed ? (
+            <div className="relative">
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full"
+              >
+                <div className="h-8 w-8 bg-[#008DB8] rounded-full flex items-center justify-center text-white font-medium text-sm">
+                  {userInitials}
+                </div>
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
+                  <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                </div>
                 <Settings className="h-4 w-4 text-gray-500" />
               </button>
+
+              {/* User Dropdown Menu */}
+              {showUserMenu && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowUserMenu(false)}
+                  />
+                  <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-xl shadow-adventure-lg border border-accent-100 overflow-hidden">
+                    <div className="py-2">
+                      <div className="px-4 py-2 border-b border-accent-100">
+                        <p className="text-xs text-gray-500 uppercase">Account</p>
+                      </div>
+                      <Link
+                        href="/admin/profile"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <User className="h-4 w-4 text-gray-500" />
+                        <span>Profile</span>
+                      </Link>
+                      <Link
+                        href="/admin/settings"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <Settings className="h-4 w-4 text-gray-500" />
+                        <span>Settings</span>
+                      </Link>
+                      <div className="border-t border-accent-100 my-2"></div>
+                      <button
+                        onClick={() => signOut({ callbackUrl: window.location.origin })}
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign out</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
+          ) : (
+            <button
+              onClick={() => signOut({ callbackUrl: window.location.origin })}
+              className="flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 transition-colors w-full text-red-600"
+              title="Sign out"
+            >
+              <LogOut className="h-5 w-5" />
+            </button>
           )}
         </div>
       </div>

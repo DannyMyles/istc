@@ -17,6 +17,7 @@ interface AuthenticatedUser {
   name?: string | null
   role?: string
   accessToken?: string
+  image?: string | null
 }
 
 export default async function AdminLayout({
@@ -36,13 +37,21 @@ export default async function AdminLayout({
     redirect('/unauthorized')
   }
 
+  // Prepare user data for header
+  const userData = {
+    name: user.name,
+    email: user.email,
+    image: user.image,
+    role: user.role,
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <AdminSidebar />
       
       {/* Main Content Area */}
       <div className="lg:ml-64 transition-all duration-300">
-        <AdminHeader user={session.user} />
+        <AdminHeader user={userData} />
         
         <main className="p-4 md:p-6">
           <div className="max-w-7xl mx-auto">

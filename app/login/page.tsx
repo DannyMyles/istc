@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, Suspense } from 'react'
-import { signIn } from 'next-auth/react'
+import { useState, Suspense, useEffect } from 'react'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -10,7 +10,9 @@ import {
   Mail, 
   Lock, 
   AlertCircle,
-  Loader2 
+  Loader2,
+  Eye,
+  EyeOff
 } from 'lucide-react'
 
 // Create a separate component for the form that uses useSearchParams
@@ -19,9 +21,34 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [isRedirecting, setIsRedirecting] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/admin'
+  const { data: session, status } = useSession()
+
+  // Use useEffect to handle redirect after mount to avoid React render phase issues
+  useEffect(() => {
+    if (status === 'authenticated' && !loading) {
+      setIsRedirecting(true)
+      // Small delay to allow the loading state to render
+      const timer = setTimeout(() => {
+        router.push(callbackUrl)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [status, loading, router, callbackUrl])
+
+  // Show redirecting state if authenticated
+  if (isRedirecting || (status === 'authenticated' && !loading)) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 space-y-4">
+        <Loader2 className="h-8 w-8 text-accent-500 animate-spin" />
+        <p className="text-sm text-gray-600">Already authenticated. Redirecting...</p>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,7 +64,18 @@ function LoginForm() {
       })
 
       if (result?.error) {
-        setError('Invalid email or password. Please try again.')
+        // Handle specific error cases
+        if (result.error.includes('invalid') || result.error.includes('credentials') || result.error.includes('Incorrect')) {
+          setError('Invalid email or password. Please try again.')
+        } else if (result.error.includes('not verified') || result.error.includes('verify')) {
+          setError('Please verify your email address to log in.')
+        } else if (result.error.includes('locked') || result.error.includes('suspended')) {
+          setError('Your account has been locked. Please contact support.')
+        } else if (result.error.includes('No token')) {
+          setError('Authentication succeeded but no token received. Please contact support.')
+        } else {
+          setError(result.error || 'An error occurred during login. Please try again.')
+        }
       } else {
         // Success - redirect to admin or callbackUrl
         router.push(callbackUrl)
@@ -45,7 +83,7 @@ function LoginForm() {
       }
     } catch (error) {
       console.error('Login error:', error)
-      setError('An error occurred. Please try again later.')
+      setError('An unexpected error occurred. Please try again later.')
     } finally {
       setLoading(false)
     }
@@ -95,15 +133,26 @@ function LoginForm() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition"
+              className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition"
               placeholder="••••••••"
               disabled={loading}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
           </div>
         </div>
 
@@ -228,3 +277,4 @@ export default function LoginPage() {
     </div>
   )
 }
+

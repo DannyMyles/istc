@@ -8,94 +8,48 @@ import {
   User,
   Mail, 
   Phone, 
-  Building,
-  Briefcase,
   Shield,
   CheckCircle,
   XCircle,
-  Upload,
   Eye,
   EyeOff,
-  AlertCircle
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react'
+import { userService } from '../../../api_services/userService'
 
 export default function CreateUserPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [roleId, setRoleId] = useState('')
   
-  // Form state
+  // Form state - matching backend model
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
+    username: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
-    role: 'user' as 'admin' | 'user' | 'instructor' | 'student',
-    status: 'active' as 'active' | 'inactive' | 'pending' | 'suspended',
-    company: '',
-    position: '',
-    department: '',
-    address: '',
-    city: '',
-    country: 'Kenya',
-    bio: '',
-    sendWelcomeEmail: true,
-    requirePasswordChange: false,
-    profileImage: '',
-    permissions: {
-      canCreateContent: false,
-      canManageUsers: false,
-      canViewReports: false,
-      canManageTrainings: false
-    }
+    isActive: true
   })
 
-  const rolePermissions = {
-    admin: {
-      canCreateContent: true,
-      canManageUsers: true,
-      canViewReports: true,
-      canManageTrainings: true
-    },
-    instructor: {
-      canCreateContent: true,
-      canManageUsers: false,
-      canViewReports: true,
-      canManageTrainings: false
-    },
-    user: {
-      canCreateContent: false,
-      canManageUsers: false,
-      canViewReports: false,
-      canManageTrainings: false
-    },
-    student: {
-      canCreateContent: false,
-      canManageUsers: false,
-      canViewReports: false,
-      canManageTrainings: false
-    }
-  }
-
-  const handleRoleChange = (role: typeof formData.role) => {
-    setFormData({
-      ...formData,
-      role,
-      permissions: rolePermissions[role]
-    })
-  }
-
   const validateForm = () => {
-    if (!formData.firstName || !formData.lastName) {
-      throw new Error('First name and last name are required')
+    if (!formData.name || !formData.name.trim()) {
+      throw new Error('Name is required')
+    }
+    if (!formData.username || !formData.username.trim()) {
+      throw new Error('Username is required')
+    }
+    if (formData.username.length < 3) {
+      throw new Error('Username must be at least 3 characters long')
     }
     if (!formData.email) {
       throw new Error('Email is required')
     }
-    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
       throw new Error('Please enter a valid email address')
     }
     if (!formData.password) {
@@ -104,8 +58,16 @@ export default function CreateUserPage() {
     if (formData.password.length < 8) {
       throw new Error('Password must be at least 8 characters long')
     }
+    // Password strength validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    if (!passwordRegex.test(formData.password)) {
+      throw new Error('Password must include uppercase, lowercase, number, and special character')
+    }
     if (formData.password !== formData.confirmPassword) {
       throw new Error('Passwords do not match')
+    }
+    if (!roleId) {
+      throw new Error('Please select a role')
     }
     return true
   }
@@ -120,16 +82,15 @@ export default function CreateUserPage() {
 
       // Prepare data for API
       const userData = {
-        ...formData,
-        // Remove confirmPassword from API data
-        confirmPassword: undefined
+        name: formData.name.trim(),
+        username: formData.username.trim().toLowerCase(),
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+        confirmPassword: undefined,
+        roleId
       }
 
-      // TODO: Replace with actual API call
-      console.log('Creating user:', userData)
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await userService.createUser(userData)
       
       // Redirect on success
       router.push('/admin/users')
@@ -140,6 +101,14 @@ export default function CreateUserPage() {
       setLoading(false)
     }
   }
+
+  // Common roles - in production, these would come from the API
+  const availableRoles = [
+    { id: 'admin', name: 'Administrator' },
+    { id: 'user', name: 'User' },
+    { id: 'editor', name: 'Editor' },
+    { id: 'viewer', name: 'Viewer' }
+  ]
 
   return (
     <div className="space-y-6 p-4">
@@ -198,13 +167,13 @@ export default function CreateUserPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  First Name *
+                  Full Name *
                 </label>
                 <input
                   type="text"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                  placeholder="John"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="John Doe"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   required
                 />
@@ -212,16 +181,17 @@ export default function CreateUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Last Name *
+                  Username *
                 </label>
                 <input
                   type="text"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                  placeholder="Doe"
+                  value={formData.username}
+                  onChange={(e) => setFormData({...formData, username: e.target.value})}
+                  placeholder="johndoe"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   required
                 />
+                <p className="text-xs text-gray-500 mt-1">Must be at least 3 characters</p>
               </div>
             </div>
           </div>
@@ -252,110 +222,55 @@ export default function CreateUserPage() {
                   />
                 </div>
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number
-                </label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    placeholder="+254 712 345 678"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Professional Information */}
+          {/* Role Selection */}
           <div className="adventure-card">
             <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
               <span className="p-2 bg-purple-50 rounded-lg">
-                <Briefcase className="h-5 w-5 text-purple-600" />
+                <Shield className="h-5 w-5 text-purple-600" />
               </span>
-              Professional Information
+              Role & Permissions
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Company
-                </label>
-                <div className="relative">
-                  <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
-                    placeholder="ABC Corporation"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                  />
-                </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                User Role *
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                {availableRoles.map((role) => (
+                  <button
+                    key={role.id}
+                    type="button"
+                    onClick={() => setRoleId(role.id)}
+                    className={`p-3 rounded-lg border transition-colors flex flex-col items-center gap-1 ${
+                      roleId === role.id
+                        ? 'border-accent-500 bg-accent-50 text-accent-700'
+                        : 'border-gray-300 hover:bg-gray-50 text-gray-700'
+                    }`}
+                  >
+                    <Shield className={`h-5 w-5 ${
+                      roleId === role.id ? 'text-accent-600' : 'text-gray-400'
+                    }`} />
+                    <span className="text-sm font-medium">{role.name}</span>
+                  </button>
+                ))}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Position
-                </label>
-                <div className="relative">
-                  <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
-                    type="text"
-                    value={formData.position}
-                    onChange={(e) => setFormData({...formData, position: e.target.value})}
-                    placeholder="Safety Manager"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Department
-                </label>
-                <input
-                  type="text"
-                  value={formData.department}
-                  onChange={(e) => setFormData({...formData, department: e.target.value})}
-                  placeholder="Health & Safety"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Country
-                </label>
-                <select
-                  value={formData.country}
-                  onChange={(e) => setFormData({...formData, country: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                >
-                  <option value="Kenya">Kenya</option>
-                  <option value="Uganda">Uganda</option>
-                  <option value="Tanzania">Tanzania</option>
-                  <option value="Rwanda">Rwanda</option>
-                  <option value="Ethiopia">Ethiopia</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+              {!roleId && (
+                <p className="text-xs text-red-500 mt-2">Please select a role</p>
+              )}
             </div>
 
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Bio
-              </label>
-              <textarea
-                value={formData.bio}
-                onChange={(e) => setFormData({...formData, bio: e.target.value})}
-                placeholder="Brief description about the user..."
-                rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent resize-none"
-              />
+            {/* Role descriptions */}
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">Role Descriptions</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li><strong>Administrator:</strong> Full access to all features and settings</li>
+                <li><strong>User:</strong> Standard access to the platform</li>
+                <li><strong>Editor:</strong> Can create and edit content</li>
+                <li><strong>Viewer:</strong> Read-only access</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -388,7 +303,9 @@ export default function CreateUserPage() {
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters long</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Must be at least 8 characters with uppercase, lowercase, number, and special character
+                </p>
               </div>
 
               <div>
@@ -403,182 +320,55 @@ export default function CreateUserPage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   required
                 />
+                {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                  <p className="text-xs text-red-500 mt-1">Passwords do not match</p>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Role & Status */}
+          {/* Account Status */}
           <div className="adventure-card">
             <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
               <Shield className="h-5 w-5 text-gray-400" />
-              Role & Status
+              Account Status
             </h3>
             
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  User Role *
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {(['admin', 'instructor', 'user', 'student'] as const).map((role) => (
-                    <button
-                      key={role}
-                      type="button"
-                      onClick={() => handleRoleChange(role)}
-                      className={`p-3 rounded-lg border transition-colors flex flex-col items-center gap-1 ${
-                        formData.role === role
-                          ? 'border-accent-500 bg-accent-50 text-accent-700'
-                          : 'border-gray-300 hover:bg-gray-50 text-gray-700'
-                      }`}
-                    >
-                      <Shield className={`h-5 w-5 ${
-                        formData.role === role ? 'text-accent-600' : 'text-gray-400'
-                      }`} />
-                      <span className="text-sm font-medium capitalize">{role}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Account Status
-                </label>
-                <div className="space-y-2">
-                  {(['active', 'pending', 'inactive', 'suspended'] as const).map((status) => (
-                    <label key={status} className="flex items-center">
-                      <input
-                        type="radio"
-                        name="status"
-                        value={status}
-                        checked={formData.status === status}
-                        onChange={(e) => setFormData({...formData, status: e.target.value as any})}
-                        className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                      />
-                      <span className="ml-2 capitalize">{status}</span>
-                      <span className="ml-auto">
-                        {status === 'active' && <CheckCircle className="h-4 w-4 text-green-500" />}
-                        {status === 'suspended' && <XCircle className="h-4 w-4 text-red-500" />}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Permissions */}
-          <div className="adventure-card">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Permissions</h3>
-            
             <div className="space-y-3">
-              <label className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.permissions.canCreateContent}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      permissions: {...formData.permissions, canCreateContent: e.target.checked}
-                    })}
-                    className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Create Content</span>
-                </div>
-                <span className="text-xs text-gray-500">Blog, Trainings</span>
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="status"
+                  value="active"
+                  checked={formData.isActive === true}
+                  onChange={() => setFormData({...formData, isActive: true})}
+                  className="h-4 w-4 text-accent-500 focus:ring-accent-500"
+                />
+                <span className="ml-2 flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  Active
+                </span>
               </label>
 
-              <label className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.permissions.canManageUsers}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      permissions: {...formData.permissions, canManageUsers: e.target.checked}
-                    })}
-                    className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Manage Users</span>
-                </div>
-                <span className="text-xs text-gray-500">Add/Edit users</span>
-              </label>
-
-              <label className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.permissions.canViewReports}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      permissions: {...formData.permissions, canViewReports: e.target.checked}
-                    })}
-                    className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">View Reports</span>
-                </div>
-                <span className="text-xs text-gray-500">Analytics, Statistics</span>
-              </label>
-
-              <label className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.permissions.canManageTrainings}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      permissions: {...formData.permissions, canManageTrainings: e.target.checked}
-                    })}
-                    className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Manage Trainings</span>
-                </div>
-                <span className="text-xs text-gray-500">Create/Edit trainings</span>
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="status"
+                  value="inactive"
+                  checked={formData.isActive === false}
+                  onChange={() => setFormData({...formData, isActive: false})}
+                  className="h-4 w-4 text-accent-500 focus:ring-accent-500"
+                />
+                <span className="ml-2 flex items-center gap-2">
+                  <XCircle className="h-4 w-4 text-gray-400" />
+                  Inactive
+                </span>
               </label>
             </div>
-          </div>
 
-          {/* Additional Settings */}
-          <div className="adventure-card">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Additional Settings</h3>
-            
-            <div className="space-y-4">
-              <label className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.sendWelcomeEmail}
-                    onChange={(e) => setFormData({...formData, sendWelcomeEmail: e.target.checked})}
-                    className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Send welcome email</span>
-                </div>
-              </label>
-
-              <label className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.requirePasswordChange}
-                    onChange={(e) => setFormData({...formData, requirePasswordChange: e.target.checked})}
-                    className="h-4 w-4 text-accent-500 focus:ring-accent-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Require password change</span>
-                </div>
-                <span className="text-xs text-gray-500">On first login</span>
-              </label>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Profile Image
-                </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-accent-500 transition-colors cursor-pointer">
-                  <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">Upload profile image</p>
-                  <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 2MB</p>
-                </div>
-              </div>
-            </div>
+            <p className="text-xs text-gray-500 mt-4">
+              Inactive users cannot log in to the system
+            </p>
           </div>
 
           {/* User Preview */}
@@ -587,38 +377,87 @@ export default function CreateUserPage() {
             
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                  <User className="h-6 w-6 text-gray-500" />
-                </div>
+                <img
+                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(formData.username || 'user')}`}
+                  alt="Preview"
+                  className="h-12 w-12 rounded-full"
+                />
                 <div>
                   <p className="font-medium text-gray-900">
-                    {formData.firstName || 'First'} {formData.lastName || 'Last'}
+                    {formData.name || 'Full Name'}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {formData.email || 'email@example.com'}
+                    @{formData.username || 'username'}
                   </p>
                 </div>
               </div>
               <div className="text-sm text-gray-600 space-y-1">
                 <div className="flex justify-between">
+                  <span>Email:</span>
+                  <span className="font-medium">{formData.email || '-'}</span>
+                </div>
+                <div className="flex justify-between">
                   <span>Role:</span>
-                  <span className="font-medium capitalize">{formData.role}</span>
+                  <span className={`font-medium ${
+                    roleId === 'admin' ? 'text-purple-600' :
+                    roleId === 'user' ? 'text-accent-600' :
+                    'text-gray-600'
+                  }`}>
+                    {availableRoles.find(r => r.id === roleId)?.name || 'Not selected'}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Status:</span>
-                  <span className={`font-medium capitalize ${
-                    formData.status === 'active' ? 'text-green-600' :
-                    formData.status === 'pending' ? 'text-yellow-600' :
-                    formData.status === 'inactive' ? 'text-gray-600' : 'text-red-600'
+                  <span className={`font-medium ${
+                    formData.isActive ? 'text-green-600' : 'text-gray-600'
                   }`}>
-                    {formData.status}
+                    {formData.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Password Requirements */}
+          <div className="adventure-card">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Password Requirements</h3>
+            
+            <ul className="text-sm space-y-2">
+              <li className={`flex items-center gap-2 ${formData.password.length >= 8 ? 'text-green-600' : 'text-gray-500'}`}>
+                <span className={formData.password.length >= 8 ? 'text-green-500' : 'text-gray-400'}>
+                  {formData.password.length >= 8 ? <CheckCircle className="h-4 w-4" /> : <span className="h-4 w-4 rounded-full border border-current"></span>}
+                </span>
+                At least 8 characters
+              </li>
+              <li className={`flex items-center gap-2 ${/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                <span className={/[A-Z]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}>
+                  {/[A-Z]/.test(formData.password) ? <CheckCircle className="h-4 w-4" /> : <span className="h-4 w-4 rounded-full border border-current"></span>}
+                </span>
+                One uppercase letter
+              </li>
+              <li className={`flex items-center gap-2 ${/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                <span className={/[a-z]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}>
+                  {/[a-z]/.test(formData.password) ? <CheckCircle className="h-4 w-4" /> : <span className="h-4 w-4 rounded-full border border-current"></span>}
+                </span>
+                One lowercase letter
+              </li>
+              <li className={`flex items-center gap-2 ${/\d/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                <span className={/\d/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}>
+                  {/\d/.test(formData.password) ? <CheckCircle className="h-4 w-4" /> : <span className="h-4 w-4 rounded-full border border-current"></span>}
+                </span>
+                One number
+              </li>
+              <li className={`flex items-center gap-2 ${/[@$!%*?&]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                <span className={/[@$!%*?&]/.test(formData.password) ? 'text-green-500' : 'text-gray-400'}>
+                  {/[@$!%*?&]/.test(formData.password) ? <CheckCircle className="h-4 w-4" /> : <span className="h-4 w-4 rounded-full border border-current"></span>}
+                </span>
+                One special character (@$!%*?&)
+              </li>
+            </ul>
           </div>
         </div>
       </form>
     </div>
   )
 }
+
