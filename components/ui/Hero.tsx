@@ -3,6 +3,7 @@
 import { Play, Shield, Award, Users, Clock, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ImageCarousel from './ImageCarousel';
 
 const Hero = () => {
   return (
@@ -36,20 +37,23 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-              <Link 
-                href="/courses" 
-                className="btn-adventure flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
-              >
-                <Award size={20} />
-                Explore Courses
-              </Link>
-              <button
-                className="btn-adventure-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
-              >
-                <Play size={20} />
-                Watch Introduction
-              </button>
-            </div>
+            <Link 
+              href="/courses" 
+              className="btn-adventure flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
+            >
+              <Award size={20} />
+              Explore Courses
+            </Link>
+            <a
+              href="https://www.youtube.com/watch?v=TAD8F87NCxk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-adventure-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
+            >
+              <Play size={20} />
+              Watch Introduction
+            </a>
+          </div>
 
             {/* Stats - Arranged like reference image */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 pt-6 md:pt-8 border-t border-gray-200">
@@ -128,6 +132,9 @@ const Hero = () => {
               </p>
             </div>
           </div>
+        </div>
+        <div className='mt-24'>
+        <ImageCarousel />
         </div>
       </div>
     </section>
