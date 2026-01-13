@@ -122,7 +122,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="pt-20">
+    <div className="pt-8">
       {/* Hero Section with Background Image */}
       <section className="relative py-28 md:py-32 overflow-hidden">
         {/* Background Image with Overlay */}
