@@ -20,7 +20,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { Blog, blogService, Category } from '../api_services/blogService'
-import debounce from 'lodash/debounce'
+import { debounce } from 'lodash'
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState<Blog[]>([])
