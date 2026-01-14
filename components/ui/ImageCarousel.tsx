@@ -192,7 +192,6 @@ function ImageCarousel() {
       title: "Laboratory Safety",
       image: "/images/clients/client_34.jpeg",
     },
-    { id: 35, title: "Office Safety", image: "/images/clients/client_35.jpeg" },
     {
       id: 36,
       title: "Construction Safety",
