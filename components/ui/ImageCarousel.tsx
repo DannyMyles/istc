@@ -206,7 +206,7 @@ function ImageCarousel() {
 
   return (
     <div className="carousel-container max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-center mb-8">
+      <h2 className="text-3xl font-bold text-center mb-8 text-amber-50">
         Our <span className="text-[#039AC5]">Portfolio </span>
       </h2>
 
