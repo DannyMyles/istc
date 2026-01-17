@@ -2,48 +2,154 @@
 
 import { Users, BookOpen, Calendar, MessageSquare, TrendingUp, TrendingDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { userService } from '@/app/api_services/userService'
+import { trainingService } from '@/app/api_services/trainingService'
+import { testimonialService } from '@/app/api_services/testimonialService'
 
-const stats = [
-  {
-    name: 'Total Users',
-    value: '1,248',
-    change: '+12%',
-    trend: 'up',
-    icon: Users,
-    color: 'bg-gradient-to-r from-accent-500 to-accent-600',
-  },
-  {
-    name: 'Active Courses',
-    value: '24',
-    change: '+3',
-    trend: 'up',
-    icon: BookOpen,
-    color: 'bg-gradient-to-r from-secondary-500 to-secondary-600',
-  },
-  {
-    name: 'Upcoming Trainings',
-    value: '8',
-    change: '-2',
-    trend: 'down',
-    icon: Calendar,
-    color: 'bg-gradient-to-r from-adventure-sky to-accent-400',
-  },
-  {
-    name: 'Pending Reviews',
-    value: '16',
-    change: '+4',
-    trend: 'up',
-    icon: MessageSquare,
-    color: 'bg-gradient-to-r from-adventure-fire to-red-500',
-  },
-]
+interface DashboardStat {
+  name: string
+  value: number
+  change: string
+  trend: 'up' | 'down'
+  icon: React.ComponentType<{ className?: string }>
+  color: string
+}
+
+interface StatData {
+  users: number
+  activeCourses: number
+  upcomingTrainings: number
+  pendingReviews: number
+}
 
 export default function DashboardStats() {
-  const [animatedStats, setAnimatedStats] = useState(stats.map(() => 0))
+  const [stats, setStats] = useState<DashboardStat[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [animatedStats, setAnimatedStats] = useState<number[]>([])
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      // Fetch data from all services in parallel
+      const [usersResponse, trainingsResponse, testimonialsResponse] = await Promise.all([
+        userService.getAllUsers().catch(() => ({ users: [] })),
+        trainingService.getAllTrainings().catch(() => ({ trainings: [] })),
+        testimonialService.getAllTestimonials().catch(() => ({ testimonials: [] }))
+      ])
+
+      const users = usersResponse.users || []
+      const trainings = trainingsResponse.trainings || []
+      const testimonials = testimonialsResponse.testimonials || []
+
+      // Calculate stats
+      const totalUsers = users.length
+      const activeCourses = trainings.length
+      const pendingReviews = testimonials.filter(t => !t.isActive).length
+
+      // Calculate upcoming trainings
+      const now = new Date()
+      const upcomingTrainings = trainings.reduce((count, training) => {
+        const upcomingSessions = training.sessions?.filter(session => {
+          const sessionDate = new Date(session.startDate)
+          return sessionDate >= now
+        }).length || 0
+        return count + upcomingSessions
+      }, 0)
+
+      // Build stats array
+      const statsData: DashboardStat[] = [
+        {
+          name: 'Total Users',
+          value: totalUsers,
+          change: '+0%',
+          trend: 'up',
+          icon: Users,
+          color: 'bg-gradient-to-r from-accent-500 to-accent-600',
+        },
+        {
+          name: 'Active Courses',
+          value: activeCourses,
+          change: '+0%',
+          trend: 'up',
+          icon: BookOpen,
+          color: 'bg-gradient-to-r from-secondary-500 to-secondary-600',
+        },
+        {
+          name: 'Upcoming Trainings',
+          value: upcomingTrainings,
+          change: upcomingTrainings > 0 ? '+' : '0',
+          trend: upcomingTrainings > 0 ? 'up' : 'up',
+          icon: Calendar,
+          color: 'bg-gradient-to-r from-adventure-sky to-accent-400',
+        },
+        {
+          name: 'Pending Reviews',
+          value: pendingReviews,
+          change: pendingReviews > 0 ? '+' : '0',
+          trend: pendingReviews > 0 ? 'up' : 'up',
+          icon: MessageSquare,
+          color: 'bg-gradient-to-r from-adventure-fire to-red-500',
+        },
+      ]
+
+      setStats(statsData)
+      setAnimatedStats(statsData.map(() => 0))
+    } catch (err) {
+      console.error('Error fetching dashboard stats:', err)
+      setError('Failed to load stats')
+      // Set default values on error
+      setStats([
+        {
+          name: 'Total Users',
+          value: 0,
+          change: '0%',
+          trend: 'up',
+          icon: Users,
+          color: 'bg-gradient-to-r from-accent-500 to-accent-600',
+        },
+        {
+          name: 'Active Courses',
+          value: 0,
+          change: '0%',
+          trend: 'up',
+          icon: BookOpen,
+          color: 'bg-gradient-to-r from-secondary-500 to-secondary-600',
+        },
+        {
+          name: 'Upcoming Trainings',
+          value: 0,
+          change: '0%',
+          trend: 'up',
+          icon: Calendar,
+          color: 'bg-gradient-to-r from-adventure-sky to-accent-400',
+        },
+        {
+          name: 'Pending Reviews',
+          value: 0,
+          change: '0%',
+          trend: 'up',
+          icon: MessageSquare,
+          color: 'bg-gradient-to-r from-adventure-fire to-red-500',
+        },
+      ])
+      setAnimatedStats([0, 0, 0, 0])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
+    fetchStats()
+  }, [])
+
+  useEffect(() => {
+    if (stats.length === 0) return
+
     const timers = stats.map((stat, index) => {
-      const target = parseInt(stat.value.replace(/,/g, ''))
+      const target = stat.value
       const increment = target / 30
       let current = 0
 
@@ -64,7 +170,28 @@ export default function DashboardStats() {
     })
 
     return () => timers.forEach(timer => clearInterval(timer))
-  }, [])
+  }, [stats])
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="adventure-card animate-pulse">
+            <div className="flex items-center justify-between">
+              <div className="space-y-3">
+                <div className="h-4 bg-gray-200 rounded w-24"></div>
+                <div className="h-8 bg-gray-200 rounded w-16"></div>
+              </div>
+              <div className="h-12 w-12 bg-gray-200 rounded-xl"></div>
+            </div>
+            <div className="mt-4">
+              <div className="h-1 w-full bg-gray-200 rounded-full"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -75,7 +202,7 @@ export default function DashboardStats() {
               <p className="text-sm font-medium text-gray-600">{stat.name}</p>
               <div className="flex items-baseline mt-2">
                 <p className="text-3xl font-bold text-gray-900">
-                  {animatedStats[index].toLocaleString()}
+                  {animatedStats[index]?.toLocaleString() || 0}
                 </p>
                 <span className={`ml-2 flex items-center text-sm font-medium ${
                   stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
@@ -99,7 +226,7 @@ export default function DashboardStats() {
                 className={`h-full ${
                   stat.trend === 'up' ? 'bg-accent-500' : 'bg-adventure-fire'
                 } rounded-full transition-all duration-1000`}
-                style={{ width: `${Math.min(100, animatedStats[index] / 50 * 100)}%` }}
+                style={{ width: `${Math.min(100, ((animatedStats[index] || 0) / 50) * 100)}%` }}
               />
             </div>
           </div>

@@ -69,16 +69,16 @@ const navigation = [
       // { name: 'Roles', href: '/admin/users/roles' },
     ]
   },
-  { 
-    name: 'Settings', 
-    href: '/admin/settings', 
-    icon: Settings,
-    children: [
-      { name: 'General', href: '/admin/settings' },
-      { name: 'Email', href: '/admin/settings/email' },
-      { name: 'Notifications', href: '/admin/settings/notifications' },
-    ]
-  },
+  // { 
+  //   name: 'Settings', 
+  //   href: '/admin/settings', 
+  //   icon: Settings,
+  //   children: [
+  //     { name: 'General', href: '/admin/settings' },
+  //     { name: 'Email', href: '/admin/settings/email' },
+  //     { name: 'Notifications', href: '/admin/settings/notifications' },
+  //   ]
+  // },
 ]
 
 export default function AdminSidebar() {

@@ -2,6 +2,9 @@
 
 import { BarChart3, TrendingUp, TrendingDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { blogService } from '@/app/api_services/blogService'
+import { trainingService } from '@/app/api_services/trainingService'
+import { testimonialService } from '@/app/api_services/testimonialService'
 
 // Define proper types for content stats
 interface ContentStat {
@@ -19,44 +22,181 @@ interface ContentStat {
   trend: 'up' | 'down';
 }
 
-const contentStats: ContentStat[] = [
-  {
-    type: 'Blog Posts',
-    published: 24,
-    draft: 3,
-    totalViews: 5204,
-    growth: 12,
-    trend: 'up',
-  },
-  {
-    type: 'Courses',
-    published: 18,
-    draft: 2,
-    totalEnrollments: 1248,
-    growth: 8,
-    trend: 'up',
-  },
-  {
-    type: 'Testimonials',
-    published: 36,
-    pending: 4,
-    avgRating: 4.8,
-    growth: 5,
-    trend: 'up',
-  },
-]
+interface BlogData {
+  blogs: Array<{
+    published: boolean;
+    views?: number;
+  }>;
+}
+
+interface TrainingData {
+  trainings: Array<{
+    sessions: Array<{
+      status: string;
+      startDate: string;
+      endDate: string;
+    }>;
+  }>;
+}
+
+interface TestimonialData {
+  testimonials: Array<{
+    isActive: boolean;
+    rating: number;
+  }>;
+}
 
 export default function ContentOverview() {
-  const [animatedStats, setAnimatedStats] = useState<number[]>(contentStats.map(() => 0))
+  const [contentStats, setContentStats] = useState<ContentStat[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [animatedStats, setAnimatedStats] = useState<number[]>([])
+
+  const fetchContentStats = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      // Fetch data from all services in parallel
+      const [blogsResponse, trainingsResponse, testimonialsResponse] = await Promise.all([
+        blogService.getAllBlogs().catch(() => ({ blogs: [] })),
+        trainingService.getAllTrainings().catch(() => ({ trainings: [] })),
+        testimonialService.getAllTestimonials().catch(() => ({ testimonials: [] }))
+      ])
+
+      const blogs = (blogsResponse as BlogData).blogs || []
+      const trainings = (trainingsResponse as TrainingData).trainings || []
+      const testimonials = (testimonialsResponse as TestimonialData).testimonials || []
+
+      const now = new Date()
+
+      // Calculate Blog stats
+      const blogPublished = blogs.filter(b => b.published).length
+      const blogDraft = blogs.filter(b => !b.published).length
+      const blogViews = blogs.reduce((sum, b) => sum + (b.views || 0), 0)
+
+      // Calculate Training stats
+      const trainingPublished = trainings.length
+      const trainingUpcoming = trainings.reduce((count, t) => {
+        const upcomingSessions = t.sessions?.filter(s => {
+          const startDate = new Date(s.startDate)
+          return startDate >= now
+        }).length || 0
+        return count + upcomingSessions
+      }, 0)
+      const trainingCompleted = trainings.reduce((count, t) => {
+        const completedSessions = t.sessions?.filter(s => {
+          const endDate = new Date(s.endDate)
+          return endDate < now
+        }).length || 0
+        return count + completedSessions
+      }, 0)
+
+      // Calculate Testimonial stats
+      const testimonialPublished = testimonials.filter(t => t.isActive).length
+      const testimonialPending = testimonials.filter(t => !t.isActive).length
+      const avgRating = testimonials.length > 0
+        ? testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length
+        : 0
+
+      // Build stats array
+      const stats: ContentStat[] = [
+        {
+          type: 'Blog Posts',
+          published: blogPublished,
+          draft: blogDraft,
+          totalViews: blogViews,
+          growth: 0,
+          trend: 'up',
+        },
+        {
+          type: 'Courses',
+          published: trainingPublished,
+          draft: 0,
+          totalEnrollments: 0,
+          growth: 0,
+          trend: 'up',
+        },
+        {
+          type: 'Trainings',
+          published: trainingUpcoming,
+          completed: trainingCompleted,
+          growth: 0,
+          trend: 'up',
+        },
+        {
+          type: 'Testimonials',
+          published: testimonialPublished,
+          pending: testimonialPending,
+          avgRating: avgRating,
+          growth: 0,
+          trend: 'up',
+        },
+      ]
+
+      setContentStats(stats)
+      setAnimatedStats(stats.map(() => 0))
+    } catch (err) {
+      console.error('Error fetching content stats:', err)
+      setError('Failed to load content stats')
+      // Set default values on error
+      setContentStats([
+        {
+          type: 'Blog Posts',
+          published: 0,
+          draft: 0,
+          totalViews: 0,
+          growth: 0,
+          trend: 'up',
+        },
+        {
+          type: 'Courses',
+          published: 0,
+          draft: 0,
+          totalEnrollments: 0,
+          growth: 0,
+          trend: 'up',
+        },
+        {
+          type: 'Trainings',
+          published: 0,
+          completed: 0,
+          growth: 0,
+          trend: 'up',
+        },
+        {
+          type: 'Testimonials',
+          published: 0,
+          pending: 0,
+          avgRating: 0,
+          growth: 0,
+          trend: 'up',
+        },
+      ])
+      setAnimatedStats([0, 0, 0, 0])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
+    fetchContentStats()
+  }, [])
+
+  useEffect(() => {
+    if (contentStats.length === 0) return
+
     const timers = contentStats.map((stat, index) => {
       // Calculate target value with proper type safety
       const target = 
         stat.totalViews || 
         stat.totalEnrollments || 
         stat.totalParticipants || 
-        (stat.avgRating ? stat.avgRating * 100 : 0)
+        (stat.avgRating ? stat.avgRating * 100 : 0) ||
+        stat.published ||
+        stat.upcoming ||
+        stat.completed ||
+        0
       
       const increment = target / 20
       let current = 0
@@ -78,7 +218,33 @@ export default function ContentOverview() {
     })
 
     return () => timers.forEach(timer => clearInterval(timer))
-  }, [])
+  }, [contentStats])
+
+  if (loading) {
+    return (
+      <div className="adventure-card">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Content Overview</h2>
+            <p className="text-sm text-gray-600 mt-1">Performance across all content types</p>
+          </div>
+          <BarChart3 className="h-6 w-6 text-accent-500 animate-pulse" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="space-y-4 animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-24"></div>
+              <div className="h-8 bg-gray-200 rounded w-16"></div>
+              <div className="space-y-2">
+                <div className="h-3 bg-gray-200 rounded w-full"></div>
+                <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="adventure-card">
@@ -98,8 +264,8 @@ export default function ContentOverview() {
               <div className="flex items-baseline mt-2">
                 <p className="text-2xl font-bold text-gray-900">
                   {stat.type === 'Testimonials' 
-                    ? `${(animatedStats[index] / 100).toFixed(1)}`
-                    : animatedStats[index].toLocaleString()
+                    ? `${((animatedStats[index] || 0) / 100).toFixed(1)}`
+                    : (animatedStats[index] || 0).toLocaleString()
                   }
                 </p>
                 <span className={`ml-2 flex items-center text-sm font-medium ${
@@ -124,7 +290,7 @@ export default function ContentOverview() {
                   </div>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>Draft</span>
-                    <span className="font-medium">{stat.draft}</span>
+                    <span className="font-medium">{stat.draft || 0}</span>
                   </div>
                 </>
               )}
@@ -137,7 +303,7 @@ export default function ContentOverview() {
                   </div>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>Draft</span>
-                    <span className="font-medium">{stat.draft}</span>
+                    <span className="font-medium">{stat.draft || 0}</span>
                   </div>
                 </>
               )}
@@ -146,11 +312,11 @@ export default function ContentOverview() {
                 <>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>Upcoming</span>
-                    <span className="font-medium">{stat.upcoming}</span>
+                    <span className="font-medium">{stat.published}</span>
                   </div>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>Completed</span>
-                    <span className="font-medium">{stat.completed}</span>
+                    <span className="font-medium">{stat.completed || 0}</span>
                   </div>
                 </>
               )}
@@ -163,7 +329,7 @@ export default function ContentOverview() {
                   </div>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>Pending</span>
-                    <span className="font-medium">{stat.pending}</span>
+                    <span className="font-medium">{stat.pending || 0}</span>
                   </div>
                 </>
               )}
@@ -176,32 +342,13 @@ export default function ContentOverview() {
                     stat.trend === 'up' ? 'bg-accent-500' : 'bg-adventure-fire'
                   } rounded-full transition-all duration-1000`}
                   style={{ 
-                    width: `${Math.min(100, (animatedStats[index] / (stat.type === 'Testimonials' ? 500 : 10000)) * 100)}%` 
+                    width: `${Math.min(100, ((animatedStats[index] || 0) / (stat.type === 'Testimonials' ? 500 : 10000)) * 100)}%` 
                   }}
                 />
               </div>
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="text-center p-3 bg-accent-50 rounded-lg">
-          <p className="text-sm font-medium text-accent-700">Engagement Rate</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">84%</p>
-        </div>
-        <div className="text-center p-3 bg-green-50 rounded-lg">
-          <p className="text-sm font-medium text-green-700">Avg. Time</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">4:32</p>
-        </div>
-        <div className="text-center p-3 bg-blue-50 rounded-lg">
-          <p className="text-sm font-medium text-blue-700">New Users</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">48</p>
-        </div>
-        <div className="text-center p-3 bg-purple-50 rounded-lg">
-          <p className="text-sm font-medium text-purple-700">Conversion</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">12%</p>
-        </div>
       </div>
     </div>
   )

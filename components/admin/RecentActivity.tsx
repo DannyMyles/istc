@@ -2,66 +2,202 @@
 
 import { Clock, User, FileText, BookOpen, Calendar, CheckCircle, AlertCircle } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { useState, useEffect } from 'react'
+import { blogService } from '@/app/api_services/blogService'
+import { trainingService } from '@/app/api_services/trainingService'
+import { userService } from '@/app/api_services/userService'
 
-const recentActivities = [
-  {
-    id: 1,
-    type: 'blog',
-    title: 'New blog post published',
-    description: 'Fire Safety Regulations Update 2024',
-    user: 'John Doe',
-    time: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    icon: FileText,
-    color: 'text-accent-500',
-    bgColor: 'bg-accent-50',
-  },
-  {
-    id: 2,
-    type: 'course',
-    title: 'Course created',
-    description: 'Advanced Occupational Safety Diploma',
-    user: 'Jane Smith',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-    icon: BookOpen,
-    color: 'text-secondary-500',
-    bgColor: 'bg-secondary-50',
-  },
-  {
-    id: 3,
-    type: 'training',
-    title: 'Training scheduled',
-    description: 'Fire Safety Course - Jan 25, 2024',
-    user: 'Mike Johnson',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
-    icon: Calendar,
-    color: 'text-adventure-sky',
-    bgColor: 'bg-blue-50',
-  },
-  {
-    id: 4,
-    type: 'user',
-    title: 'New user registration',
-    description: 'Sarah Williams registered for course',
-    user: 'System',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
-    icon: User,
-    color: 'text-green-500',
-    bgColor: 'bg-green-50',
-  },
-  {
-    id: 5,
-    type: 'update',
-    title: 'Content updated',
-    description: 'First Aid Training course materials',
-    user: 'Admin',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-    icon: CheckCircle,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-50',
-  },
-]
+interface Activity {
+  id: string
+  type: 'blog' | 'course' | 'training' | 'user' | 'update'
+  title: string
+  description: string
+  user: string
+  time: Date
+  icon: React.ComponentType<{ className?: string }>
+  color: string
+  bgColor: string
+}
+
+interface Blog {
+  id: string
+  title: string
+  createdAt: string
+  updatedAt: string
+}
+
+interface Training {
+  id: string
+  title: string
+  createdAt: string
+  updatedAt: string
+  sessions?: Array<{
+    startDate: string
+  }>
+}
+
+interface User {
+  _id: string
+  name: string
+  createdAt: string
+}
 
 export default function RecentActivity() {
+  const [activities, setActivities] = useState<Activity[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchActivities = async () => {
+    try {
+      setLoading(true)
+
+      // Fetch data from services
+      const [blogsResponse, trainingsResponse, usersResponse] = await Promise.all([
+        blogService.getAllBlogs().catch(() => ({ blogs: [] })),
+        trainingService.getAllTrainings().catch(() => ({ trainings: [] })),
+        userService.getAllUsers().catch(() => ({ users: [] }))
+      ])
+
+      const blogs = (blogsResponse as { blogs: Blog[] }).blogs || []
+      const trainings = (trainingsResponse as { trainings: Training[] }).trainings || []
+      const users = (usersResponse as { users: User[] }).users || []
+
+      const newActivities: Activity[] = []
+
+      // Get most recent blog (published)
+      const recentBlog = blogs
+        .filter(b => b.createdAt)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
+
+      if (recentBlog) {
+        newActivities.push({
+          id: `blog-${recentBlog.id}`,
+          type: 'blog',
+          title: 'New blog post',
+          description: recentBlog.title,
+          user: 'Editor',
+          time: new Date(recentBlog.createdAt),
+          icon: FileText,
+          color: 'text-accent-500',
+          bgColor: 'bg-accent-50',
+        })
+      }
+
+      // Get most recent training
+      const recentTraining = trainings
+        .filter(t => t.createdAt)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
+
+      if (recentTraining) {
+        newActivities.push({
+          id: `training-${recentTraining.id}`,
+          type: 'training',
+          title: 'Training created',
+          description: recentTraining.title,
+          user: 'Admin',
+          time: new Date(recentTraining.createdAt),
+          icon: Calendar,
+          color: 'text-adventure-sky',
+          bgColor: 'bg-blue-50',
+        })
+      }
+
+      // Get most recent user
+      const recentUser = users
+        .filter(u => u.createdAt)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
+
+      if (recentUser) {
+        newActivities.push({
+          id: `user-${recentUser._id}`,
+          type: 'user',
+          title: 'New user registration',
+          description: `${recentUser.name} joined`,
+          user: 'System',
+          time: new Date(recentUser.createdAt),
+          icon: User,
+          color: 'text-green-500',
+          bgColor: 'bg-green-50',
+        })
+      }
+
+      // Add some training updates (most recently updated training)
+      const recentUpdate = trainings
+        .filter(t => t.updatedAt && t.updatedAt !== t.createdAt)
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())[0]
+
+      if (recentUpdate) {
+        newActivities.push({
+          id: `update-${recentUpdate.id}`,
+          type: 'update',
+          title: 'Training updated',
+          description: recentUpdate.title,
+          user: 'Admin',
+          time: new Date(recentUpdate.updatedAt),
+          icon: CheckCircle,
+          color: 'text-purple-500',
+          bgColor: 'bg-purple-50',
+        })
+      }
+
+      // If no activities found, add a placeholder
+      if (newActivities.length === 0) {
+        newActivities.push({
+          id: 'placeholder-1',
+          type: 'blog',
+          title: 'Welcome to Admin',
+          description: 'Add your first content to see activity',
+          user: 'System',
+          time: new Date(),
+          icon: AlertCircle,
+          color: 'text-gray-500',
+          bgColor: 'bg-gray-50',
+        })
+      }
+
+      // Sort by time (most recent first)
+      newActivities.sort((a, b) => b.time.getTime() - a.time.getTime())
+
+      // Take top 5 activities
+      setActivities(newActivities.slice(0, 5))
+    } catch (err) {
+      console.error('Error fetching activities:', err)
+      // Set empty activities on error - the UI will show placeholder
+      setActivities([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchActivities()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="adventure-card">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
+            <p className="text-sm text-gray-600 mt-1">Latest actions in your admin panel</p>
+          </div>
+          <Clock className="h-6 w-6 text-accent-500 animate-pulse" />
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="flex items-start gap-3 p-3 animate-pulse">
+              <div className="h-10 w-10 bg-gray-200 rounded-lg"></div>
+              <div className="flex-1 space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/4"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="adventure-card">
       <div className="flex items-center justify-between mb-6">
@@ -73,7 +209,7 @@ export default function RecentActivity() {
       </div>
 
       <div className="space-y-4">
-        {recentActivities.map((activity) => {
+        {activities.map((activity) => {
           const Icon = activity.icon
           return (
             <div

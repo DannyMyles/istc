@@ -8,22 +8,8 @@ const quickActions = [
     title: 'Create New Post',
     description: 'Write a blog article',
     icon: Plus,
-    color: 'bg-accent-500',
+    color: 'bg-yellow-500',
     href: '/admin/blog/create',
-  },
-  {
-    title: 'Import Data',
-    description: 'Upload course data',
-    icon: Upload,
-    color: 'bg-green-500',
-    href: '/admin/import',
-  },
-  {
-    title: 'Export Reports',
-    description: 'Download analytics',
-    icon: Download,
-    color: 'bg-blue-500',
-    href: '/admin/export',
   },
   {
     title: 'User Management',
@@ -33,18 +19,11 @@ const quickActions = [
     href: '/admin/users',
   },
   {
-    title: 'System Settings',
-    description: 'Configure settings',
-    icon: Settings,
-    color: 'bg-gray-700',
-    href: '/admin/settings',
-  },
-  {
-    title: 'Send Notification',
-    description: 'Notify all users',
+    title: 'Testimonial Management',
+    description: 'Manage testimonials',
     icon: Bell,
-    color: 'bg-yellow-500',
-    href: '/admin/notifications',
+    color: 'bg-blue-500',
+    href: '/admin/testimonials',
   },
 ]
 
