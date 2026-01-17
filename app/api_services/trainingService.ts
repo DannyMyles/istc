@@ -90,7 +90,27 @@ export const trainingService = {
   // Get all trainings (public - no auth required)
   getAllTrainings: async (): Promise<TrainingResponse> => {
     try {
-      return await api.public.trainings.getAll()
+      const response = await api.public.trainings.getAll()
+      console.log('Get all trainings response:', response)
+      
+      // Handle both wrapped ({ trainings: [...] }) and direct responses
+      const trainingsData = (response as any).trainings || response
+      
+      // If trainings is an array, construct the proper response
+      if (Array.isArray(trainingsData)) {
+        return {
+          trainings: trainingsData,
+          pagination: {
+            currentPage: 1,
+            totalPages: 1,
+            totalTrainings: trainingsData.length,
+            hasNextPage: false,
+            hasPrevPage: false
+          }
+        }
+      }
+      
+      return response as TrainingResponse
     } catch (error) {
       console.error('Error fetching trainings:', error)
       throw error
@@ -100,7 +120,12 @@ export const trainingService = {
   // Get single training (public - no auth required)
   getTrainingById: async (id: string): Promise<Training> => {
     try {
-      return await api.public.trainings.getOne(id)
+      const response = await api.public.trainings.getOne(id)
+      console.log('Raw API response:', response)
+      
+      // Handle both wrapped ({ training: ... }) and direct training responses
+      const trainingData = (response as any).training || response
+      return trainingData as Training
     } catch (error) {
       console.error(`Error fetching training ${id}:`, error)
       throw error

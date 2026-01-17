@@ -90,7 +90,27 @@ export const blogService = {
     sort?: string
   }): Promise<BlogResponse> => {
     try {
-      return await api.public.blog.getAll(params)
+      const response = await api.public.blog.getAll(params)
+      console.log('Get all blogs response:', response)
+      
+      // Handle both wrapped ({ blogs: [...] }) and direct responses
+      const blogsData = (response as any).blogs || response
+      
+      // If blogs is an array, construct the proper response
+      if (Array.isArray(blogsData)) {
+        return {
+          blogs: blogsData,
+          pagination: {
+            currentPage: 1,
+            totalPages: 1,
+            totalBlogs: blogsData.length,
+            hasNextPage: false,
+            hasPrevPage: false
+          }
+        }
+      }
+      
+      return response as BlogResponse
     } catch (error) {
       console.error('Error fetching blogs:', error)
       throw error

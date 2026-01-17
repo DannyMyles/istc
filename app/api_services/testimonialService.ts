@@ -51,7 +51,27 @@ export const testimonialService = {
   // Get all testimonials (public - no auth required)
   getAllTestimonials: async (): Promise<TestimonialResponse> => {
     try {
-      return await api.public.testimonials.getAll()
+      const response = await api.public.testimonials.getAll()
+      console.log('Get all testimonials response:', response)
+      
+      // Handle both wrapped ({ testimonials: [...] }) and direct responses
+      const testimonialsData = (response as any).testimonials || response
+      
+      // If testimonials is an array, construct the proper response
+      if (Array.isArray(testimonialsData)) {
+        return {
+          testimonials: testimonialsData,
+          pagination: {
+            currentPage: 1,
+            totalPages: 1,
+            totalTestimonials: testimonialsData.length,
+            hasNextPage: false,
+            hasPrevPage: false
+          }
+        }
+      }
+      
+      return response as TestimonialResponse
     } catch (error) {
       console.error('Error fetching testimonials:', error)
       throw error
@@ -61,7 +81,12 @@ export const testimonialService = {
   // Get single testimonial (public - no auth required)
   getTestimonialById: async (id: string): Promise<Testimonial> => {
     try {
-      return await api.public.testimonials.getOne(id)
+      const response = await api.public.testimonials.getOne(id)
+      console.log('Get testimonial by ID response:', response)
+      
+      // Handle both wrapped ({ testimonial: ... }) and direct responses
+      const testimonialData = (response as any).testimonial || response
+      return testimonialData as Testimonial
     } catch (error) {
       console.error(`Error fetching testimonial ${id}:`, error)
       throw error
