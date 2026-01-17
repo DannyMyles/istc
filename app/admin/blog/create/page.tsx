@@ -419,7 +419,7 @@ export default function CreateBlogPage() {
               disabled={loading}
             />
             <p className="mt-2 text-sm text-gray-500">
-              Use relevant tags like: web-development, safety, training, etc.
+              Use relevant tags like: Fire Safety, safety, training, etc.
             </p>
           </div>
 

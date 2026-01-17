@@ -149,7 +149,6 @@ export default function TrainingsManagementPage() {
   const handleToggleFeatured = async (training: Training) => {
     try {
       await trainingService.updateTraining(training.id, {
-        ...training,
         isFeatured: !training.isFeatured
       })
       toast.success(`Training ${!training.isFeatured ? 'added to' : 'removed from'} featured`)
@@ -462,14 +461,14 @@ export default function TrainingsManagementPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-gray-700">
                         <Clock className="h-4 w-4 text-gray-400" />
-                        {training.duration}
+                        {typeof training.duration === 'string' ? training.duration : training.duration?.display || 'N/A'}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 font-medium">
                         {/* <DollarSign className="h-4 w-4 text-gray-400" /> */}
                         {/* Ksh. */}
-                        {training.cost}
+                        {typeof training.cost === 'string' ? training.cost : training.cost?.display || 'N/A'}
                       </div>
                       {training.registrationFee > 0 && (
                         <p className="text-xs text-gray-500 mt-1">

@@ -251,10 +251,13 @@ const useSafeFont = () => {
 };
 
 // Utility functions
-const formatCurrency = (cost: string): string => {
-  // Ensure proper formatting
-  const num = parseInt(cost.replace(/\D/g, ''));
-  return num ? `Kshs ${num.toLocaleString()}` : cost;
+const formatCurrency = (cost: { display: string; amount: number }): string => {
+  // Use the display property if available, otherwise format the amount
+  if (cost?.display) {
+    return cost.display.replace('KSH', 'Kshs');
+  }
+  // Fallback to amount
+  return cost?.amount ? `Kshs ${cost.amount.toLocaleString()}` : 'N/A';
 };
 
 const formatDate = (dateString: string): string => {
@@ -420,7 +423,7 @@ export const TrainingCalendarPDF: React.FC<TrainingCalendarPDFProps> = ({
                 {training.targetGroup}
               </Text>
               <Text style={[styles.tableCell, styles.cellDuration, styles.centeredText]}>
-                {training.duration}
+                {typeof training.duration === 'string' ? training.duration : training.duration?.display || 'N/A'}
               </Text>
               <View style={[styles.tableCell, styles.cellDates]}>
                 <Text style={styles.courseDates}>

@@ -96,8 +96,19 @@ export default function CalendarPage() {
   };
 
   // Format currency
-  const formatCurrency = (cost: string) => {
-    return cost.replace('KSH', 'Kshs');
+  const formatCurrency = (cost: { display?: string; amount?: number }) => {
+    if (cost?.display) {
+      return cost.display.replace('KSH', 'Kshs');
+    }
+    return cost?.amount ? `Kshs ${cost.amount.toLocaleString()}` : 'N/A';
+  };
+
+  // Get duration display
+  const getDurationDisplay = (duration: { display?: string; value?: number; unit?: string }) => {
+    if (typeof duration === 'string') return duration;
+    if (duration?.display) return duration.display;
+    if (duration?.value && duration?.unit) return `${duration.value} ${duration.unit}`;
+    return 'N/A';
   };
 
   // Get sessions for specific month (or all sessions if selectedMonth is null)
@@ -506,7 +517,7 @@ export default function CalendarPage() {
                               <div className="col-span-2 p-4">
                                 <div className="flex items-center gap-2 text-gray-700">
                                   <Clock size={14} className="text-accent-500" />
-                                  {training.duration}
+                                  {getDurationDisplay(training.duration)}
                                 </div>
                                 <div className="text-sm text-gray-600 mt-1">
                                   {training.modeOfStudy.join(', ')}

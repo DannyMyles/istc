@@ -22,8 +22,17 @@ export interface Training {
   title: string
   description: string
   targetGroup: string
-  duration: string
-  cost: string
+  duration: {
+    value: number
+    unit: string
+    display: string
+  }
+  cost: {
+    amount: number
+    currency: string
+    display: string
+    taxInclusive?: boolean
+  }
   category: string
   modeOfStudy: string[]
   isFeatured: boolean
@@ -50,8 +59,17 @@ export interface CreateTrainingRequest {
   title: string
   description: string
   targetGroup: string
-  duration: string
-  cost: string
+  duration: {
+    value: number
+    unit: 'days' | 'weeks' | 'months'
+    display: string
+  }
+  cost: {
+    amount: number
+    currency: string
+    display: string
+    taxInclusive?: boolean
+  }
   category: string
   modeOfStudy: string[]
   isFeatured: boolean
@@ -214,7 +232,7 @@ export const trainingService = {
   // Calculate total revenue (placeholder - adjust based on your business logic)
   calculateRevenue: (training: Training): number => {
     const enrollments = trainingService.getTotalEnrollments(training)
-    const cost = parseFloat(training.cost.replace(/[^0-9.]/g, '')) || 0
+    const cost = training.cost.amount || 0
     return enrollments * cost
   }
 }

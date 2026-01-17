@@ -112,10 +112,15 @@ async function getAuthToken(): Promise<string | null> {
 class ApiClient {
   private refreshTokenPromise: Promise<string> | null = null
 
-  private async getAuthHeaders(): Promise<Record<string, string>> {
+  private async getAuthHeaders(options?: ApiOptions): Promise<Record<string, string>> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
       'Accept': 'application/json',
+    }
+
+    // Don't set Content-Type for FormData - browser sets it automatically with boundary
+    // Setting it manually breaks multipart/form-data requests
+    if (!(options?.body instanceof FormData)) {
+      headers['Content-Type'] = 'application/json'
     }
 
     try {
@@ -132,12 +137,12 @@ class ApiClient {
   }
 
   private async request<T = any>(
-    endpoint: string, 
+    endpoint: string,
     options: ApiOptions = {}
   ): Promise<T> {
     const { requiresAuth = true, ...fetchOptions } = options
-    
-    const headers = await this.getAuthHeaders()
+
+    const headers = await this.getAuthHeaders(options)
 
     // Add additional headers from options
     const allHeaders: Record<string, string> = {

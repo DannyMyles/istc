@@ -16,7 +16,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { CreateTrainingRequest, trainingService } from '@/app/api_services/trainingService'
+import { trainingService, CreateTrainingRequest } from '@/app/api_services/trainingService'
 
 interface TrainingSessionInput {
   startDate: string
@@ -28,13 +28,27 @@ interface TrainingSessionInput {
   instructor?: string
 }
 
+interface TrainingFormData {
+  title: string
+  description: string
+  targetGroup: string
+  duration: string
+  cost: string
+  category: string
+  modeOfStudy: string[]
+  isFeatured: boolean
+  registrationFee: number
+  certification: string
+  sessions: TrainingSessionInput[]
+}
+
 export default function CreateTrainingPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
   // Form state
-  const [formData, setFormData] = useState<CreateTrainingRequest>({
+  const [formData, setFormData] = useState<TrainingFormData>({
     title: '',
     description: '',
     targetGroup: '',
@@ -112,15 +126,29 @@ export default function CreateTrainingPage() {
         throw new Error('Certification name is required')
       }
 
-      // Prepare data for API
-      const trainingData = {
-        ...formData,
+      // Prepare data for API - Transform strings to nested objects required by backend
+      const trainingData: CreateTrainingRequest = {
         title: formData.title.trim(),
         description: formData.description.trim(),
         targetGroup: formData.targetGroup.trim(),
         certification: formData.certification.trim(),
-        // Format cost with KSH if not already included
-        cost: formData.cost.includes('KSH') ? formData.cost : `${formData.cost} KSH`,
+        category: formData.category,
+        modeOfStudy: formData.modeOfStudy,
+        isFeatured: formData.isFeatured,
+        sessions: formData.sessions,
+        // Transform duration string to object structure
+        duration: {
+          value: parseInt(formData.duration) || 1,
+          unit: 'days',
+          display: formData.duration.includes('day') ? formData.duration : `${formData.duration} days`
+        },
+        // Transform cost string to object structure
+        cost: {
+          amount: parseFloat(formData.cost.replace(/[^0-9.]/g, '')) || 0,
+          currency: 'KSH',
+          display: formData.cost.includes('KSH') ? formData.cost : `${formData.cost} KSH`,
+          taxInclusive: false
+        },
         // Ensure registration fee is a number
         registrationFee: Number(formData.registrationFee) || 0
       }
@@ -525,8 +553,8 @@ export default function CreateTrainingPage() {
                   <input
                     type="number"
                     min="0"
-                    value={formData.registrationFee}
-                    onChange={(e) => setFormData({...formData, registrationFee: parseFloat(e.target.value)})}
+                    value={formData.registrationFee || ''}
+                    onChange={(e) => setFormData({...formData, registrationFee: parseFloat(e.target.value) || 0})}
                     className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   />
                 </div>
