@@ -12,7 +12,7 @@ const Hero = () => {
       {/* Video Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <ReactPlayer
-          src="/videos/safety_video.mp4"
+          // src="/videos/safety_video.mp4"
           playing={true}
           loop={true}
           muted={true}
