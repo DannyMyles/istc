@@ -23,7 +23,7 @@ const config: Config = {
           950: '#172554',
         },
         accent: {
-          DEFAULT: '#039AC5', // Your new accent color
+          DEFAULT: '#039AC5', // Your accent color
           light: '#4AC1E8',
           dark: '#02749C',
           50: '#E6F7FC',
@@ -44,14 +44,30 @@ const config: Config = {
           dark: '#065f46',
         },
         adventure: {
-          sun: '#039AC5', // Updated
+          sun: '#039AC5',
           forest: '#059669',
-          river: '#039AC5', // Updated
+          river: '#039AC5',
           earth: '#92400e',
-          sky: '#4AC1E8', // Updated
+          sky: '#4AC1E8',
           fire: '#dc2626',
           grass: '#22c55e',
-        }
+        },
+        // Yellow color palette for buttons
+        yellow: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+          DEFAULT: '#d3ae0b',
+          gradientStart: '#f0c711',
+          gradientEnd: '#d3ae0b',
+        },
       },
       fontFamily: {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],

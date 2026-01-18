@@ -273,7 +273,7 @@ export default function TestimonialsPage() {
             <p className="text-gray-600 mb-6">{error}</p>
             <button
               onClick={fetchTestimonials}
-              className="bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent-700 transition-colors"
+              className="btn-adventure px-6 py-3 rounded-lg font-semibold"
             >
               Try Again
             </button>
@@ -507,13 +507,13 @@ export default function TestimonialsPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <a 
                   href="tel:+254700364722" 
-                  className="bg-white text-accent-700 hover:bg-gray-100 hover:scale-105 px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg"
+                  className="btn-adventure px-8 py-3 rounded-xl font-semibold text-lg"
                 >
                   Call to Enroll
                 </a>
                 <Link 
                   href="/courses" 
-                  className="bg-transparent border-2 border-white text-[#303136] hover:bg-white hover:text-accent-700 px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300"
+                  className="btn-outline px-8 py-3 rounded-xl font-semibold text-lg"
                 >
                   Browse Courses
                 </Link>

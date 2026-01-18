@@ -255,23 +255,23 @@ export default function AdminSidebar() {
             <div className="space-y-1">
               <Link
                 href="/admin/blog/create"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 transition-colors"
               >
-                <PlusSquare className="h-4 w-4 text-gray-500" />
+                <PlusSquare className="h-4 w-4 text-yellow-500" />
                 <span>New Blog Post</span>
               </Link>
               <Link
                 href="/admin/trainings/create"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 transition-colors"
               >
-                <PlusSquare className="h-4 w-4 text-gray-500" />
+                <PlusSquare className="h-4 w-4 text-yellow-500" />
                 <span>New Training</span>
               </Link>
               <Link
                 href="/admin/users/create"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 transition-colors"
               >
-                <PlusSquare className="h-4 w-4 text-gray-500" />
+                <PlusSquare className="h-4 w-4 text-yellow-500" />
                 <span>Add User</span>
               </Link>
             </div>

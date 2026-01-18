@@ -393,13 +393,13 @@ export default function AboutPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Link 
                   href="/contact" 
-                  className="bg-white text-accent-700 hover:bg-gray-100 hover:scale-105 px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg"
+                  className="btn-adventure px-8 py-3 rounded-xl font-semibold text-lg"
                 >
                   Contact Our Team
                 </Link>
                 <Link 
                   href="/courses" 
-                  className="bg-transparent border-2 border-white text-[#5F606A] hover:bg-white hover:text-accent-700 px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300"
+                  className="btn-outline px-8 py-3 rounded-xl font-semibold text-lg"
                 >
                   Browse Courses
                 </Link>

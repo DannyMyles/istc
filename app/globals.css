@@ -44,10 +44,10 @@
 }
 
 @layer components {
-  /* Adventure-themed buttons */
-  .btn-adventure {
-    background: linear-gradient(to right, #039AC5, #02749C); /* Updated */
-    color: white;
+  /* Yellow-themed action buttons with gradient */
+  .btn-action {
+    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
+    color: #1f2937;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.75rem;
@@ -57,24 +57,26 @@
     letter-spacing: 0.025em;
     transition: all 300ms;
     transform: translateY(0);
-    box-shadow: 0 10px 30px -3px rgba(3, 154, 197, 0.3), 0 4px 6px -2px rgba(3, 154, 197, 0.1); /* Updated */
+    box-shadow: 0 10px 30px -3px rgba(211, 174, 11, 0.3), 0 4px 6px -2px rgba(211, 174, 11, 0.1);
+    border: none;
   }
 
-  .btn-adventure:hover {
-    background: linear-gradient(to right, #02749C, #035C7A); /* Updated */
+  .btn-action:hover {
+    background: linear-gradient(135deg, #d3ae0b 0%, #b8960a 100%);
     transform: translateY(-2px);
-    box-shadow: 0 20px 60px -10px rgba(3, 154, 197, 0.4), 0 10px 20px -5px rgba(3, 154, 197, 0.2); /* Updated */
+    box-shadow: 0 20px 60px -10px rgba(211, 174, 11, 0.4), 0 10px 20px -5px rgba(211, 174, 11, 0.2);
   }
 
-  .btn-adventure:focus {
+  .btn-action:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(3, 154, 197, 0.4); /* Updated */
+    box-shadow: 0 0 0 4px rgba(211, 174, 11, 0.4);
   }
 
-  .btn-adventure-outline {
-    border: 2px solid #039AC5; /* Updated */
-    color: #02749C; /* Updated */
+  /* Yellow-themed outline buttons for non-action buttons */
+  .btn-outline {
+    background-color: white;
+    color: #B8860B;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.75rem;
@@ -83,11 +85,71 @@
     font-weight: 600;
     letter-spacing: 0.025em;
     transition: all 300ms;
+    border: 2px solid #d3ae0b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-outline:hover {
+    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
+    color: #1f2937;
+    border-color: #d3ae0b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -3px rgba(211, 174, 11, 0.3), 0 4px 6px -2px rgba(211, 174, 11, 0.1);
+  }
+
+  .btn-outline:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(211, 174, 11, 0.4);
+  }
+
+  /* Legacy adventure button - kept for backward compatibility */
+  .btn-adventure {
+    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
+    color: #1f2937;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    transition: all 300ms;
+    transform: translateY(0);
+    box-shadow: 0 10px 30px -3px rgba(211, 174, 11, 0.3), 0 4px 6px -2px rgba(211, 174, 11, 0.1);
+    border: none;
+  }
+
+  .btn-adventure:hover {
+    background: linear-gradient(135deg, #d3ae0b 0%, #b8960a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px -10px rgba(211, 174, 11, 0.4), 0 10px 20px -5px rgba(211, 174, 11, 0.2);
+  }
+
+  .btn-adventure:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(211, 174, 11, 0.4);
+  }
+
+  .btn-adventure-outline {
+    border: 2px solid #d3ae0b;
+    color: #B8860B;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    transition: all 300ms;
+    background-color: white;
   }
 
   .btn-adventure-outline:hover {
-    background-color: #039AC5; /* Updated */
-    color: white;
+    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
+    color: #1f2937;
+    border-color: #d3ae0b;
   }
 
   /* Adventure cards */

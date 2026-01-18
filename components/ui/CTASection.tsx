@@ -40,13 +40,13 @@ const CTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/contact" 
-              className="bg-white text-accent-800 hover:bg-accent-50 px-8 py-4 rounded-xl font-semibold text-lg transition-colors"
+              className="btn-adventure px-8 py-4 rounded-xl font-semibold text-lg"
             >
               Get Free Consultation
             </Link>
             <Link 
               href="/courses" 
-              className="border-2 border-white hover:bg-white/10 px-8 py-4 rounded-xl font-semibold text-lg transition-colors"
+              className="btn-outline px-8 py-4 rounded-xl font-semibold text-lg"
             >
               Browse All Courses
             </Link>

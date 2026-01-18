@@ -46,7 +46,7 @@ export default function QuickActions() {
         <button
           onClick={handleSync}
           disabled={syncing}
-          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-accent-600 hover:bg-accent-50 rounded-lg transition-colors disabled:opacity-50"
+          className="btn-adventure flex items-center gap-2 px-3 py-2 text-sm font-medium disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${syncing ? 'animate-spin' : ''}`} />
           {syncing ? 'Syncing...' : 'Sync Now'}

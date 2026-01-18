@@ -73,7 +73,7 @@ const Hero = () => {
                 href="https://www.youtube.com/watch?v=TAD8F87NCxk"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg transition-colors"
+                className="btn-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
               >
                 <Play size={20} />
                 Watch Introduction
