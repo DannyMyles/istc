@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
 import "./globals.css";
+import "./fonts/montserrat.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
 import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
 import AuthProviderWrapper from "@/app/providers/AuthProvider";
-
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "International Safety Training Centre | Professional Safety Training & Certification",
@@ -24,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} font-sans`}>
+    <html lang="en" className="font-sans">
       <head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

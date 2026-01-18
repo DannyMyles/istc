@@ -527,7 +527,7 @@ function ImageCarousel() {
           <h2 className="text-4xl md:text-5xl font-bold text-white">
             Trusted by <span className="text-[#039AC5]">Industry Leaders</span>
           </h2>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-gray-100 max-w-2xl mx-auto">
             Delivering world-class safety training and compliance solutions to businesses worldwide
           </p>
         </motion.div>
