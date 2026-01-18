@@ -509,7 +509,7 @@ export default function TestimonialsPage() {
                   href="tel:+254700364722" 
                   className="btn-adventure px-8 py-3 rounded-xl font-semibold text-lg"
                 >
-                  Call to Enroll
+                  Call to Enquire 
                 </a>
                 <Link 
                   href="/courses" 

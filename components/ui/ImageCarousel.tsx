@@ -436,10 +436,15 @@ function ImageCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(1024);
 
-  // Detect mobile
+  // Detect mobile and window width
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setWindowWidth(width);
+    };
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -494,7 +499,7 @@ function ImageCarousel() {
   // Calculate visible slides
   const getVisibleSlides = () => {
     if (isMobile) return 1;
-    if (window.innerWidth < 1024) return 2;
+    if (windowWidth < 1024) return 2;
     return 3;
   };
 
@@ -519,7 +524,7 @@ function ImageCarousel() {
             <Award className="w-4 h-4" />
             Our Portfolio
           </motion.span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+          <h2 className="text-4xl md:text-5xl font-bold text-white">
             Trusted by <span className="text-[#039AC5]">Industry Leaders</span>
           </h2>
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">

@@ -93,10 +93,10 @@ const CourseCard = ({
           <span className="text-gray-500 text-sm ml-2">/person</span>
         </div>
         <Link
-          href={href}
+          href="/contact"
           className="btn-adventure px-6 py-2 text-sm"
         >
-          Enroll Now
+          Enquire Now
         </Link>
       </div>
     </div>

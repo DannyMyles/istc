@@ -119,7 +119,7 @@ export default function FirstAid() {
                     onClick={() => setShowEnrollmentForm(true)}
                     className="w-full bg-white text-red-600 hover:bg-red-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
                   >
-                    Enroll Now
+                    Enquire  Now
                   </button>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">

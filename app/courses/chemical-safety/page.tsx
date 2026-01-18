@@ -97,7 +97,7 @@ export default function ChemicalSafety() {
                     onClick={() => setShowEnrollmentForm(true)}
                     className="w-full bg-white text-purple-600 hover:bg-purple-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
                   >
-                    Enroll Now
+                    Enquire  Now
                   </button>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
