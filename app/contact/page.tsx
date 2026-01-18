@@ -227,8 +227,8 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Office Location',
-      details: ['Westlands, Nairobi', 'Kenya'],
-      action: 'https://maps.google.com/?q=Westlands+Nairobi+Kenya',
+      details: ['Occidental House, Baricho Road,, Nairobi', 'Kenya'],
+      action: 'https://maps.google.com/?q=Occidental House, Baricho Road,+Nairobi+Kenya',
       color: 'from-purple-500 to-purple-600'
     },
     {
@@ -630,13 +630,13 @@ export default function ContactPage() {
                     <MapPin className="text-white" size={40} />
                   </div>
                   <h3 className="text-2xl font-bold text-accent-800 mb-2">
-                    Westlands, Nairobi
+                    Occidental House, Baricho Road,, Nairobi
                   </h3>
                   <p className="text-gray-600 mb-6">
                     Visit our state-of-the-art training facility
                   </p>
                   <a 
-                    href="https://maps.google.com/?q=Westlands+Nairobi+Kenya" 
+                    href="https://maps.google.com/?q=Occidental House, Baricho Road,+Nairobi+Kenya" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-block bg-gradient-to-r from-accent-500 to-accent-600   px-8 py-3 rounded-lg font-semibold hover:from-accent-600 hover:to-accent-700 hover:scale-105 transition-all duration-300 shadow-lg"
