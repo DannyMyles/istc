@@ -5,20 +5,52 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ImageCarousel from './ImageCarousel';
 import ReactPlayer from 'react-player';
+import { useState, useEffect } from 'react';
 
 const Hero = () => {
+  const [showFallback, setShowFallback] = useState(false);
+
+  useEffect(() => {
+    // Fallback timeout in case video fails silently
+    const timeout = setTimeout(() => {
+      setShowFallback(true);
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <section className="relative overflow-hidden min-h-screen">
       {/* Video Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <ReactPlayer
-          src="/videos/safety_video.mp4"
-          playing={true}
-          loop={true}
-          muted={true}
-          width="100%"
-          height="100%"
-          playsInline={true}
+        {!showFallback && (
+          <ReactPlayer
+            src="/videos/safety_video.mp4"
+            playing={true}
+            loop={true}
+            muted={true}
+            width="100%"
+            height="100%"
+            playsInline={true}
+            onError={() => setShowFallback(true)}
+            onPlay={() => setShowFallback(false)}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              minWidth: '100%',
+              minHeight: '100%',
+              objectFit: 'cover',
+            }}
+          />
+        )}
+        
+        {/* Fallback Image */}
+        <Image
+          src="/videos/10.jpg"
+          alt="Hero background"
+          fill
           style={{
             position: 'absolute',
             top: '50%',
@@ -28,6 +60,7 @@ const Hero = () => {
             minHeight: '100%',
             objectFit: 'cover',
           }}
+          priority
         />
         
         {/* Enhanced Darker overlay for much better text readability */}
