@@ -47,7 +47,7 @@ const Hero = () => {
           {/* Left Content - Safety Training */}
           <div className="space-y-6 md:space-y-8">
             <div className="inline-flex items-center gap-3 bg-white/90 backdrop-blur-sm text-accent-800 px-4 py-2 rounded-full text-sm font-semibold">
-              <Shield size={16} />
+              <Shield size={16} stroke='#FED803' fill='none' />
               <span>Certified Safety Training Centre</span>
             </div>
 

@@ -16,7 +16,6 @@ export default function ChemicalSafety() {
     duration: '2 days',
     format: 'Classroom & Practical Demonstrations',
     level: 'Specialized Training',
-    price: 'Ksh 15,000',
     nextIntake: 'Bi-weekly',
     
     targetProfessions: [
@@ -89,8 +88,7 @@ export default function ChemicalSafety() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <div className="text-3xl font-bold mb-2">{courseData.price}</div>
-                    <p className="text-purple-200 text-sm">Per participant</p>
+                    <p className="text-purple-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <button 

@@ -227,7 +227,7 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Office Location',
-      details: ['Occidental House, Baricho Road,, Nairobi', 'Kenya'],
+      details: ['Occidental House, Baricho Road, Nairobi', 'Kenya'],
       action: 'https://maps.google.com/?q=Occidental House, Baricho Road,+Nairobi+Kenya',
       color: 'from-purple-500 to-purple-600'
     },
@@ -630,7 +630,7 @@ export default function ContactPage() {
                     <MapPin className="text-white" size={40} />
                   </div>
                   <h3 className="text-2xl font-bold text-accent-800 mb-2">
-                    Occidental House, Baricho Road,, Nairobi
+                    Occidental House, Baricho Road, Nairobi
                   </h3>
                   <p className="text-gray-600 mb-6">
                     Visit our state-of-the-art training facility

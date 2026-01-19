@@ -99,7 +99,7 @@ export default function CoursesPage() {
       level: 'Advanced',
       nextStart: 'April 15, 2024',
       rating: 4.9,
-      price: 160000,
+      price: 45000,
       category: 'Occupational Safety',
       href: '/courses/occupational-safety-health-diploma',
       featured: true
@@ -112,7 +112,7 @@ export default function CoursesPage() {
       level: 'Beginner',
       nextStart: 'March 18, 2024',
       rating: 4.7,
-      price: 45000,
+      price: 15000,
       category: 'Occupational Safety',
       href: '/courses/occupational-safety-health-certificate',
       featured: false
@@ -126,7 +126,7 @@ export default function CoursesPage() {
       level: 'Advanced',
       nextStart: 'April 2, 2024',
       rating: 4.8,
-      price: 49000,
+      price: 35000,
       category: 'Fire Safety',
       href: '/courses/fire-safety-course-diploma',
       featured: true
@@ -139,7 +139,7 @@ export default function CoursesPage() {
       level: 'Beginner',
       nextStart: 'March 20, 2024',
       rating: 4.6,
-      price: 15000,
+      price: 5000,
       category: 'Fire Safety',
       href: '/courses/fire-safety-course-certificate',
       featured: false
@@ -153,7 +153,7 @@ export default function CoursesPage() {
       level: 'Beginner',
       nextStart: 'March 15, 2024',
       rating: 4.9,
-      price: 12000,
+      price: 8000,
       category: 'First Aid',
       href: '/courses/first-aid?course=occupational',
       featured: false
@@ -166,7 +166,7 @@ export default function CoursesPage() {
       level: 'Beginner',
       nextStart: 'March 22, 2024',
       rating: 4.8,
-      price: 6000,
+      price: 3500,
       category: 'First Aid',
       href: '/courses/first-aid?course=basic',
       featured: false
@@ -179,7 +179,7 @@ export default function CoursesPage() {
       level: 'Beginner',
       nextStart: 'March 25, 2024',
       rating: 4.7,
-      price: 7000,
+      price: 4000,
       category: 'First Aid',
       href: '/courses/first-aid?course=paediatric',
       featured: false
@@ -192,7 +192,7 @@ export default function CoursesPage() {
       level: 'Intermediate',
       nextStart: 'March 28, 2024',
       rating: 4.8,
-      price: 8000,
+      price: 3000,
       category: 'First Aid',
       href: '/courses/first-aid?course=refresher',
       featured: false
@@ -206,7 +206,7 @@ export default function CoursesPage() {
       level: 'Intermediate',
       nextStart: 'April 5, 2024',
       rating: 4.7,
-      price: 18000,
+      price: 12000,
       category: 'Construction Safety',
       href: '/courses/work-at-height',
       featured: false
@@ -219,7 +219,7 @@ export default function CoursesPage() {
       level: 'Intermediate',
       nextStart: 'April 8, 2024',
       rating: 4.6,
-      price: 15000,
+      price: 10000,
       category: 'Chemical Safety',
       href: '/courses/chemical-safety',
       featured: false
@@ -232,7 +232,7 @@ export default function CoursesPage() {
       level: 'Intermediate',
       nextStart: 'April 12, 2024',
       rating: 4.8,
-      price: 25000,
+      price: 15000,
       category: 'Emergency Management',
       href: '/courses/disaster-emergency-preparedness',
       featured: true
@@ -245,7 +245,7 @@ export default function CoursesPage() {
       level: 'Intermediate',
       nextStart: 'April 15, 2024',
       rating: 4.7,
-      price: 12000,
+      price: 8000,
       category: 'Transport Safety',
       href: '/courses/road-safety',
       featured: false
@@ -290,10 +290,6 @@ export default function CoursesPage() {
   // Sort courses
   const sortedCourses = [...filteredCourses].sort((a, b) => {
     switch(sortBy) {
-      case 'price-low':
-        return a.price - b.price;
-      case 'price-high':
-        return b.price - a.price;
       case 'rating':
         return b.rating - a.rating;
       default: // newest (default)
@@ -593,8 +589,6 @@ export default function CoursesPage() {
                       className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
                     >
                       <option value="newest">Sort by: Newest</option>
-                      <option value="price-low">Sort by: Price Low to High</option>
-                      <option value="price-high">Sort by: Price High to Low</option>
                       <option value="rating">Sort by: Rating</option>
                     </select>
                   </div>

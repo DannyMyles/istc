@@ -86,12 +86,8 @@ const CourseCard = ({
         <span className="text-sm text-gray-600">({rating}.0)</span>
       </div>
 
-      {/* Price and CTA */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-        <div>
-          <span className="text-2xl font-bold text-accent-800">Ksh {price.toLocaleString()}</span>
-          <span className="text-gray-500 text-sm ml-2">/person</span>
-        </div>
+      {/* CTA */}
+      <div className="flex items-center justify-end pt-4 border-t border-gray-100">
         <Link
           href="/contact"
           className="btn-adventure px-6 py-2 text-sm"

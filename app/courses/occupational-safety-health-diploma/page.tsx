@@ -17,7 +17,6 @@ export default function OccupationalSafetyHealthDiploma() {
     format: 'Distance learning with occasional tutorial classes',
     level: 'Advanced Diploma',
     partnership: 'In collaboration with Cambridge International College',
-    price: 'Ksh 160,000',
     nextIntake: 'April 2024',
     
     whoShouldAttend: [
@@ -92,8 +91,7 @@ export default function OccupationalSafetyHealthDiploma() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <div className="text-3xl font-bold mb-2">{courseData.price}</div>
-                    <p className="text-accent-200 text-sm">Full programme fee</p>
+                    <p className="text-accent-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <button 

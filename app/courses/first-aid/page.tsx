@@ -12,7 +12,6 @@ export default function FirstAid() {
     occupational: {
       title: 'Occupational First Aid',
       duration: '3 days',
-      price: 'Ksh 12,000',
       description: 'For individuals who wish to take the role of nominated first aiders in the workplace.',
       content: [
         'Emergency response procedures',
@@ -26,7 +25,6 @@ export default function FirstAid() {
     basic: {
       title: 'Basic First Aid',
       duration: '1 day',
-      price: 'Ksh 6,000',
       description: 'Aimed to equip participants with basic lifesaving skills and information to deal with emergency situations.',
       content: [
         'Basic life support',
@@ -39,7 +37,6 @@ export default function FirstAid() {
     paediatric: {
       title: 'Paediatric First Aid',
       duration: '1 day',
-      price: 'Ksh 7,000',
       description: 'For people who work with or look after children, enabling them to have basic knowledge on how to deal with pediatric emergency situations.',
       content: [
         'Child CPR techniques',
@@ -52,7 +49,6 @@ export default function FirstAid() {
     refresher: {
       title: 'Occupational First Aid Refresher',
       duration: '1 day',
-      price: 'Ksh 8,000',
       description: 'For people intending to requalify in their role as first aiders in the workplace.',
       content: [
         'CPR refresher',
@@ -64,7 +60,6 @@ export default function FirstAid() {
     school: {
       title: 'Basic School Safety',
       duration: '1 day',
-      price: 'Ksh 5,000',
       description: 'Aimed to equip school staff with basic lifesaving skills.',
       content: [
         'School emergency procedures',
@@ -111,8 +106,7 @@ export default function FirstAid() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <div className="text-3xl font-bold mb-2">{currentCourse.price}</div>
-                    <p className="text-red-200 text-sm">For {currentCourse.duration} course</p>
+                    <p className="text-red-200 text-sm">Duration: {currentCourse.duration}</p>
                   </div>
                   
                   <button 
@@ -237,7 +231,7 @@ export default function FirstAid() {
                         }`}
                       >
                         <div className="font-medium text-gray-900 mb-1">{course.title}</div>
-                        <div className="text-sm text-gray-600">{course.duration} • {course.price}</div>
+                        <div className="text-sm text-gray-600">{course.duration}</div>
                       </div>
                     ))}
                   </div>

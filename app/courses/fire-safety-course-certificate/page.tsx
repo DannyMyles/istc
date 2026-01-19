@@ -12,7 +12,6 @@ export default function FireSafetyCourseCertificate() {
     basic: {
       title: 'Basic Fire Safety',
       duration: '1 day',
-      price: 'Ksh 5,000',
       description: 'Aimed at imparting knowledge to anyone who requires basic knowledge on fire nature, classification, causes, firefighting appliances, and prevention methods.',
       content: [
         'Nature and behaviour of fire',
@@ -26,7 +25,6 @@ export default function FireSafetyCourseCertificate() {
     marshal: {
       title: 'Fire Marshals Training',
       duration: '3 days',
-      price: 'Ksh 15,000',
       description: 'Aimed to equip participants with necessary knowledge on fire safety, emergency preparedness, evacuation, and escape to become effective Fire Marshals.',
       content: [
         'Fire safety legislation',
@@ -76,8 +74,7 @@ export default function FireSafetyCourseCertificate() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <div className="text-3xl font-bold mb-2">{currentCourse.price}</div>
-                    <p className="text-red-200 text-sm">For {currentCourse.duration} course</p>
+                    <p className="text-red-200 text-sm">Duration: {currentCourse.duration}</p>
                   </div>
                   
                   <button 
@@ -202,7 +199,7 @@ export default function FireSafetyCourseCertificate() {
                         }`}
                       >
                         <div className="font-medium text-gray-900 mb-1">{course.title}</div>
-                        <div className="text-sm text-gray-600">{course.duration} • {course.price}</div>
+                        <div className="text-sm text-gray-600">{course.duration}</div>
                       </div>
                     ))}
                   </div>

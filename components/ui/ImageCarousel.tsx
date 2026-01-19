@@ -315,7 +315,7 @@ function CarouselSlide({
             transition={{ delay: 0.2 }}
           >
             <span className="text-[#039AC5]">{getCategoryIcon(slide.category)}</span>
-            <span className="text-xs font-semibold text-gray-800">{slide.category}</span>
+            {/* <span className="text-xs font-semibold text-gray-800">{slide.category}</span> */}
           </motion.div>
 
 
@@ -584,11 +584,11 @@ function ImageCarousel() {
           </div>
 
           {/* Progress dots */}
-          <ProgressDots
+          {/* <ProgressDots
             total={slides.length}
             current={currentIndex}
             onClick={goToSlide}
-          />
+          /> */}
 
           {/* Mobile swipe indicator */}
           {isMobile && (

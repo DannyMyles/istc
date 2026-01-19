@@ -17,7 +17,6 @@ export default function FireSafetyCourseDiploma() {
     format: 'Evening & Weekend Classes',
     level: 'Professional Diploma',
     partnership: 'In collaboration with Institute of Fire Engineers',
-    price: 'Ksh 49,000',
     nextIntake: 'Quarterly',
     
     scheduleOptions: [
@@ -38,14 +37,6 @@ export default function FireSafetyCourseDiploma() {
         section: 'Fire Safety',
         topics: ['Elements of construction', 'Fire safety Practice', 'Fixed Installations']
       }
-    ],
-    
-    feesBreakdown: [
-      { item: 'Registration Fee', amount: 'Ksh 2,500' },
-      { item: 'Tuition Fee', amount: 'Ksh 30,000' },
-      { item: 'Books', amount: 'Ksh 8,500' },
-      { item: 'Exam Fee', amount: 'Ksh 8,000' },
-      { item: 'Total Fee', amount: 'Ksh 49,000', highlight: true }
     ],
     
     certification: 'IFE Level 2 Certificate in Fire Science, Operations and Safety from Institute of Fire Engineers.',
@@ -91,8 +82,7 @@ export default function FireSafetyCourseDiploma() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <div className="text-3xl font-bold mb-2">{courseData.price}</div>
-                    <p className="text-orange-200 text-sm">Complete programme fee</p>
+                    <p className="text-orange-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <button 
@@ -208,27 +198,6 @@ export default function FireSafetyCourseDiploma() {
                             {option.days}
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-white adventure-card p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Fees Breakdown</h3>
-                  <div className="space-y-3">
-                    {courseData.feesBreakdown.map((fee, index) => (
-                      <div 
-                        key={index} 
-                        className={`flex justify-between items-center py-2 ${
-                          fee.highlight ? 'border-t border-gray-200 pt-3 font-bold' : ''
-                        }`}
-                      >
-                        <span className={`${fee.highlight ? 'text-gray-900' : 'text-gray-600'}`}>
-                          {fee.item}
-                        </span>
-                        <span className={`${fee.highlight ? 'text-orange-600' : 'text-gray-900'}`}>
-                          {fee.amount}
-                        </span>
                       </div>
                     ))}
                   </div>
