@@ -5,7 +5,6 @@ import { Calendar, Clock, Award, Heart, Stethoscope, Users, CheckCircle, Phone, 
 import Link from 'next/link';
 
 export default function FirstAid() {
-  const [showEnrollmentForm, setShowEnrollmentForm] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState('occupational');
   
   const courses = {
@@ -109,12 +108,12 @@ export default function FirstAid() {
                     <p className="text-red-200 text-sm">Duration: {currentCourse.duration}</p>
                   </div>
                   
-                  <button 
-                    onClick={() => setShowEnrollmentForm(true)}
-                    className="w-full bg-white text-red-600 hover:bg-red-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link 
+                    href="/contact"
+                    className="block w-full bg-white text-red-600 hover:bg-red-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Enquire  Now
-                  </button>
+                    Enquire Now
+                  </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">

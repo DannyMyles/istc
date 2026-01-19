@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { Calendar, Clock, Flame, Award, BookOpen, Users, CheckCircle, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 export default function FireSafetyCourseDiploma() {
-  const [showEnrollmentForm, setShowEnrollmentForm] = useState(false);
   
   const courseData = {
     title: 'IFE Level 2 Certificate in Fire Science, Operations and Safety',
@@ -85,12 +83,12 @@ export default function FireSafetyCourseDiploma() {
                     <p className="text-orange-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
-                  <button 
-                    onClick={() => setShowEnrollmentForm(true)}
-                    className="w-full bg-white text-orange-600 hover:bg-orange-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link 
+                    href="/contact"
+                    className="block w-full bg-white text-orange-600 hover:bg-orange-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Enquire  Now
-                  </button>
+                    Enquire Now
+                  </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">

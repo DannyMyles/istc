@@ -5,7 +5,6 @@ import { Calendar, Clock, Users, Award, BookOpen, CheckCircle, Shield, Graduatio
 import Link from 'next/link';
 
 export default function OccupationalSafetyHealthDiploma() {
-  const [showEnrollmentForm, setShowEnrollmentForm] = useState(false);
   
   const courseData = {
     title: 'Diploma in Occupational Safety & Health',
@@ -94,12 +93,12 @@ export default function OccupationalSafetyHealthDiploma() {
                     <p className="text-accent-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
-                  <button 
-                    onClick={() => setShowEnrollmentForm(true)}
-                    className="w-full bg-white text-accent-800 hover:bg-accent-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link 
+                    href="/contact"
+                    className="block w-full bg-white text-accent-800 hover:bg-accent-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Enquire  Now
-                  </button>
+                    Enquire Now
+                  </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
