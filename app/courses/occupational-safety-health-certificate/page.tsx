@@ -89,7 +89,7 @@ export default function OccupationalSafetyHealthCertificate() {
                   
                   <Link 
                     href="/contact"
-                    className="block w-full bg-white text-accent-800 hover:bg-accent-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                    className="btn-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
                   >
                     Enquire Now
                   </Link>
