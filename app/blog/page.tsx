@@ -21,6 +21,7 @@ import {
 import Link from 'next/link'
 import { Blog, blogService, Category } from '../api_services/blogService'
 import debounce from 'lodash/debounce'
+import Spinner, { LoadingSpinner } from '@/components/ui/Spinner'
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState<Blog[]>([])
@@ -209,10 +210,10 @@ export default function BlogPage() {
   if (loading && blogs.length === 0) {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading blogs...</p>
-        </div>
+        <LoadingSpinner 
+          text="Loading articles..." 
+          size="lg"
+        />
       </div>
     )
   }
@@ -236,25 +237,34 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-accent-50 to-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="container mx-auto px-4 relative">
+    <div className="pt-8">
+      {/* Hero Section with Background Image */}
+      <section className="relative py-28 md:py-64 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/3.jpg')",
+            backgroundColor: '#039AC5'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/50"></div>
+          <div className="absolute inset-0 opacity-10 bg-[url('/images/patterns/quote-pattern.svg')]"></div>
+        </div>
+        
+        <div className="container relative z-10 mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full mb-6 shadow-sm">
-              <Sparkles className="text-accent-600" size={16} />
-              <span className="text-sm font-medium text-gray-700">
-                {pagination.totalBlogs}+ Articles Published
-              </span>
+            <div className="inline-flex items-center gap-2 bg-accent-500/10 backdrop-blur-sm border border-accent-500/20 text-white px-6 py-2 rounded-full text-sm font-medium mb-8">
+              <Sparkles size={16} />
+              <span>{pagination.totalBlogs}+ Articles Published</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               Safety Insights & 
-              <span className="text-accent-600"> Articles</span>
+              <span className="text-accent-400"> Articles</span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
               Latest news, insights, and expert advice on workplace safety, training, and compliance.
             </p>
             
@@ -297,20 +307,20 @@ export default function BlogPage() {
             {/* Quick Stats */}
             <div className="flex flex-wrap justify-center gap-6 mt-8">
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{pagination.totalBlogs}</div>
-                <div className="text-sm text-gray-600">Total Articles</div>
+                <div className="text-2xl font-bold text-white">{pagination.totalBlogs}</div>
+                <div className="text-sm text-gray-100">Total Articles</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{featuredBlogs.length}</div>
-                <div className="text-sm text-gray-600">Featured</div>
+                <div className="text-2xl font-bold text-white">{featuredBlogs.length}</div>
+                <div className="text-sm text-gray-100">Featured</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{categories.length}</div>
-                <div className="text-sm text-gray-600">Categories</div>
+                <div className="text-2xl font-bold text-white">{categories.length}</div>
+                <div className="text-sm text-gray-100">Categories</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{getReadingProgress()}%</div>
-                <div className="text-sm text-gray-600">Your Progress</div>
+                <div className="text-2xl font-bold text-white">{getReadingProgress()}%</div>
+                <div className="text-sm text-gray-100">Your Progress</div>
               </div>
             </div>
           </div>

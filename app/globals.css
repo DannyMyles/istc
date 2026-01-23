@@ -3,9 +3,23 @@
 
 @layer base {
   :root {
-    --color-accent: 193.8 96.9% 39.6%; /* #039AC5 in HSL: 193.8°, 96.9%, 39.6% */
-    --color-accent-light: 193.8 76.7% 59.4%; /* #4AC1E8 in HSL */
-    --color-accent-dark: 193.8 96.9% 31.4%; /* #02749C in HSL */
+    /* #039AC5 - Teal/Cyan */
+    --color-teal: 193.8 96.9% 39.6%;
+    --color-teal-light: 193.8 76.7% 59.4%;
+    --color-teal-dark: 193.8 96.9% 31.4%;
+    
+    /* #771440 - Deep Magenta/Berry */
+    --color-magenta: 337.5 71.4% 34.1%;
+    --color-magenta-light: 337.5 60% 50%;
+    --color-magenta-dark: 337.5 75% 26%;
+    
+    /* Blend colors - Gradient combinations */
+    --color-gradient-start: 337.5 71.4% 34.1%; /* #771440 */
+    --color-gradient-end: 193.8 96.9% 39.6%; /* #039AC5 */
+    
+    --color-accent: 193.8 96.9% 39.6%; /* Kept for backward compatibility - #039AC5 */
+    --color-accent-light: 193.8 76.7% 59.4%;
+    --color-accent-dark: 193.8 96.9% 31.4%;
     
     --font-montserrat: 'Montserrat', sans-serif;
     --font-sans: var(--font-montserrat);
@@ -19,11 +33,11 @@
 
   /* Custom selection color with accent */
   ::selection {
-    background-color: rgba(3, 154, 197, 0.2); /* Updated */
-    color: #1f2937;
+    background-color: rgba(119, 20, 64, 0.2);
+    color: white;
   }
 
-  /* Custom scrollbar with accent */
+  /* Custom scrollbar with blended colors */
   ::-webkit-scrollbar {
     width: 10px;
   }
@@ -33,21 +47,21 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #039AC5; /* Updated */
+    background: linear-gradient(to bottom, #771440, #039AC5);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #02749C; /* Updated */
-    transition: background-color 300ms;
+    background: linear-gradient(to bottom, #5a0f33, #02749C);
+    transition: background 300ms;
   }
 }
 
 @layer components {
-  /* Yellow-themed action buttons with gradient */
+  /* Magenta-Teal Gradient Button - Primary Action */
   .btn-action {
-    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
-    color: #1f2937;
+    background: linear-gradient(135deg, #771440 0%, #039AC5 50%, #5a0f33 100%);
+    color: white;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.75rem;
@@ -57,26 +71,26 @@
     letter-spacing: 0.025em;
     transition: all 300ms;
     transform: translateY(0);
-    box-shadow: 0 10px 30px -3px rgba(211, 174, 11, 0.3), 0 4px 6px -2px rgba(211, 174, 11, 0.1);
+    box-shadow: 0 10px 30px -3px rgba(119, 20, 64, 0.3), 0 4px 6px -2px rgba(3, 154, 197, 0.2);
     border: none;
   }
 
   .btn-action:hover {
-    background: linear-gradient(135deg, #d3ae0b 0%, #b8960a 100%);
+    background: linear-gradient(135deg, #5a0f33 0%, #02749C 50%, #771440 100%);
     transform: translateY(-2px);
-    box-shadow: 0 20px 60px -10px rgba(211, 174, 11, 0.4), 0 10px 20px -5px rgba(211, 174, 11, 0.2);
+    box-shadow: 0 20px 60px -10px rgba(119, 20, 64, 0.4), 0 10px 20px -5px rgba(3, 154, 197, 0.3);
   }
 
   .btn-action:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(211, 174, 11, 0.4);
+    box-shadow: 0 0 0 4px rgba(119, 20, 64, 0.3);
   }
 
-  /* Yellow-themed outline buttons for non-action buttons */
+  /* Magenta-Teal Outline Button */
   .btn-outline {
     background-color: white;
-    color: #B8860B;
+    color: #771440;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.75rem;
@@ -85,28 +99,28 @@
     font-weight: 600;
     letter-spacing: 0.025em;
     transition: all 300ms;
-    border: 2px solid #d3ae0b;
+    border: 2px solid #771440;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
   .btn-outline:hover {
-    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
-    color: #1f2937;
-    border-color: #d3ae0b;
+    background: linear-gradient(135deg, #771440 0%, #039AC5 100%);
+    color: white;
+    border-color: #039AC5;
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px -3px rgba(211, 174, 11, 0.3), 0 4px 6px -2px rgba(211, 174, 11, 0.1);
+    box-shadow: 0 10px 30px -3px rgba(119, 20, 64, 0.3), 0 4px 6px -2px rgba(3, 154, 197, 0.2);
   }
 
   .btn-outline:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(211, 174, 11, 0.4);
+    box-shadow: 0 0 0 4px rgba(119, 20, 64, 0.3);
   }
 
-  /* Legacy adventure button - kept for backward compatibility */
-  .btn-adventure {
-    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
-    color: #1f2937;
+  /* Teal Button - Secondary */
+  .btn-teal {
+    background: linear-gradient(135deg, #039AC5 0%, #02749C 100%);
+    color: white;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.75rem;
@@ -116,25 +130,83 @@
     letter-spacing: 0.025em;
     transition: all 300ms;
     transform: translateY(0);
-    box-shadow: 0 10px 30px -3px rgba(211, 174, 11, 0.3), 0 4px 6px -2px rgba(211, 174, 11, 0.1);
+    box-shadow: 0 10px 30px -3px rgba(3, 154, 197, 0.3), 0 4px 6px -2px rgba(3, 154, 197, 0.1);
+    border: none;
+  }
+
+  .btn-teal:hover {
+    background: linear-gradient(135deg, #02749C 0%, #039AC5 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px -10px rgba(3, 154, 197, 0.4), 0 10px 20px -5px rgba(3, 154, 197, 0.2);
+  }
+
+  .btn-teal:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(3, 154, 197, 0.4);
+  }
+
+  /* Magenta Button - Accent */
+  .btn-magenta {
+    background: linear-gradient(135deg, #771440 0%, #5a0f33 100%);
+    color: white;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    transition: all 300ms;
+    transform: translateY(0);
+    box-shadow: 0 10px 30px -3px rgba(119, 20, 64, 0.3), 0 4px 6px -2px rgba(119, 20, 64, 0.1);
+    border: none;
+  }
+
+  .btn-magenta:hover {
+    background: linear-gradient(135deg, #5a0f33 0%, #771440 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px -10px rgba(119, 20, 64, 0.4), 0 10px 20px -5px rgba(119, 20, 64, 0.2);
+  }
+
+  .btn-magenta:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(119, 20, 64, 0.4);
+  }
+
+  /* Legacy adventure button - kept for backward compatibility */
+  .btn-adventure {
+    background: linear-gradient(135deg, #771440 0%, #039AC5 50%, #5a0f33 100%);
+    color: white;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    transition: all 300ms;
+    transform: translateY(0);
+    box-shadow: 0 10px 30px -3px rgba(119, 20, 64, 0.3), 0 4px 6px -2px rgba(3, 154, 197, 0.2);
     border: none;
   }
 
   .btn-adventure:hover {
-    background: linear-gradient(135deg, #d3ae0b 0%, #b8960a 100%);
+    background: linear-gradient(135deg, #5a0f33 0%, #02749C 50%, #771440 100%);
     transform: translateY(-2px);
-    box-shadow: 0 20px 60px -10px rgba(211, 174, 11, 0.4), 0 10px 20px -5px rgba(211, 174, 11, 0.2);
+    box-shadow: 0 20px 60px -10px rgba(119, 20, 64, 0.4), 0 10px 20px -5px rgba(3, 154, 197, 0.3);
   }
 
   .btn-adventure:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(211, 174, 11, 0.4);
+    box-shadow: 0 0 0 4px rgba(119, 20, 64, 0.3);
   }
 
   .btn-adventure-outline {
-    border: 2px solid #d3ae0b;
-    color: #B8860B;
+    border: 2px solid #771440;
+    color: #771440;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.75rem;
@@ -147,12 +219,12 @@
   }
 
   .btn-adventure-outline:hover {
-    background: linear-gradient(135deg, #f0c711 0%, #d3ae0b 100%);
-    color: #1f2937;
-    border-color: #d3ae0b;
+    background: linear-gradient(135deg, #771440 0%, #039AC5 100%);
+    color: white;
+    border-color: #039AC5;
   }
 
-  /* Adventure cards */
+  /* Cards */
   .adventure-card {
     background-color: white;
     border-radius: 1rem;
@@ -163,17 +235,42 @@
   }
 
   .adventure-card:hover {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(119, 20, 64, 0.2);
     transform: translateY(-4px);
   }
 
   .adventure-card-accent {
-    border-left: 4px solid #039AC5; /* Updated */
+    border-left: 4px solid #039AC5;
   }
 
-  /* Gradient text */
+  .adventure-card-magenta {
+    border-left: 4px solid #771440;
+  }
+
+  .adventure-card-blend {
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, #771440, #039AC5) 1;
+  }
+
+  /* Gradient Text - Magenta to Teal */
   .text-gradient-adventure {
-    background: linear-gradient(to right, #039AC5, #02749C, #4AC1E8); /* Updated */
+    background: linear-gradient(135deg, #771440 0%, #039AC5 50%, #5a0f33 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Alternate gradient - Teal to Magenta */
+  .text-gradient-teal-magenta {
+    background: linear-gradient(135deg, #039AC5 0%, #771440 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Three-color gradient */
+  .text-gradient-full {
+    background: linear-gradient(to right, #771440, #B0406B, #039AC5, #02749C);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -190,8 +287,36 @@
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 500;
-    background-color: #E6F7FC; /* Updated */
-    color: #023D55; /* Updated */
+    background-color: #E6F7FC;
+    color: #023D55;
+  }
+
+  .badge-magenta {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: #FCE4EC;
+    color: #771440;
+  }
+
+  .badge-gradient {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: linear-gradient(135deg, #771440 0%, #039AC5 100%);
+    color: white;
   }
 
   /* Navigation accent */
@@ -202,7 +327,7 @@
   }
 
   .nav-link-accent:hover {
-    color: #771440; /* Updated */
+    color: #771440;
   }
 
   .nav-link-accent::after {
@@ -212,7 +337,7 @@
     left: 0;
     height: 2px;
     width: 0;
-    background-color: #039AC5; /* Updated */
+    background: linear-gradient(to right, #771440, #039AC5);
     transition: all 300ms;
   }
 
@@ -221,11 +346,26 @@
   }
 
   .nav-link-active {
-    color: #02749C; /* Updated */
+    color: #039AC5;
   }
 
   .nav-link-active::after {
     width: 100%;
+    background: linear-gradient(to right, #771440, #039AC5);
+  }
+
+  /* Gradient borders */
+  .border-gradient {
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #771440, #039AC5) border-box;
+  }
+
+  .border-gradient-rgb {
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, rgb(119, 20, 64), rgb(3, 154, 197)) border-box;
   }
 }
 
@@ -239,13 +379,44 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(3, 154, 197, 0.2), /* Updated */
-      rgba(3, 154, 197, 0.4), /* Updated */
-      rgba(3, 154, 197, 0.2), /* Updated */
+      rgba(3, 154, 197, 0.2),
+      rgba(3, 154, 197, 0.4),
+      rgba(3, 154, 197, 0.2),
       transparent
     );
     background-size: 200% auto;
     animation: shine 2s linear infinite;
+  }
+
+  /* Gradient backgrounds - Magenta to Teal */
+  .bg-gradient-magenta-teal {
+    background: linear-gradient(135deg, #771440 0%, #039AC5 100%);
+  }
+
+  .bg-gradient-magenta-teal-reverse {
+    background: linear-gradient(135deg, #039AC5 0%, #771440 100%);
+  }
+
+  .bg-gradient-magenta-teal-vertical {
+    background: linear-gradient(to bottom, #771440 0%, #039AC5 100%);
+  }
+
+  .bg-gradient-magenta-teal-diagonal {
+    background: linear-gradient(45deg, #771440 0%, #039AC5 50%, #771440 100%);
+    background-size: 200% 200%;
+  }
+
+  /* Subtle backgrounds */
+  .bg-magenta-soft {
+    background-color: rgba(119, 20, 64, 0.05);
+  }
+
+  .bg-teal-soft {
+    background-color: rgba(3, 154, 197, 0.05);
+  }
+
+  .bg-gradient-soft {
+    background: linear-gradient(135deg, rgba(119, 20, 64, 0.08) 0%, rgba(3, 154, 197, 0.08) 100%);
   }
 
   /* Adventure-specific utilities */
@@ -256,7 +427,81 @@
   .glass-adventure {
     backdrop-filter: blur(12px);
     background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(3, 154, 197, 0.3); /* Updated */
+    border: 1px solid rgba(3, 154, 197, 0.3);
+  }
+
+  /* Glassmorphism with blended colors */
+  .glass-magenta-teal {
+    backdrop-filter: blur(12px);
+    background: linear-gradient(135deg, rgba(119, 20, 64, 0.1) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(3, 154, 197, 0.1) 100%);
+    border: 1px solid rgba(119, 20, 64, 0.2);
+  }
+
+  /* Shadow utilities with blended colors */
+  .shadow-magenta {
+    box-shadow: 0 10px 40px -10px rgba(119, 20, 64, 0.3);
+  }
+
+  .shadow-teal {
+    box-shadow: 0 10px 40px -10px rgba(3, 154, 197, 0.3);
+  }
+
+  .shadow-magenta-teal {
+    box-shadow: 0 10px 40px -10px rgba(119, 20, 64, 0.2), 0 5px 20px -5px rgba(3, 154, 197, 0.2);
+  }
+
+  /* Text colors */
+  .text-magenta {
+    color: #771440;
+  }
+
+  .text-teal {
+    color: #039AC5;
+  }
+
+  .text-gradient-magenta-teal {
+    background: linear-gradient(135deg, #771440 0%, #039AC5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Border colors */
+  .border-magenta {
+    border-color: #771440;
+  }
+
+  .border-teal {
+    border-color: #039AC5;
+  }
+
+  .border-gradient-magenta-teal {
+    border-image: linear-gradient(135deg, #771440, #039AC5) 1;
+  }
+
+  /* Ring utilities for focus states */
+  .ring-magenta {
+    --tw-ring-color: rgba(119, 20, 64, 0.4);
+  }
+
+  .ring-teal {
+    --tw-ring-color: rgba(3, 154, 197, 0.4);
+  }
+
+  .ring-magenta-teal {
+    --tw-ring-color: rgba(119, 20, 64, 0.3);
+  }
+
+  /* Hover transitions for gradient backgrounds */
+  .hover-bg-gradient-magenta-teal:hover {
+    background: linear-gradient(135deg, #5a0f33 0%, #02749C 100%);
+  }
+
+  .hover-text-gradient-magenta-teal:hover {
+    background: linear-gradient(135deg, #5a0f33 0%, #02749C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
 
