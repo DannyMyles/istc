@@ -7,6 +7,7 @@ import {
   Facebook, Twitter, Linkedin, Instagram, 
   GraduationCap, Award, Users, Clock 
 } from 'lucide-react';
+import { FaTiktok } from 'react-icons/fa';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
@@ -47,17 +48,19 @@ const Footer = () => {
               Your trusted partner for professional safety training, certification, and consultancy services.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-accent-light transition-colors">
+              <a href="https://www.tiktok.com/@istc_ke?_r=1&_t=ZS-93FzoErNgZ7" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
+                <FaTiktok size={20} />
+              </a>
+              <a href="https://www.facebook.com/share/1826jx1pxG/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="hover:text-accent-light transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="hover:text-accent-light transition-colors">
-                <Linkedin size={20} />
-              </a>
-              <a href="#" className="hover:text-accent-light transition-colors">
+              <a href="https://www.instagram.com/istc._.kenya?igsh=MTV4aDZ0ZGtvYzl2MA==" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
                 <Instagram size={20} />
+              </a>
+              <a href="https://x.com/hsetraining?s=11&t=i93mQhgATaeMgK7d-PmFGw" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
               </a>
             </div>
           </div>
