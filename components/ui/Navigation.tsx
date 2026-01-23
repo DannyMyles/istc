@@ -7,6 +7,7 @@ import {
   Menu, X, Phone, ChevronDown, Shield, GraduationCap, 
   Search, Mail, Clock, ChevronRight, User, LogOut, KeyRound 
 } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
@@ -188,9 +189,21 @@ const Navigation = () => {
                 </a>
               </div>
               <div className="hidden md:block h-4 w-px bg-white/30"></div>
-              <div className="hidden md:flex items-center gap-2 text-accent-light font-medium animate-pulse-glow">
-                <Clock size={14} />
-                24/7 Emergency Support Available
+              <div className="hidden md:flex items-center gap-3">
+                <a href="https://www.tiktok.com/@istc_ke?_r=1&_t=ZS-93FzoErNgZ7" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
+                  <FaTiktok size={16} />
+                </a>
+                <a href="https://www.facebook.com/share/1826jx1pxG/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
+                  <FaFacebook size={16} />
+                </a>
+                <a href="https://www.instagram.com/istc._.kenya?igsh=MTV4aDZ0ZGtvYzl2MA==" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
+                  <FaInstagram size={16} />
+                </a>
+                <a href="https://x.com/hsetraining?s=11&t=i93mQhgATaeMgK7d-PmFGw" target="_blank" rel="noopener noreferrer" className="hover:text-accent-light transition-colors">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
               </div>
             </div>
             
