@@ -143,54 +143,65 @@ const Hero = () => {
 
           {/* Right Content - Safety Training Image with overlay elements */}
           <div className="relative mt-8 md:mt-0">
-            {/* Main Image Container */}
-            <div className="relative rounded-2xl overflow-hidden shadow-xl md:shadow-2xl border-2 border-white/20 backdrop-blur-sm">
-              <div className="aspect-[4/3] relative">
+            {/* Main Image Container with floating animation */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20 group hover:shadow-3xl transition-all duration-500">
+              <div className="aspect-[4/3] relative overflow-hidden">
                 <Image
-                  src="/images/landing.png" // Replace with your actual image
+                  src="/images/landing.png"
                   alt="Online Learning Platform"
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                   priority
                 />
+                
+                {/* Gradient overlay for better card visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/30"></div>
+                
+                {/* Animated shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                
                 {/* Overlay Stats Card - Top Right */}
-                <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-white/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-lg max-w-[150px] md:max-w-[180px]">
+                <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg max-w-[150px] md:max-w-[180px] hover:bg-white/20 hover:scale-105 transition-all duration-300">
                   <div className="text-center">
-                    <div className="text-xl md:text-2xl font-bold text-gray-900">1K+</div>
-                    <div className="text-xs md:text-sm text-gray-600">Professionals Trained</div>
+                    <div className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">1K+</div>
+                    <div className="text-xs md:text-sm text-white/90 font-medium">Professionals Trained</div>
                   </div>
                 </div>
                 
                 {/* Overlay Class Card - Bottom Left */}
-                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-lg max-w-[160px] md:max-w-[200px]">
+                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg max-w-[160px] md:max-w-[200px] hover:bg-white/20 hover:scale-105 transition-all duration-300">
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm md:text-base">First Aid Certification</h4>
-                    <div className="flex items-center gap-2 text-xs md:text-sm text-gray-600 mt-1">
-                      <Clock size={12} />
+                    <h4 className="font-semibold text-white text-sm md:text-base drop-shadow-lg">First Aid Certification</h4>
+                    <div className="flex items-center gap-2 text-xs md:text-sm text-white/90 mt-1">
+                      <Clock size={12} className="text-white animate-pulse" />
                       March 15, 10:00 AM
                     </div>
-                    {/* <button className="mt-2 md:mt-3 bg-accent-600 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-accent-700 transition-colors">
-                      Reserve Seat
-                    </button> */}
                   </div>
                 </div>
                 
                 {/* Rating Badge - Bottom Right */}
-                <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-white p-2 md:p-3 rounded-full shadow-lg">
-                  <div className="flex items-center gap-1">
-                    <Star size={16} className="fill-yellow-400 text-yellow-400" />
-                    <span className="font-bold text-gray-900 text-sm md:text-base">4.9</span>
+                <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-white/10 backdrop-blur-md border border-white/20 p-2 md:p-2.5 rounded-full shadow-lg hover:bg-white/20 hover:scale-110 transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center gap-1.5">
+                    <Star size={18} className="fill-yellow-400 text-yellow-400 drop-shadow-lg" />
+                    <span className="font-bold text-white text-sm md:text-base drop-shadow-lg">4.9</span>
                   </div>
                 </div>
               </div>
             </div>
             
             {/* Additional Success Info Card below the image */}
-            <div className="mt-4 md:mt-6 bg-white/90 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg border border-white/20">
-              <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">Our Training Success</h3>
-              <p className="text-gray-600 text-xs md:text-sm">
-                With 10+ years of experience, we've certified 1,000+ professionals across 25+ safety courses, achieving a 98% success rate through strong industry partnership
-              </p>
+            <div className="mt-4 md:mt-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 md:p-6 shadow-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-accent-500/20 rounded-lg">
+                  <Award size={20} className="text-accent-300" />
+                </div>
+                <div>
+                  <h3 className="text-base md:text-lg font-bold text-white mb-1 drop-shadow-lg">Our Training Success</h3>
+                  <p className="text-white/80 text-xs md:text-sm">
+                    With 10+ years of experience, we've certified 1,000+ professionals across 25+ safety courses, achieving a 98% success rate through strong industry partnership
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
