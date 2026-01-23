@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Training, TrainingResponse, trainingService } from '../api_services/trainingService';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { TrainingCalendarPDF, generatePDFFileName } from '@/utils/trainingPdfGenerator';
+import Spinner, { LoadingSpinner } from '@/components/ui/Spinner';
 
 interface TrainingSession {
   id: string;
@@ -200,12 +201,11 @@ export default function CalendarPage() {
   if (loading) {
     return (
       <div className="pt-20">
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Loading Training Calendar...</h1>
-            <p className="text-gray-600">Please wait while we fetch the latest training schedule.</p>
-          </div>
-        </div>
+        <LoadingSpinner 
+          text="Loading Training Calendar..." 
+          size="lg"
+          className="min-h-[60vh]"
+        />
       </div>
     );
   }
@@ -231,45 +231,61 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-accent-50 to-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                2026 Training Calendar
-              </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Professional safety training programs with scheduled dates, durations, and costs. All courses are available for both individuals and corporate clients.
-              </p>
+    <div className="pt-4">
+      {/* Hero Section with Background Image */}
+      <section className="relative py-28 md:py-32 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/13.jpg')",
+            backgroundColor: '#039AC5'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/50"></div>
+          <div className="absolute inset-0 opacity-10 bg-[url('/images/patterns/network-pattern.svg')]"></div>
+        </div>
+
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 bg-accent-500/10 backdrop-blur-sm border border-accent-500/20 text-white px-6 py-2 rounded-full text-sm font-medium mb-8">
+              <Calendar size={16} />
+              <span>2026 Training Schedule</span>
             </div>
 
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+              Training <span className="text-accent-400">Calendar</span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Professional safety training programs with scheduled dates, durations, and costs. All courses are available for both individuals and corporate clients.
+            </p>
+
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-              <div className="bg-white adventure-card text-center p-6">
-                <div className="text-2xl font-bold text-accent-800 mb-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                   {trainings.length}
                 </div>
-                <div className="text-gray-600">Available Courses</div>
+                <div className="text-gray-300">Available Courses</div>
               </div>
-              <div className="bg-white adventure-card text-center p-6">
-                <div className="text-2xl font-bold text-accent-800 mb-2">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                   {trainings.reduce((sum, t) => sum + trainingService.getUpcomingSessionsCount(t), 0)}
                 </div>
-                <div className="text-gray-600">Upcoming Sessions</div>
+                <div className="text-gray-300">Upcoming Sessions</div>
               </div>
-              <div className="bg-white adventure-card text-center p-6">
-                <div className="text-2xl font-bold text-accent-800 mb-2">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                   {trainings.filter(t => t.isFeatured).length}
                 </div>
-                <div className="text-gray-600">Featured Courses</div>
+                <div className="text-gray-300">Featured Courses</div>
               </div>
-              <div className="bg-white adventure-card text-center p-6">
-                <div className="text-2xl font-bold text-accent-800 mb-2">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                   {trainingService.getUniqueCategories(trainings).length}
                 </div>
-                <div className="text-gray-600">Categories</div>
+                <div className="text-gray-300">Categories</div>
               </div>
             </div>
           </div>
