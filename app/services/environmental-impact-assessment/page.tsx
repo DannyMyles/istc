@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { Globe, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, TreePine, Users2, Heart, Building } from 'lucide-react';
 import Link from 'next/link';
 
 export default function EnvironmentalImpactAssessment() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Environmental Impact Assessment',
     subtitle: 'Comprehensive Evaluation of Proposed Project Impacts',
@@ -118,12 +115,12 @@ export default function EnvironmentalImpactAssessment() {
                   <h3 className="text-xl font-bold mb-4">Request EIA Services</h3>
                   <p className="text-emerald-200 text-sm mb-6">Contact us for project-specific EIA consultation and pricing.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-emerald-600 hover:bg-emerald-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-emerald-600 hover:bg-emerald-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get EIA Proposal
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-emerald-200 hover:text-white py-2">

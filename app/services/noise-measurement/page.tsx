@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { Volume2, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Ear, AlertTriangle, Headphones } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NoiseMeasurement() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Noise Measurement & Assessment',
     subtitle: 'Environmental & Workplace Noise Control Solutions',
@@ -94,12 +91,12 @@ export default function NoiseMeasurement() {
                   <h3 className="text-xl font-bold mb-4">Request Noise Assessment</h3>
                   <p className="text-purple-200 text-sm mb-6">Get a customized noise measurement plan for your facility.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-purple-600 hover:bg-purple-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-purple-600 hover:bg-purple-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get Measurement Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-purple-200 hover:text-white py-2">

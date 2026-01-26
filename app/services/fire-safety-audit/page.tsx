@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { Flame, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Building, AlertTriangle, Zap, Eye } from 'lucide-react';
 import Link from 'next/link';
 
 export default function FireSafetyAudit() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Fire Safety Audit',
     subtitle: 'Comprehensive Fire Safety Management Systems Assessment',
@@ -94,12 +91,12 @@ export default function FireSafetyAudit() {
                   <h3 className="text-xl font-bold mb-4">Request Fire Safety Audit</h3>
                   <p className="text-orange-200 text-sm mb-6">Get a customized quote based on your premises size and complexity.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-orange-600 hover:bg-orange-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-orange-600 hover:bg-orange-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Request Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-orange-200 hover:text-white py-2">

@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { AlertTriangle, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Biohazard, Brain, Zap, Droplets } from 'lucide-react';
 import Link from 'next/link';
 
 export default function RiskAssessment() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Risk Assessment',
     subtitle: 'Comprehensive Workplace Hazard Identification & Control',
@@ -107,12 +104,12 @@ export default function RiskAssessment() {
                   <h3 className="text-xl font-bold mb-4">Request Risk Assessment</h3>
                   <p className="text-red-200 text-sm mb-6">Get a comprehensive hazard analysis for your workplace.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-red-600 hover:bg-red-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-red-600 hover:bg-red-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get Risk Assessment Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-red-200 hover:text-white py-2">

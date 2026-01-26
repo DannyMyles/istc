@@ -73,10 +73,10 @@ const Navigation = () => {
           { 
             name: 'First Aid Training', 
             subitems: [
-              { name: 'Occupational First Aid (3 Days)', href: '/courses/first-aid?course=occupational' },
-              { name: 'Basic First Aid (1 Day)', href: '/courses/first-aid?course=basic' },
-              { name: 'Paediatric First Aid', href: '/courses/first-aid?course=paediatric' },
-              { name: 'First Aid Refresher', href: '/courses/first-aid?course=refresher' },
+              { name: 'Occupational First Aid (3 Days)', href: '/courses/first-aid/occupational' },
+              { name: 'Basic First Aid (1 Day)', href: '/courses/first-aid/basic' },
+              { name: 'Paediatric First Aid', href: '/courses/first-aid/paediatric' },
+              { name: 'First Aid Refresher', href: '/courses/first-aid/refresher' },
             ]
           },
           { name: 'Work at Height', href: '/courses/work-at-height' },
@@ -85,7 +85,7 @@ const Navigation = () => {
           { name: 'Road Safety', href: '/courses/road-safety' },
           { name: 'All Courses', href: '/courses' },
         ]
-      },
+      }, 
       { 
         name: 'Services', 
         href: '/services',

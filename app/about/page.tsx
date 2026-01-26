@@ -149,12 +149,12 @@ export default function AboutPage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-              For over 16 years, we have been at the forefront of safety training and certification in Kenya and beyond, transforming workplaces through excellence.
+              For over 2 decades, we have been at the forefront of safety training and certification in Kenya and beyond, transforming workplaces through excellence.
             </p>
             
             <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-12">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">22+</div>
                 <div className="text-sm text-gray-300">Years Experience</div>
               </div>
               <div className="text-center">
@@ -253,7 +253,7 @@ export default function AboutPage() {
                   {values.map((value, index) => (
                     <div key={index} className="flex items-start gap-4">
                       <div className="bg-white p-3 rounded-xl">
-                        <value.icon className="text-accent-600" size={24} />
+                        <value.icon style={{ color: '#E24785' }} size={24} />
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-1">{value.title}</h4>
@@ -316,7 +316,7 @@ export default function AboutPage() {
                 <h4 className="text-lg font-semibold mb-2">Industry Partnerships</h4>
                 <p className="opacity-90">Collaborations with leading industry bodies and government agencies</p>
               </div>
-              <div className="bg-gradient-to-r from-[#f0c711] to-[#d3ae0b] text-[#ffffff] rounded-xl p-6">
+              <div className="bg-gradient-to-r from-[#771440] to-[#BE2D6B] text-[#ffffff] rounded-xl p-6">
                 <h4 className="text-lg font-semibold mb-2">Modern Facilities</h4>
                 <p className="opacity-90">State-of-the-art training facilities with real-world simulation equipment</p>
               </div>
@@ -405,11 +405,7 @@ export default function AboutPage() {
                 </Link>
               </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[#5F606A]/80">
-                <div className="text-center">
-                  <div className="text-2xl font-bold">24/7</div>
-                  <div className="text-sm">Support</div>
-                </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-[#5F606A]/80">
                 <div className="text-center">
                   <div className="text-2xl font-bold">Flexible</div>
                   <div className="text-sm">Scheduling</div>
