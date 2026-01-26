@@ -155,7 +155,7 @@ export default function CoursesPage() {
       rating: 4.9,
       price: 8000,
       category: 'First Aid',
-      href: '/courses/first-aid?course=occupational',
+      href: '/courses/first-aid/occupational',
       featured: false
     },
     {
@@ -168,7 +168,7 @@ export default function CoursesPage() {
       rating: 4.8,
       price: 3500,
       category: 'First Aid',
-      href: '/courses/first-aid?course=basic',
+      href: '/courses/first-aid/basic',
       featured: false
     },
     {
@@ -181,7 +181,7 @@ export default function CoursesPage() {
       rating: 4.7,
       price: 4000,
       category: 'First Aid',
-      href: '/courses/first-aid?course=paediatric',
+      href: '/courses/first-aid/paediatric',
       featured: false
     },
     {
@@ -194,7 +194,7 @@ export default function CoursesPage() {
       rating: 4.8,
       price: 3000,
       category: 'First Aid',
-      href: '/courses/first-aid?course=refresher',
+      href: '/courses/first-aid/refresher',
       featured: false
     },
     // Specialized Safety Courses

@@ -1,12 +1,9 @@
 'use client';
-import { useState } from 'react';
 import { UserCheck, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Monitor, Mouse, Brain } from 'lucide-react';
 import { Armchair } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ErgonomicsAudit() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Ergonomics Audit',
     subtitle: 'Workstation Assessment for Productivity & Injury Prevention',
@@ -106,12 +103,12 @@ export default function ErgonomicsAudit() {
                   <h3 className="text-xl font-bold mb-4">Request Ergonomics Audit</h3>
                   <p className="text-indigo-200 text-sm mb-6">Get a workstation assessment plan for your organization.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-indigo-600 hover:bg-indigo-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-indigo-600 hover:bg-indigo-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get Ergonomic Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-indigo-200 hover:text-white py-2">

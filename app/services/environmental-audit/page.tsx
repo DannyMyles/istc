@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { TreePine, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Globe, Droplets, Recycle, Factory } from 'lucide-react';
 import Link from 'next/link';
 
 export default function EnvironmentalAudit() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Environmental Audit',
     subtitle: 'EMCA Compliance & Global Best Practices Assessment',
@@ -96,12 +93,12 @@ export default function EnvironmentalAudit() {
                   <h3 className="text-xl font-bold mb-4">Request Environmental Audit</h3>
                   <p className="text-green-200 text-sm mb-6">Get a proposal tailored to your specific operations and needs.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-green-600 hover:bg-green-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-green-600 hover:bg-green-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get Custom Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-green-200 hover:text-white py-2">

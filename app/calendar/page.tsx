@@ -485,8 +485,8 @@ export default function CalendarPage() {
 
                 {/* Training Calendar Table */}
                 <div className="bg-white adventure-card overflow-hidden">
-                  {/* Table Header */}
-                  <div className="grid grid-cols-12 bg-accent-50 border-b border-gray-200">
+                  {/* Table Header - Desktop Only */}
+                  <div className="hidden md:grid md:grid-cols-12 bg-accent-50 border-b border-gray-200">
                     <div className="col-span-4 p-4 font-semibold text-gray-900">
                       COURSE TITLE
                     </div>
@@ -511,12 +511,74 @@ export default function CalendarPage() {
                         
                         return (
                           <div key={training.id}>
-                            {/* Main Row */}
+                            {/* Main Row - Mobile Card View / Desktop Table Row */}
                             <div 
-                              className="grid grid-cols-12 hover:bg-gray-50 cursor-pointer transition-colors"
+                              className="md:grid md:grid-cols-12 hover:bg-gray-50 cursor-pointer transition-colors"
                               onClick={() => toggleTrainingExpansion(training.id)}
                             >
-                              <div className="col-span-4 p-4">
+                              {/* Mobile View - Card Layout */}
+                              <div className="md:hidden p-4">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1">
+                                    <div className="font-semibold text-gray-900">
+                                      {training.title}
+                                    </div>
+                                    <div className="text-sm text-gray-600 mt-1">
+                                      {training.targetGroup}
+                                    </div>
+                                    {training.isFeatured && (
+                                      <span className="inline-block mt-2 bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-semibold">
+                                        Featured
+                                      </span>
+                                    )}
+                                  </div>
+                                  <ChevronRight 
+                                    size={20} 
+                                    className={`text-gray-400 transition-transform flex-shrink-0 ml-2 ${
+                                      isExpanded ? 'rotate-90' : ''
+                                    }`}
+                                  />
+                                </div>
+                                
+                                {/* Quick Info Row */}
+                                <div className="grid grid-cols-2 gap-3 mt-4">
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <Clock size={14} className="text-accent-500 flex-shrink-0" />
+                                    <span className="text-gray-700">{getDurationDisplay(training.duration)}</span>
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="font-semibold text-gray-900">
+                                      {formatCurrency(training.cost)}
+                                    </div>
+                                    <div className="text-xs text-gray-500">Excl. VAT</div>
+                                  </div>
+                                </div>
+                                
+                                {/* Dates */}
+                                <div className="mt-3">
+                                  {sessions.length > 0 ? (
+                                    <div className="text-sm text-gray-700">
+                                      {sessions.slice(0, 1).map((session) => (
+                                        <div key={session._id}>
+                                          {session.formattedDates}
+                                        </div>
+                                      ))}
+                                      {sessions.length > 1 && (
+                                        <div className="text-sm text-accent-600">
+                                          +{sessions.length - 1} more session{sessions.length - 1 > 1 ? 's' : ''}
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="text-sm text-gray-400">
+                                      {showAllCourses ? "No upcoming sessions" : "No sessions this month"}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              
+                              {/* Desktop View - Table Layout */}
+                              <div className="hidden md:block col-span-4 p-4">
                                 <div className="font-semibold text-gray-900">
                                   {training.title}
                                 </div>
@@ -530,7 +592,7 @@ export default function CalendarPage() {
                                 )}
                               </div>
                               
-                              <div className="col-span-2 p-4">
+                              <div className="hidden md:block col-span-2 p-4">
                                 <div className="flex items-center gap-2 text-gray-700">
                                   <Clock size={14} className="text-accent-500" />
                                   {getDurationDisplay(training.duration)}
@@ -540,7 +602,7 @@ export default function CalendarPage() {
                                 </div>
                               </div>
                               
-                              <div className="col-span-3 p-4">
+                              <div className="hidden md:block col-span-3 p-4">
                                 {sessions.length > 0 ? (
                                   <div className="space-y-1">
                                     {sessions.slice(0, 1).map((session, index) => (
@@ -561,7 +623,7 @@ export default function CalendarPage() {
                                 )}
                               </div>
                               
-                              <div className="col-span-2 p-4 text-right">
+                              <div className="hidden md:block col-span-2 p-4 text-right">
                                 <div className="font-semibold text-gray-900">
                                   {formatCurrency(training.cost)}
                                 </div>
@@ -570,7 +632,7 @@ export default function CalendarPage() {
                                 </div>
                               </div>
                               
-                              <div className="col-span-1 p-4 flex items-center justify-center">
+                              <div className="hidden md:block col-span-1 p-4 flex items-center justify-center">
                                 <ChevronRight 
                                   size={20} 
                                   className={`text-gray-400 transition-transform ${
@@ -583,30 +645,30 @@ export default function CalendarPage() {
                             {/* Expanded Details */}
                             {isExpanded && (
                               <div className="bg-accent-25 border-t border-gray-100">
-                                <div className="p-6">
+                                <div className="p-4 md:p-6">
                                   {/* Course Description */}
-                                  <div className="mb-6">
+                                  <div className="mb-4 md:mb-6">
                                     <h4 className="font-semibold text-gray-900 mb-2">
                                       Course Description
                                     </h4>
-                                    <p className="text-gray-600">
+                                    <p className="text-gray-600 text-sm">
                                       {training.description}
                                     </p>
-                                    <div className="mt-3 flex items-center gap-4 text-sm text-gray-600">
+                                    <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-600">
                                       <div className="flex items-center gap-1">
                                         <BookOpen size={14} />
                                         <span>Certification: {training.certification}</span>
                                       </div>
                                       <div className="flex items-center gap-1">
                                         <CreditCard size={14} />
-                                        <span>Registration Fee: Kshs {training.registrationFee.toLocaleString()}</span>
+                                        <span>Reg. Fee: Kshs {training.registrationFee.toLocaleString()}</span>
                                       </div>
                                     </div>
                                   </div>
                                   
                                   {/* Available Sessions */}
                                   {sessions.length > 0 && (
-                                    <div className="mb-6">
+                                    <div className="mb-4 md:mb-6">
                                       <h4 className="font-semibold text-gray-900 mb-3">
                                         {showAllCourses ? "All Upcoming Sessions" : `Available Sessions in ${months[selectedMonth!]}`}
                                       </h4>
@@ -616,7 +678,40 @@ export default function CalendarPage() {
                                             key={session._id} 
                                             className="bg-white rounded-lg p-4 border border-gray-200"
                                           >
-                                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            {/* Mobile: Stacked layout */}
+                                            <div className="md:hidden space-y-3">
+                                              <div>
+                                                <div className="text-xs text-gray-500">Dates</div>
+                                                <div className="font-medium text-sm">{session.formattedDates}</div>
+                                              </div>
+                                              <div>
+                                                <div className="text-xs text-gray-500">Venue</div>
+                                                <div className="font-medium text-sm">{session.venue}</div>
+                                              </div>
+                                              <div>
+                                                <div className="text-xs text-gray-500">Seats</div>
+                                                <div className="font-medium text-sm">
+                                                  {session.seats.available || 0} / {session.seats.total}
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <div className="text-xs text-gray-500">Instructor</div>
+                                                <div className="font-medium text-sm">
+                                                  {session.instructor || 'TBD'}
+                                                </div>
+                                              </div>
+                                              <div className="pt-2 flex gap-2">
+                                                <button className="flex-1 text-sm text-accent-600 hover:text-accent-800 font-medium py-2 px-3 border border-accent-600 rounded-lg">
+                                                  View Details
+                                                </button>
+                                                <button className="flex-1 text-sm bg-accent-600 text-white py-2 px-3 rounded-lg font-medium hover:bg-accent-700 transition-colors">
+                                                  Register Now
+                                                </button>
+                                              </div>
+                                            </div>
+                                            
+                                            {/* Desktop: Grid layout */}
+                                            <div className="hidden md:grid md:grid-cols-4 gap-4">
                                               <div>
                                                 <div className="text-sm text-gray-500">Dates</div>
                                                 <div className="font-medium">{session.formattedDates}</div>
@@ -639,7 +734,7 @@ export default function CalendarPage() {
                                               </div>
                                             </div>
                                             
-                                            <div className="mt-4 flex justify-end space-x-3">
+                                            <div className="hidden md:flex mt-4 justify-end space-x-3">
                                               <button className="text-sm text-accent-600 hover:text-accent-800 font-medium">
                                                 View Details
                                               </button>
@@ -654,15 +749,10 @@ export default function CalendarPage() {
                                   )}
                                   
                                   {/* Action Buttons */}
-                                  <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
-                                    <button className="flex-1 min-w-[200px] btn-adventure">
-                                      {/* <Calendar size={18} className="mr-2" /> */}
+                                  <div className="flex flex-wrap gap-3 pt-3 md:pt-4 border-t border-gray-200">
+                                    <button className="flex-1 min-w-[140px] btn-adventure text-sm py-2.5">
                                       Register for Course
                                     </button>
-                                    {/* <button className="flex-1 min-w-[200px] btn-adventure-outline">
-                                      Download Course Outline
-                                    </button> */}
-                                    
                                   </div>
                                 </div>
                               </div>
@@ -671,17 +761,17 @@ export default function CalendarPage() {
                         );
                       })
                     ) : (
-                      <div className="p-12 text-center">
-                        <Calendar size={48} className="text-gray-400 mx-auto mb-4" />
+                      <div className="p-8 md:p-12 text-center">
+                        <Calendar size={36} className="text-gray-400 mx-auto mb-4" />
                         <h4 className="text-lg font-semibold text-gray-900 mb-2">
                           No training sessions found
                         </h4>
-                        <p className="text-gray-600 mb-6">
+                        <p className="text-gray-600 mb-6 text-sm">
                           Try selecting a different month or category to view available training sessions.
                         </p>
                         <button
                           onClick={handleShowAllCourses}
-                          className="btn-adventure inline-flex items-center gap-2"
+                          className="btn-adventure inline-flex items-center gap-2 text-sm"
                         >
                           Show All Courses
                         </button>

@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { Wind, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Thermometer, Droplets, AlertTriangle, Building } from 'lucide-react';
 import Link from 'next/link';
 
 export default function IndoorAirQualityIAQ() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Indoor Air Quality (IAQ) Assessment',
     subtitle: 'Comprehensive Air Quality Testing for Healthy Indoor Environments',
@@ -107,12 +104,12 @@ export default function IndoorAirQualityIAQ() {
                   <h3 className="text-xl font-bold mb-4">Request IAQ Assessment</h3>
                   <p className="text-cyan-200 text-sm mb-6">Get a comprehensive air quality evaluation for your building.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get Air Quality Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">

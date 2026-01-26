@@ -1,11 +1,8 @@
 'use client';
-import { useState } from 'react';
 import { Shield, CheckCircle, Calendar, Clock, Users, FileText, ArrowLeft, Phone, Mail, Target, TrendingUp, Users2, Brain } from 'lucide-react';
 import Link from 'next/link';
 
 export default function OccupationalSafetyHealthAudit() {
-  const [showContactForm, setShowContactForm] = useState(false);
-  
   const serviceData = {
     title: 'Occupational Safety & Health Audit',
     subtitle: 'Compliance with OSHA 2007 & Contemporary Best Practices',
@@ -82,12 +79,12 @@ export default function OccupationalSafetyHealthAudit() {
                   <h3 className="text-xl font-bold mb-4">Request This Service</h3>
                   <p className="text-blue-200 text-sm mb-6">Contact us for a customized proposal based on your facility size and needs.</p>
                   
-                  <button 
-                    onClick={() => setShowContactForm(true)}
-                    className="w-full bg-white text-blue-600 hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4"
+                  <Link
+                    href="/contact"
+                    className="w-full bg-white text-blue-600 hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
                   >
                     Get Quote
-                  </button>
+                  </Link>
                   
                   <div className="space-y-3">
                     <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-blue-200 hover:text-white py-2">
