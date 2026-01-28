@@ -58,11 +58,11 @@ export default function OccupationalSafetyHealthDiploma() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-8">
-      <div className="bg-gradient-to-r from-accent-900 to-accent-800 text-[#393A40] py-12">
+      <div className="bg-gradient-to-r from-teal-800 to-teal-700 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-accent-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-teal-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -70,7 +70,7 @@ export default function OccupationalSafetyHealthDiploma() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Shield className="text-accent-200" size={24} />
+                  <Shield className="text-teal-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Advanced Programme
                   </span>
@@ -79,10 +79,10 @@ export default function OccupationalSafetyHealthDiploma() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {courseData.title}
                 </h1>
-                <p className="text-xl text-accent-100 mb-6">
+                <p className="text-xl text-teal-100 mb-6">
                   {courseData.subtitle}
                 </p>
-                <p className="text-accent-200 text-lg">
+                <p className="text-teal-200 text-lg">
                   {courseData.description}
                 </p>
               </div>
@@ -90,7 +90,7 @@ export default function OccupationalSafetyHealthDiploma() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <p className="text-accent-200 text-sm">Duration: {courseData.duration}</p>
+                    <p className="text-teal-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <Link 
@@ -102,11 +102,11 @@ export default function OccupationalSafetyHealthDiploma() {
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
-                      <a href="tel:+254700364722" className="flex items-center gap-2 text-accent-200 hover:text-white">
+                      <a href="tel:+254700364722" className="flex items-center gap-2 text-teal-200 hover:text-white">
                         <Phone size={18} />
                         <span>Call Now</span>
                       </a>
-                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-accent-200 hover:text-white">
+                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-teal-200 hover:text-white">
                         <Mail size={18} />
                         <span>Email Us</span>
                       </a>
