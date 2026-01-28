@@ -280,8 +280,27 @@ getBlogImageUrl: (blog: Blog): string => {
 
   // Helper function to format date
   formatDate: (dateString: string): string => {
+    // If the date string is already in a readable format (like "Jan 17, 2026"), return it as-is
+    // This handles cases where the API returns pre-formatted dates
+    if (!dateString || dateString === '') {
+      return ''
+    }
+    
+    // Check if it's already a nicely formatted date string (contains month name)
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const isAlreadyFormatted = monthNames.some(month => dateString.includes(month))
+    
+    if (isAlreadyFormatted) {
+      return dateString
+    }
+    
+    // Otherwise, try to parse and format it
     try {
       const date = new Date(dateString)
+      if (isNaN(date.getTime())) {
+        // If invalid date, return original string
+        return dateString
+      }
       return date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',

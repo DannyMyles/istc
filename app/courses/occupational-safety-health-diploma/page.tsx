@@ -26,18 +26,18 @@ export default function OccupationalSafetyHealthDiploma() {
     ],
     
     courseModules: [
-      'Managing Safety and Health in the workplace',
-      'Providing a Safe place to work',
-      'Fire Safety',
-      'Working at Height',
-      'Safe use of equipment in the workplace',
-      'Transport Safety',
-      'Electrical Safety',
-      'Hazardous Substances in the workplace',
-      'Health and Safety in kitchen and eating places',
-      'Psychological Health hazards in the workplace',
-      'Health and Safety in Educational establishments',
-      'Health Protection'
+      { name: 'Managing Safety and Health in the workplace', route: '/courses/occupational-safety-health-certificate' },
+      { name: 'Providing a Safe place to work', route: '/courses' },
+      { name: 'Fire Safety', route: '/courses/fire-safety-course-diploma' },
+      { name: 'Working at Height', route: '/courses/work-at-height' },
+      { name: 'Safe use of equipment in the workplace', route: '/services/ergonomics-audit' },
+      { name: 'Transport Safety', route: '/courses/road-safety' },
+      { name: 'Electrical Safety', route: '/services/occupational-safety-health-audit' },
+      { name: 'Hazardous Substances in the workplace', route: '/courses/chemical-safety' },
+      { name: 'Health and Safety in kitchen and eating places', route: '/services/environmental-audit' },
+      { name: 'Psychological Health hazards in the workplace', route: '/services/risk-assessment' },
+      { name: 'Health and Safety in Educational establishments', route: '/services/training' },
+      { name: 'Health Protection', route: '/services/indoor-air-quality-iaq' }
     ],
     
     learningOutcomes: [
@@ -58,11 +58,11 @@ export default function OccupationalSafetyHealthDiploma() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-8">
-      <div className="bg-gradient-to-r from-accent-900 to-accent-800 text-[#393A40] py-12">
+      <div className="bg-gradient-to-r from-teal-800 to-teal-700 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-accent-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-teal-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -70,7 +70,7 @@ export default function OccupationalSafetyHealthDiploma() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Shield className="text-accent-200" size={24} />
+                  <Shield className="text-teal-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Advanced Programme
                   </span>
@@ -79,10 +79,10 @@ export default function OccupationalSafetyHealthDiploma() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {courseData.title}
                 </h1>
-                <p className="text-xl text-accent-100 mb-6">
+                <p className="text-xl text-teal-100 mb-6">
                   {courseData.subtitle}
                 </p>
-                <p className="text-accent-200 text-lg">
+                <p className="text-teal-200 text-lg">
                   {courseData.description}
                 </p>
               </div>
@@ -90,7 +90,7 @@ export default function OccupationalSafetyHealthDiploma() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <p className="text-accent-200 text-sm">Duration: {courseData.duration}</p>
+                    <p className="text-teal-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <Link 
@@ -102,11 +102,11 @@ export default function OccupationalSafetyHealthDiploma() {
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
-                      <a href="tel:+254700364722" className="flex items-center gap-2 text-accent-200 hover:text-white">
+                      <a href="tel:+254700364722" className="flex items-center gap-2 text-teal-200 hover:text-white">
                         <Phone size={18} />
                         <span>Call Now</span>
                       </a>
-                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-accent-200 hover:text-white">
+                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-teal-200 hover:text-white">
                         <Mail size={18} />
                         <span>Email Us</span>
                       </a>
@@ -133,28 +133,28 @@ export default function OccupationalSafetyHealthDiploma() {
                     
                     <div className="grid grid-cols-2 gap-6 mb-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-accent-600" size={20} />
+                        <Calendar className="text-teal-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-accent-600" size={20} />
+                        <Clock className="text-teal-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Award className="text-accent-600" size={20} />
+                        <Award className="text-teal-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-accent-600" size={20} />
+                        <Users className="text-teal-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
                           <div className="text-gray-600">{courseData.nextIntake}</div>
@@ -168,12 +168,16 @@ export default function OccupationalSafetyHealthDiploma() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Modules</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courseData.courseModules.map((module, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4">
-                        <div className="bg-accent-100 p-2 rounded-lg">
-                          <CheckCircle className="text-accent-600" size={20} />
+                      <Link 
+                        key={index} 
+                        href={module.route}
+                        className="flex items-start gap-3 bg-white adventure-card p-4 hover:shadow-md transition-shadow cursor-pointer"
+                      >
+                        <div className="bg-teal-100 p-2 rounded-lg">
+                          <CheckCircle className="text-teal-600" size={20} />
                         </div>
-                        <span className="text-gray-700 font-medium">{module}</span>
-                      </div>
+                        <span className="text-gray-700 font-medium">{module.name}</span>
+                      </Link>
                     ))}
                   </div>
                 </section>
@@ -185,7 +189,7 @@ export default function OccupationalSafetyHealthDiploma() {
                   <ul className="space-y-3">
                     {courseData.entryRequirements.map((requirement, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <GraduationCap className="text-accent-600 mt-1" size={18} />
+                        <GraduationCap className="text-teal-600 mt-1" size={18} />
                         <span className="text-gray-600">{requirement}</span>
                       </li>
                     ))}
@@ -194,8 +198,8 @@ export default function OccupationalSafetyHealthDiploma() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-accent-50 p-4 rounded-xl">
-                    <Award className="text-accent-600 mb-3" size={24} />
+                  <div className="bg-teal-50 p-4 rounded-xl">
+                    <Award className="text-teal-600 mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>

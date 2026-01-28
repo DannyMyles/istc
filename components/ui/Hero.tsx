@@ -145,9 +145,9 @@ const Hero = () => {
           <div className="relative mt-8 md:mt-0">
             {/* Main Image Container with floating animation */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20 group hover:shadow-3xl transition-all duration-500">
-              <div className="aspect-[4/3] relative overflow-hidden">
+              <div className="aspect-[3/3] relative overflow-hidden">
                 <Image
-                  src="/images/landing.png"
+                  src="/images/landing_updated.png"
                   alt="Online Learning Platform"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

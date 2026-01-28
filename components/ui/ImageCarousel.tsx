@@ -44,14 +44,24 @@ const slides = [
     image: "/images/clients/client_5.jpeg",
     category: "Emergency",
   },
-  { id: 6, title: "OSHA Compliance", image: "/images/clients/client_6.jpeg", category: "Compliance" },
+  {
+    id: 6,
+    title: "OSHA Compliance",
+    image: "/images/clients/client_6.jpeg",
+    category: "Compliance",
+  },
   {
     id: 7,
     title: "CPR Certification",
     image: "/images/clients/client_7.jpeg",
     category: "Medical",
   },
-  { id: 8, title: "Fall Protection", image: "/images/clients/client_8.jpeg", category: "Construction" },
+  {
+    id: 8,
+    title: "Fall Protection",
+    image: "/images/clients/client_8.jpeg",
+    category: "Construction",
+  },
   {
     id: 9,
     title: "Electrical Safety",
@@ -150,57 +160,66 @@ const slides = [
   },
   {
     id: 25,
-    title: "Welding Safety",
-    image: "/images/clients/client_25.jpeg",
-    category: "Industrial",
+    title: "Crane Safety",
+    image: "/images/clients/client_26.jpeg",
+    category: "Equipment",
   },
-  { id: 26, title: "Crane Safety", image: "/images/clients/client_26.jpeg", category: "Equipment" },
   {
-    id: 27,
+    id: 26,
     title: "Excavation Safety",
     image: "/images/clients/client_27.jpeg",
     category: "Construction",
   },
   {
-    id: 28,
+    id: 27,
     title: "Asbestos Awareness",
     image: "/images/clients/client_28.jpeg",
     category: "HazMat",
   },
-  { id: 29, title: "Lead Safety", image: "/images/clients/client_29.jpeg", category: "HazMat" },
-  { id: 30, title: "Silica Safety", image: "/images/clients/client_30.jpeg", category: "HazMat" },
   {
-    id: 31,
+    id: 28,
+    title: "Lead Safety",
+    image: "/images/clients/client_29.jpeg",
+    category: "HazMat",
+  },
+  {
+    id: 39,
+    title: "Silica Safety",
+    image: "/images/clients/client_30.jpeg",
+    category: "HazMat",
+  },
+  {
+    id: 30,
     title: "Trenching Safety",
     image: "/images/clients/client_31.jpeg",
     category: "Construction",
   },
   {
-    id: 32,
+    id: 31,
     title: "Radiation Safety",
     image: "/images/clients/client_32.jpeg",
     category: "HazMat",
   },
   {
-    id: 33,
+    id: 32,
     title: "Chemical Safety",
     image: "/images/clients/client_33.jpeg",
     category: "HazMat",
   },
   {
-    id: 34,
+    id: 33,
     title: "Laboratory Safety",
     image: "/images/clients/client_34.jpeg",
     category: "Industrial",
   },
   {
-    id: 36,
+    id: 34,
     title: "Construction Safety",
     image: "/images/clients/client_36.jpeg",
     category: "Construction",
   },
   {
-    id: 37,
+    id: 35,
     title: "Maritime Safety",
     image: "/images/clients/client_37.jpeg",
     category: "Specialized",
@@ -225,17 +244,19 @@ function CarouselSlide({
   slide,
   isActive,
   index,
+  isMobile,
 }: {
-  slide: typeof slides[0];
+  slide: (typeof slides)[0];
   isActive: boolean;
   index: number;
+  isMobile: boolean;
 }) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <motion.div
-      className="relative w-full"
+      className="relative w-full h-full"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{
         opacity: isActive ? 1 : 0.4,
@@ -247,15 +268,15 @@ function CarouselSlide({
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      {/* Glassmorphism Card */}
-      <div className="relative group overflow-hidden rounded-2xl bg-gradient-to-br from-white/80 via-white/60 to-white/40 backdrop-blur-xl border border-white/50 shadow-2xl aspect-[4/3]">
+      {/* Glassmorphism Card - Reduced max-width */}
+      <div className="relative group overflow-hidden rounded-xl bg-gradient-to-br from-white/80 via-white/60 to-white/40 backdrop-blur-xl border border-white/50 shadow-xl aspect-[4/3] w-full max-w-[280px] mx-auto">
         {/* Gradient Border */}
-        <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-[#039AC5]/0 via-[#039AC5]/50 to-[#039AC5]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="w-full h-full rounded-2xl bg-transparent" />
+        <div className="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-[#039AC5]/0 via-[#039AC5]/50 to-[#039AC5]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <div className="w-full h-full rounded-xl bg-transparent" />
         </div>
 
         {/* Inner glow effect */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#039AC5]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#039AC5]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         {/* Image container */}
         <div className="relative w-full aspect-[4/3] overflow-hidden">
@@ -264,7 +285,11 @@ function CarouselSlide({
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"
               animate={{ x: ["-100%", "100%"] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
           )}
 
@@ -276,14 +301,14 @@ function CarouselSlide({
                 animate={{ scale: 1, opacity: 1 }}
                 className="text-center p-4"
               >
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#039AC5]/20 to-[#02749C]/20 flex items-center justify-center">
-                  <Shield className="w-8 h-8 text-[#039AC5]" />
+                <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-br from-[#039AC5]/20 to-[#02749C]/20 flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-[#039AC5]" />
                 </div>
               </motion.div>
             </div>
           )}
 
-          {/* Optimized Image */}
+          {/* Optimized Image with smaller sizes */}
           {!imageError && (
             <motion.div
               className="absolute inset-0"
@@ -294,31 +319,18 @@ function CarouselSlide({
                 src={slide.image}
                 alt={slide.title}
                 fill
-                sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) calc(50vw - 48px), calc(33vw - 48px)"
-                className="object-cover"
+                sizes="(max-width: 640px) 85vw, (max-width: 768px) 75vw, (max-width: 1024px) 40vw, (max-width: 1280px) 28vw, 20vw"
+                className="object-fit-cover rounded-md"
                 onError={() => setImageError(true)}
                 onLoad={() => setImageLoaded(true)}
                 priority={index < 4}
-                quality={85}
+                quality={80} // Reduced quality for smaller images
               />
             </motion.div>
           )}
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
-
-          {/* Category badge */}
-          <motion.div
-            className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md shadow-lg border border-white/50"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <span className="text-[#039AC5]">{getCategoryIcon(slide.category)}</span>
-            {/* <span className="text-xs font-semibold text-gray-800">{slide.category}</span> */}
-          </motion.div>
-
-
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/0" />
         </div>
 
         {/* Hover shine effect */}
@@ -348,7 +360,7 @@ function NavButton({
     <motion.button
       onClick={onClick}
       disabled={disabled}
-      className="absolute top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/80 backdrop-blur-xl border border-white/50 shadow-xl hover:shadow-2xl disabled:opacity-40 disabled:cursor-not-allowed"
+      className="absolute top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/80 backdrop-blur-xl border border-white/50 shadow-lg hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed"
       whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,1)" }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, x: direction === "prev" ? -20 : 20 }}
@@ -357,75 +369,11 @@ function NavButton({
       aria-label={direction === "prev" ? "Previous slide" : "Next slide"}
     >
       {direction === "prev" ? (
-        <ChevronLeft className="w-5 h-5 text-[#039AC5]" />
+        <ChevronLeft className="w-4 h-4 text-[#039AC5]" />
       ) : (
-        <ChevronRight className="w-5 h-5 text-[#039AC5]" />
+        <ChevronRight className="w-4 h-4 text-[#039AC5]" />
       )}
     </motion.button>
-  );
-}
-
-// Progress indicator dots
-function ProgressDots({
-  total,
-  current,
-  onClick,
-}: {
-  total: number;
-  current: number;
-  onClick: (index: number) => void;
-}) {
-  const visiblePages = 5;
-  const startPage = Math.max(0, current - Math.floor(visiblePages / 2));
-  const endPage = Math.min(total, startPage + visiblePages);
-  const visibleDots = slides.slice(startPage, endPage);
-
-  return (
-    <div className="flex items-center justify-center gap-2 mt-8 flex-wrap px-4">
-      {/* Previous pages indicator */}
-      {startPage > 0 && (
-        <span className="text-gray-400 text-xs">.{slides.length - startPage}</span>
-      )}
-
-      {visibleDots.map((_, idx) => {
-        const actualIndex = startPage + idx;
-        const isActive = actualIndex === current;
-
-        return (
-          <motion.button
-            key={actualIndex}
-            onClick={() => onClick(actualIndex)}
-            className="relative"
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label={`Go to slide ${actualIndex + 1}`}
-          >
-            {/* Active indicator ring */}
-            {isActive && (
-              <motion.div
-                className="absolute -inset-2 rounded-full bg-gradient-to-r from-[#039AC5]/30 to-[#4AC1E8]/30"
-                layoutId="activeDot"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
-
-            {/* Dot */}
-            <div
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                isActive
-                  ? "bg-[#039AC5] shadow-lg shadow-[#039AC5]/50"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
-            />
-          </motion.button>
-        );
-      })}
-
-      {/* Next pages indicator */}
-      {endPage < slides.length && (
-        <span className="text-gray-400 text-xs">{slides.length - endPage}.</span>
-      )}
-    </div>
   );
 }
 
@@ -456,7 +404,7 @@ function ImageCarousel() {
 
     const interval = setInterval(() => {
       goToNext();
-    }, 4000);
+    }, 3500); // Slightly faster auto-play
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, currentIndex]);
@@ -471,10 +419,13 @@ function ImageCarousel() {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
-  const goToSlide = useCallback((index: number) => {
-    setDirection(index > currentIndex ? 1 : -1);
-    setCurrentIndex(index);
-  }, [currentIndex]);
+  const goToSlide = useCallback(
+    (index: number) => {
+      setDirection(index > currentIndex ? 1 : -1);
+      setCurrentIndex(index);
+    },
+    [currentIndex],
+  );
 
   // Touch handlers for swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -496,39 +447,61 @@ function ImageCarousel() {
     setIsAutoPlaying(true);
   };
 
-  // Calculate visible slides
+  // Calculate visible slides based on screen size - More on large screens
   const getVisibleSlides = () => {
     if (isMobile) return 1;
-    if (windowWidth < 1024) return 2;
-    return 3;
+    if (windowWidth < 768) return 1;
+    if (windowWidth < 1024) return 3;
+    if (windowWidth < 1280) return 4;
+    if (windowWidth < 1536) return 5;
+    return 6; // Even more on extra large screens
+  };
+
+  // Get maximum index based on visible slides
+  const getMaxIndex = () => {
+    const max = slides.length - getVisibleSlides();
+    return max > 0 ? max : 0;
+  };
+
+  // Generate visible slides
+  const getVisibleSlidesArray = () => {
+    const visibleCount = getVisibleSlides();
+    let startIndex = currentIndex;
+
+    // Adjust start index if we're near the end
+    if (currentIndex > slides.length - visibleCount) {
+      startIndex = slides.length - visibleCount;
+    }
+
+    return slides.slice(startIndex, startIndex + visibleCount);
   };
 
   return (
-    <section className="relative py-16 px-4 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#039AC5]/3 to-transparent pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#039AC5]/10 to-transparent blur-3xl pointer-events-none" />
+    <section className="relative py-12 md:py-16 px-4 overflow-hidden">
+      {/* Background decoration - Lighter */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#039AC5]/2 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-[#039AC5]/5 to-transparent blur-2xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header - Smaller */}
         <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
+          className="text-center mb-8 md:mb-12"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <motion.span
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#039AC5]/10 text-[#039AC5] text-sm font-semibold mb-4"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#039AC5]/10 text-[#039AC5] text-xs font-semibold mb-3"
             whileHover={{ scale: 1.05 }}
           >
-            <Award className="w-4 h-4" />
+            <Award className="w-3 h-3" />
             Our Portfolio
           </motion.span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white">
             Trusted by <span className="text-[#039AC5]">Industry Leaders</span>
           </h2>
-          <p className="mt-4 text-gray-100 max-w-2xl mx-auto">
-            Delivering world-class safety training and compliance solutions to businesses worldwide
+          <p className="mt-3 text-gray-100 text-sm md:text-base max-w-2xl mx-auto">
+            Delivering world-class safety training and compliance solutions
           </p>
         </motion.div>
 
@@ -538,69 +511,69 @@ function ImageCarousel() {
           onMouseEnter={() => setIsAutoPlaying(false)}
           onMouseLeave={() => setIsAutoPlaying(true)}
         >
-          {/* Navigation buttons */}
-          {!isMobile && (
+          {/* Navigation buttons - Closer to slides */}
+          {!isMobile && windowWidth >= 768 && (
             <>
               <NavButton
                 onClick={goToPrev}
                 direction="prev"
                 disabled={currentIndex === 0}
+                // style={{ left: '0.5rem' }}
               />
               <NavButton
                 onClick={goToNext}
                 direction="next"
-                disabled={currentIndex >= slides.length - getVisibleSlides()}
+                disabled={currentIndex >= getMaxIndex()}
+                // style={{ right: '0.5rem' }}
               />
             </>
           )}
 
-          {/* Slides container */}
+          {/* Slides container with tighter spacing */}
           <div
-            className="overflow-hidden px-2"
+            className="overflow-hidden px-1"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-3 md:gap-4 transition-all duration-300">
               <AnimatePresence mode="wait">
-                {slides.slice(currentIndex, currentIndex + getVisibleSlides()).map((slide, idx) => (
-                  <div
-                    key={slide.id}
-                    className={`${
-                      isMobile ? "w-full" : "w-full"
-                    } ${getVisibleSlides() === 2 ? "w-1/2" : ""} ${
-                      getVisibleSlides() === 3 ? "w-1/3" : ""
-                    } px-2`}
-                    style={{ maxWidth: isMobile ? "100%" : `${100 / getVisibleSlides()}%` }}
-                  >
-                    <CarouselSlide
-                      slide={slide}
-                      isActive={idx === Math.floor(getVisibleSlides() / 2)}
-                      index={currentIndex + idx}
-                    />
-                  </div>
-                ))}
+                {getVisibleSlidesArray().map((slide, idx) => {
+                  const visibleSlides = getVisibleSlides();
+                  const slideWidth = 100 / visibleSlides;
+                  const isActive = idx === Math.floor(visibleSlides / 2);
+
+                  return (
+                    <div
+                      key={slide.id}
+                      className="flex-shrink-0"
+                      style={{ width: `${slideWidth}%` }}
+                    >
+                      <div className="px-1.5">
+                        <CarouselSlide
+                          slide={slide}
+                          isActive={isActive}
+                          index={currentIndex + idx}
+                          isMobile={isMobile}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
               </AnimatePresence>
             </div>
           </div>
 
-          {/* Progress dots */}
-          {/* <ProgressDots
-            total={slides.length}
-            current={currentIndex}
-            onClick={goToSlide}
-          /> */}
-
           {/* Mobile swipe indicator */}
           {isMobile && (
             <motion.div
-              className="flex items-center justify-center gap-2 mt-4 text-gray-400"
+              className="flex items-center justify-center gap-1.5 mt-4 text-gray-400"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
+              <ChevronDown className="w-3 h-3 rotate-[-90deg]" />
               <span className="text-xs">Swipe to navigate</span>
-              <ChevronDown className="w-4 h-4 rotate-90" />
+              <ChevronDown className="w-3 h-3 rotate-90" />
             </motion.div>
           )}
         </div>
@@ -610,4 +583,3 @@ function ImageCarousel() {
 }
 
 export default ImageCarousel;
-
