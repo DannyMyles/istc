@@ -616,48 +616,131 @@ export default function ContactPage() {
 
       {/* Map & Location Section */}
       <div ref={setMapRef}>
-        <section className="py-20 bg-gradient-to-b from-gray-50 to-white scroll-mt-20" id="map-section">
+        <section className="py-20 bg-gradient-to-b from-white to-gray-50 scroll-mt-20" id="map-section">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              Visit Our Training Center
-            </h2>
-            <div className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
-              <div className="h-96 bg-gradient-to-br from-accent-100 to-blue-100 flex items-center justify-center relative">
-                {/* Map Pattern Background */}
-                <div className="absolute inset-0 opacity-20 bg-[url('/images/patterns/map-pattern.svg')] bg-repeat bg-center"></div>
-                <div className="text-center relative z-10">
-                  <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-accent-500 to-accent-600 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
-                    <MapPin className="text-white" size={40} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-accent-800 mb-2">
-                    Occidental House, Baricho Road, Nairobi
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Visit our state-of-the-art training facility
-                  </p>
-                  <a 
-                    href="https://maps.google.com/?q=Occidental House, Baricho Road,+Nairobi+Kenya" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-block bg-gradient-to-r from-accent-500 to-accent-600   px-8 py-3 rounded-lg font-semibold hover:from-accent-600 hover:to-accent-700 hover:scale-105 transition-all duration-300 shadow-lg"
-                  >
-                    Get Directions
-                  </a>
-                </div>
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Visit Our Training Center
+                </h2>
+                <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                  Experience our state-of-the-art training facility in the heart of Nairobi
+                </p>
               </div>
-              <div className="p-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center p-6 bg-gray-50 rounded-xl hover:bg-white hover:shadow-lg transition-all duration-300">
-                    <h4 className="font-semibold text-gray-900 mb-2">Training Facilities</h4>
-                    <p className="text-gray-600">Modern classrooms and practical training areas</p>
+              
+              <div className="bg-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                {/* Map Container */}
+                <div className="relative h-[450px] w-full">
+                  {/* Google Maps Embed */}
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8199999999997!2d36.8172!3d-1.2864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f6d3445433444%3A0x1234567890abcdef!2sOccidental%20House%2C%20Baricho%20Road%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1699999999999!5m2!1sen!2ske"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full h-full"
+                    title="ISTC Location Map"
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
+                  
+                  {/* Location Card Overlay */}
+                  <div className="absolute bottom-6 left-6 right-6 md:left-8 md:w-96">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-white/20">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-gradient-to-br from-accent-500 to-accent-600 p-3 rounded-xl text-green-500 flex-shrink-0 shadow-lg">
+                          <MapPin size={24} />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">
+                            ISTC Training Center
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-4">
+                            Occidental House, Baricho Road, Nairobi, Kenya
+                          </p>
+                          <a 
+                            href="https://maps.google.com/?q=Occidental House, Baricho Road,+Nairobi+Kenya" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-accent-500 to-accent-600 px-5 py-2.5 rounded-xl font-semibold hover:from-accent-600 hover:to-accent-700 hover:scale-105 transition-all duration-300 shadow-lg text-sm"
+                          >
+                            Get Directions
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center p-6 bg-gray-50 rounded-xl hover:bg-white hover:shadow-lg transition-all duration-300">
-                    <h4 className="font-semibold text-gray-900 mb-2">Equipment Available</h4>
-                    <p className="text-gray-600">Latest safety equipment for hands-on training</p>
+                </div>
+                
+                {/* Features Grid */}
+                <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="group flex items-center gap-4 p-5 bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border border-gray-100">
+                      <div className="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900">Training Facilities</h4>
+                        <p className="text-sm text-gray-600">Modern classrooms</p>
+                      </div>
+                    </div>
+                    
+                    <div className="group flex items-center gap-4 p-5 bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border border-gray-100">
+                      <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900">Equipment</h4>
+                        <p className="text-sm text-gray-600">Latest safety gear</p>
+                      </div>
+                    </div>
+                    
+                    <div className="group flex items-center gap-4 p-5 bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border border-gray-100">
+                      <div className="bg-gradient-to-br from-purple-100 to-purple-200 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900">Parking</h4>
+                        <p className="text-sm text-gray-600">Secure & convenient</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center p-6 bg-gray-50 rounded-xl hover:bg-white hover:shadow-lg transition-all duration-300">
-                    <h4 className="font-semibold text-gray-900 mb-2">Parking Available</h4>
-                    <p className="text-gray-600">Secure parking for all visitors</p>
+                  
+                  {/* Transport Info */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                        <span>5 min walk from bus stop</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span>Easy access from CBD</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>Central location</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
