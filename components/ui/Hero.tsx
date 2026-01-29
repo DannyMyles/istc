@@ -64,7 +64,7 @@ const Hero = () => {
         />
         
         {/* Enhanced Darker overlay for much better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/40 to-black/30"></div>
       </div>
       
       {/* Optional: Add an additional solid overlay for even more darkness */}
