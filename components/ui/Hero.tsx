@@ -48,7 +48,7 @@ const Hero = () => {
         
         {/* Fallback Image */}
         <Image
-          src="/videos/10.jpg"
+          src="/videos/hero_bg.jpeg"
           alt="Hero background"
           fill
           style={{

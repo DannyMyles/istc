@@ -206,17 +206,6 @@ const Footer = () => {
             <div className="text-accent-300 text-sm">
               <p>© {currentYear} International Safety Training Centre. All rights reserved.</p>
             </div>
-            <div className="flex items-center gap-6 text-sm">
-              <Link href="/privacy" className="text-accent-300 hover:text-[#039AC5] transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-accent-300 hover:text-[#039AC5] transition-colors">
-                Terms & Conditions
-              </Link>
-              <Link href="/sitemap" className="text-accent-300 hover:text-[#039AC5] transition-colors">
-                Sitemap
-              </Link>
-            </div>
           </div>
         </div>
       </div>
