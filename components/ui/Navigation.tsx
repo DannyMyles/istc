@@ -291,92 +291,100 @@ const Navigation = () => {
 
             {/* Desktop Navigation with enhanced interactions */}
             <nav className="hidden lg:flex items-center gap-1">
-              {navigation.main.map((item) => (
-                <div key={item.name} className="relative">
-                  {item.submenu ? (
-                    <div className="group">
-                      <button className={`flex items-center gap-1 px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
-                        isActiveLink(item.href)
-                          ? 'text-[#039AC5] after:scale-x-100'
-                          : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
-                      }`}>
-                        {item.name}
-                        <ChevronDown size={16} className={`group-hover:rotate-180 transition-transform ${
-                          isActiveLink(item.href) ? 'text-[#039AC5]' : 'text-gray-500'
-                        }`} />
-                      </button>
-                      <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
-                        <div className="p-2">
-                          {item.submenu.map((subItem) => (
-                            hasSubitems(subItem) ? (
-                              // Nested submenu for items with subitems
-                              <div key={subItem.name} className="relative group/sub">
-                                <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5] rounded-lg transition-colors cursor-pointer">
-                                  <div className="flex items-center gap-3">
-                                    <div className={`w-2 h-2 rounded-full ${
-                                      isActiveLink(item.href) ? 'bg-[#039AC5]' : 'bg-gray-300'
-                                    } group-hover/sub:scale-125 transition-transform`}></div>
-                                    <span className="font-medium">{subItem.name}</span>
+              {navigation.main.map((item) => {
+                // Check if item should be hidden on desktop
+                const shouldHide = ['Testimonials', 'Blog', 'Contact'].includes(item.name);
+                
+                return (
+                  <div 
+                    key={item.name} 
+                    className={`relative ${shouldHide ? 'hidden-on-desktop' : ''}`}
+                  >
+                    {item.submenu ? (
+                      <div className="group">
+                        <button className={`flex items-center gap-1 px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
+                          isActiveLink(item.href)
+                            ? 'text-[#039AC5] after:scale-x-100'
+                            : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
+                        }`}>
+                          {item.name}
+                          <ChevronDown size={16} className={`group-hover:rotate-180 transition-transform ${
+                            isActiveLink(item.href) ? 'text-[#039AC5]' : 'text-gray-500'
+                          }`} />
+                        </button>
+                        <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
+                          <div className="p-2">
+                            {item.submenu.map((subItem) => (
+                              hasSubitems(subItem) ? (
+                                // Nested submenu for items with subitems
+                                <div key={subItem.name} className="relative group/sub">
+                                  <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5] rounded-lg transition-colors cursor-pointer">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-2 h-2 rounded-full ${
+                                        isActiveLink(item.href) ? 'bg-[#039AC5]' : 'bg-gray-300'
+                                      } group-hover/sub:scale-125 transition-transform`}></div>
+                                      <span className="font-medium">{subItem.name}</span>
+                                    </div>
+                                    <ChevronRight size={16} className="text-[#039AC5]" />
                                   </div>
-                                  <ChevronRight size={16} className="text-[#039AC5]" />
-                                </div>
-                                {/* Second level submenu */}
-                                <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
-                                  <div className="p-2">
-                                    {subItem.subitems.map((nestedItem) => (
-                                      <Link
-                                        key={nestedItem.name}
-                                        href={nestedItem.href}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/nested ${
-                                          isActiveLink(nestedItem.href)
-                                            ? 'bg-[#039AC5]/5 text-[#039AC5]'
-                                            : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
-                                        }`}
-                                      >
-                                        <div className={`w-1.5 h-1.5 rounded-full ${
-                                          isActiveLink(nestedItem.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
-                                        } group-hover/nested:scale-125 transition-transform`}></div>
-                                        <span className="font-medium">{nestedItem.name}</span>
-                                      </Link>
-                                    ))}
+                                  {/* Second level submenu */}
+                                  <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
+                                    <div className="p-2">
+                                      {subItem.subitems.map((nestedItem) => (
+                                        <Link
+                                          key={nestedItem.name}
+                                          href={nestedItem.href}
+                                          className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/nested ${
+                                            isActiveLink(nestedItem.href)
+                                              ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                              : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                          }`}
+                                        >
+                                          <div className={`w-1.5 h-1.5 rounded-full ${
+                                            isActiveLink(nestedItem.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
+                                          } group-hover/nested:scale-125 transition-transform`}></div>
+                                          <span className="font-medium">{nestedItem.name}</span>
+                                        </Link>
+                                      ))}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ) : (
-                              // Regular submenu item
-                              <Link
-                                key={subItem.name}
-                                href={subItem.href!}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/sub ${
-                                  isActiveLink(subItem.href!)
-                                    ? 'bg-[#039AC5]/5 text-[#039AC5]'
-                                    : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
-                                }`}
-                              >
-                                <div className={`w-2 h-2 rounded-full ${
-                                  isActiveLink(subItem.href!) ? 'bg-[#039AC5] animate-pulse' : 'bg-gray-300'
-                                } group-hover/sub:scale-125 transition-transform`}></div>
-                                <span className="font-medium">{subItem.name}</span>
-                              </Link>
-                            )
-                          ))}
+                              ) : (
+                                // Regular submenu item
+                                <Link
+                                  key={subItem.name}
+                                  href={subItem.href!}
+                                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/sub ${
+                                    isActiveLink(subItem.href!)
+                                      ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                      : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                  }`}
+                                >
+                                  <div className={`w-2 h-2 rounded-full ${
+                                    isActiveLink(subItem.href!) ? 'bg-[#039AC5] animate-pulse' : 'bg-gray-300'
+                                  } group-hover/sub:scale-125 transition-transform`}></div>
+                                  <span className="font-medium">{subItem.name}</span>
+                                </Link>
+                              )
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className={`px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
-                        isActiveLink(item.href)
-                          ? 'text-[#039AC5] after:scale-x-100'
-                          : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </div>
-              ))}
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={`px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
+                          isActiveLink(item.href)
+                            ? 'text-[#039AC5] after:scale-x-100'
+                            : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
             </nav>
 
             {/* CTA Buttons */}
@@ -393,7 +401,7 @@ const Navigation = () => {
               )}
               <Link
                 href="/courses"
-                className="btn-adventure flex items-center gap-2"
+                className="btn-adventure flex items-center gap-2 hidden-on-desktop-btn"
               >
                 <GraduationCap size={18} />
                 Browse Courses
@@ -493,7 +501,7 @@ const Navigation = () => {
               {/* Mobile Navigation */}
               <div className="space-y-1">
                 {navigation.main.map((item) => (
-                  <div key={item.name} className="border-b border-gray-100 last:border-0">
+                  <div key={item.name} className={`border-b border-gray-100 last:border-0 ${['Blog', 'Testimonials', 'Contact'].includes(item.name) ? 'md:hidden' : ''}`}>
                     {item.submenu ? (
                       <details className="group">
                         <summary className={`flex items-center justify-between py-4 font-semibold cursor-pointer list-none transition-colors ${
@@ -595,7 +603,7 @@ const Navigation = () => {
                 <Link
                   href="/courses"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block w-full text-center border-2 border-[#039AC5] text-[#039AC5] hover:bg-[#039AC5] hover:text-white transition-colors py-3.5 rounded-lg font-semibold"
+                  className="block w-full text-center border-2 border-[#039AC5] text-[#039AC5] hover:bg-[#039AC5] hover:text-white transition-colors py-3.5 rounded-lg font-semibold hidden-on-desktop-btn"
                 >
                   Browse Courses
                 </Link>
@@ -604,6 +612,21 @@ const Navigation = () => {
           </div>
         )}
       </header>
+
+      {/* Add custom CSS for media queries */}
+      <style jsx global>{`
+        /* Hide elements on desktop (1024px and up) */
+        @media (max-width: 1536px) {
+          .hidden-on-desktop {
+            display: none !important;
+          }
+          
+          /* Hide Browse Courses button on desktop */
+          .hidden-on-desktop-btn {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 };
