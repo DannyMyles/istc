@@ -293,7 +293,7 @@ const Navigation = () => {
             <nav className="hidden lg:flex items-center gap-1">
               {navigation.main.map((item) => {
                 // Check if item should be hidden on desktop
-                const shouldHide = ['Testimonials', 'Blog', 'Contact'].includes(item.name);
+                const shouldHide = ['Testimonials', 'Blog'].includes(item.name);
                 
                 return (
                   <div 
