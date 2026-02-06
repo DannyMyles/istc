@@ -141,7 +141,7 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-accent-500/10 backdrop-blur-sm border border-accent-500/20 text-white px-6 py-2 rounded-full text-sm font-medium mb-8">
               <Award size={16} />
-              <span>Pioneers in Safety Training Since 2008</span>
+              <span>Pioneers in Safety Training Since 2004</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -286,7 +286,7 @@ export default function AboutPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-100 rounded-2xl mb-6 mx-auto">
                   <Clock className="text-accent-600" size={32} />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">10+ Years Experience</h3>
+                <h3 className="text-xl font-semibold mb-4">22+ Years Experience</h3>
                 <p className="text-gray-600">
                   Extensive experience in safety training across various industries including construction, manufacturing, oil & gas, and healthcare.
                 </p>
