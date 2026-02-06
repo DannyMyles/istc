@@ -97,6 +97,18 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/testimonials" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
+                  <span className="w-1 h-1 bg-accent-light rounded-full"></span>
+                  Testimonials
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
+                  <span className="w-1 h-1 bg-accent-light rounded-full"></span>
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <span className="w-1 h-1 bg-accent-light rounded-full"></span>
                   Contact
