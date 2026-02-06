@@ -138,15 +138,15 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!optimisticQuery.trim()) return;
+  // const handleSearch = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!optimisticQuery.trim()) return;
 
-    startTransition(() => {
-      setOptimisticQuery(optimisticQuery);
-      router.push(`/search?q=${encodeURIComponent(optimisticQuery)}`);
-    });
-  };
+  //   startTransition(() => {
+  //     setOptimisticQuery(optimisticQuery);
+  //     router.push(`/search?q=${encodeURIComponent(optimisticQuery)}`);
+  //   });
+  // };
 
   // Helper function to check if a link is active
   const isActiveLink = (href: string) => {
@@ -210,7 +210,7 @@ const Navigation = () => {
             {/* Mobile: Stack authentication at end, Desktop: Keep as before */}
             <div className="w-full md:w-auto flex justify-between md:justify-normal items-center gap-4">
               {/* Search form - hidden on mobile */}
-              <form onSubmit={handleSearch} className="relative hidden md:block">
+              {/* <form onSubmit={handleSearch} className="relative hidden md:block">
                 <input
                   type="text"
                   value={optimisticQuery}
@@ -225,7 +225,7 @@ const Navigation = () => {
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#039AC5]"></div>
                   </div>
                 )}
-              </form>
+              </form> */}
               
               {/* Authentication status in top bar */}
               <div className="flex items-center gap-2">
@@ -431,7 +431,7 @@ const Navigation = () => {
           <div className="lg:hidden bg-white border-t border-gray-200 animate-in slide-in-from-top duration-300">
             <div className="container mx-auto px-4 py-6">
               {/* Mobile Search */}
-              <form onSubmit={handleSearch} className="mb-6">
+              {/* <form onSubmit={handleSearch} className="mb-6">
                 <div className="relative">
                   <input
                     type="text"
@@ -448,7 +448,7 @@ const Navigation = () => {
                     </div>
                   )}
                 </div>
-              </form>
+              </form> */}
 
               {/* Authentication section in mobile menu */}
               {status === "loading" ? (
