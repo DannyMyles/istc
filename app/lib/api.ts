@@ -577,6 +577,21 @@ class ApiClient {
           method: 'DELETE',
         }),
     },
+    roles: {
+      getAll: () =>
+        this.request('/api/v1/roles'),
+
+      create: (data: any) =>
+        this.request('/api/v1/roles', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }),
+      
+      delete: (id: string) =>
+        this.request(`/api/v1/contacts/${id}`, {
+          method: 'DELETE',
+        }),
+    },
   }
 }
 

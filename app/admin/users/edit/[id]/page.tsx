@@ -85,7 +85,7 @@ export default function EditUserPage() {
         email: user.email || '',
         password: '', // Don't populate password field
         role: user.role || 'user',
-        roleId: typeof user.roleId === 'object' ? user.roleId?._id || '' : '',
+        roleId: typeof user.roleId === 'object' ? user.roleId?.id?.toString() || '' : '',
         isActive: user.isActive ?? true
       })
     } catch (err: any) {
@@ -462,8 +462,8 @@ export default function EditUserPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">User ID:</span>
-                  <span className="text-gray-900 font-mono text-xs truncate max-w-[150px]" title={originalUser._id}>
-                    {originalUser._id.slice(0, 8)}...
+                  <span className="text-gray-900 font-mono text-xs truncate max-w-[150px]" title={originalUser.id.toString()}>
+                    {originalUser.id.toString().slice(0, 8)}...
                   </span>
                 </div>
                 <div className="flex justify-between">

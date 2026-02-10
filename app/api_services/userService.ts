@@ -2,13 +2,13 @@ import { api } from "../lib/api"
 
 // User interface matching the backend model
 export interface User {
-  _id: string
+  id: number
   name: string
   username: string
   email: string
   role: string
   roleId?: {
-    _id: string
+    id: number
     name: string
   }
   isActive: boolean

@@ -22,7 +22,9 @@ import {
   User as UserIcon,
   Loader2
 } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { User, userService } from '@/app/api_services/userService'
+import { ConfirmModal, DeleteConfirmModal, BulkDeleteConfirmModal } from '@/components/ui/ConfirmModal'
 
 export default function UsersManagementPage() {
   const router = useRouter()
@@ -37,8 +39,14 @@ export default function UsersManagementPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([])
   const [isAuthLoading, setIsAuthLoading] = useState(true)
+
+  // Delete modal state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [userToDelete, setUserToDelete] = useState<User | null>(null)
+  const [bulkDeleteModalOpen, setBulkDeleteModalOpen] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   // Check authentication status
   useEffect(() => {
@@ -135,13 +143,13 @@ export default function UsersManagementPage() {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedUsers(filteredUsers.map(user => user._id))
+      setSelectedUsers(filteredUsers.map(user => user.id))
     } else {
       setSelectedUsers([])
     }
   }
 
-  const handleSelectUser = (id: string, checked: boolean) => {
+  const handleSelectUser = (id: number, checked: boolean) => {
     if (checked) {
       setSelectedUsers([...selectedUsers, id])
     } else {
@@ -149,41 +157,60 @@ export default function UsersManagementPage() {
     }
   }
 
-  const handleDeleteUser = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this user?')) return
-    
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return
+
+    setDeleteLoading(true)
     try {
-      await userService.deleteUser(id)
-      setUsers(users.filter(u => u._id !== id))
-      setSelectedUsers(selectedUsers.filter(userId => userId !== id))
+      await userService.deleteUser(userToDelete.id.toString())
+      setUsers(users.filter(u => u.id !== userToDelete.id))
+      setSelectedUsers(selectedUsers.filter(userId => userId !== userToDelete.id))
+      setDeleteModalOpen(false)
+      setUserToDelete(null)
+      toast.success(`${userToDelete.name} has been deleted successfully.`)
     } catch (err: any) {
-      alert(err.message || 'Failed to delete user')
+      toast.error(err.message || 'Failed to delete user')
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
   const handleDeleteSelected = async () => {
     if (selectedUsers.length === 0) return
-    if (!confirm(`Are you sure you want to delete ${selectedUsers.length} selected users?`)) return
-    
+
+    setDeleteLoading(true)
     try {
-      await Promise.all(selectedUsers.map(id => userService.deleteUser(id)))
-      setUsers(users.filter(u => !selectedUsers.includes(u._id)))
+      await Promise.all(selectedUsers.map(id => userService.deleteUser(id.toString())))
+      setUsers(users.filter(u => !selectedUsers.includes(u.id)))
       setSelectedUsers([])
+      setBulkDeleteModalOpen(false)
+      toast.success(`${selectedUsers.length} users have been deleted successfully.`)
     } catch (err: any) {
-      alert(err.message || 'Failed to delete users')
+      toast.error(err.message || 'Failed to delete users')
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
-  const handleToggleStatus = async (id: string) => {
-    const user = users.find(u => u._id === id)
+  const openDeleteModal = (user: User) => {
+    setUserToDelete(user)
+    setDeleteModalOpen(true)
+  }
+
+  const openBulkDeleteModal = () => {
+    setBulkDeleteModalOpen(true)
+  }
+
+  const handleToggleStatus = async (id: number) => {
+    const user = users.find(u => u.id === id)
     if (!user) return
-    
+
     try {
-      const updatedUser = await userService.updateUser(id, { 
-        isActive: !user.isActive 
+      const updatedUser = await userService.updateUser(id.toString(), {
+        isActive: !user.isActive
       })
-      setUsers(users.map(u => 
-        u._id === id ? { ...u, ...updatedUser.user } : u
+      setUsers(users.map(u =>
+        u.id === id ? { ...u, ...updatedUser.user } : u
       ))
     } catch (err: any) {
       alert(err.message || 'Failed to update user status')
@@ -388,7 +415,7 @@ export default function UsersManagementPage() {
               <button
                 onClick={() => {
                   const userId = selectedUsers[0]
-                  const user = users.find(u => u._id === userId)
+                  const user = users.find(u => u.id === userId)
                   if (user) handleToggleStatus(userId)
                 }}
                 className="px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-sm font-medium hover:bg-green-100 transition-colors"
@@ -396,7 +423,7 @@ export default function UsersManagementPage() {
                 Toggle Status
               </button>
               <button
-                onClick={handleDeleteSelected}
+                onClick={openBulkDeleteModal}
                 className="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors"
               >
                 Delete Selected
@@ -499,12 +526,12 @@ export default function UsersManagementPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {filteredUsers.map((user) => (
-                      <tr key={user._id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={user.id || user.email} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4">
                           <input
                             type="checkbox"
-                            checked={selectedUsers.includes(user._id)}
-                            onChange={(e) => handleSelectUser(user._id, e.target.checked)}
+                            checked={selectedUsers.includes(user.id)}
+                            onChange={(e) => handleSelectUser(user.id, e.target.checked)}
                             className="h-4 w-4 text-accent-500 focus:ring-accent-500"
                           />
                         </td>
@@ -533,7 +560,7 @@ export default function UsersManagementPage() {
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
                               <Mail className="h-4 w-4 text-gray-400" />
-                              <a 
+                              <a
                                 href={`mailto:${user.email}`}
                                 className="text-sm text-gray-600 hover:text-accent-600 transition-colors"
                               >
@@ -554,7 +581,7 @@ export default function UsersManagementPage() {
                         </td>
                         <td className="px-6 py-4">
                           <button
-                            onClick={() => handleToggleStatus(user._id)}
+                            onClick={() => handleToggleStatus(user.id)}
                             className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${getStatusColor(user.isActive)}`}
                           >
                             {getStatusIcon(user.isActive)}
@@ -576,29 +603,29 @@ export default function UsersManagementPage() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <Link
-                              href={`/admin/users/${user._id}`}
+                              href={`/admin/users/${user.id}`}
                               className="p-2 hover:bg-blue-50 rounded-lg transition-colors text-blue-600"
                               title="View Profile"
                             >
                               <Eye className="h-4 w-4" />
                             </Link>
-                            
+
                             <Link
-                              href={`/admin/users/edit/${user._id}`}
+                              href={`/admin/users/edit/${user.id}`}
                               className="p-2 hover:bg-accent-50 rounded-lg transition-colors text-accent-600"
                               title="Edit"
                             >
                               <Edit className="h-4 w-4" />
                             </Link>
-                            
+
                             <button
-                              onClick={() => handleDeleteUser(user._id)}
+                              onClick={() => openDeleteModal(user)}
                               className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600"
                               title="Delete"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
-                            
+
                             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                               <MoreVertical className="h-4 w-4" />
                             </button>
@@ -655,6 +682,29 @@ export default function UsersManagementPage() {
           )}
         </div>
       )}
+
+      {/* Delete Confirmation Modal for Single User */}
+      {userToDelete && (
+        <DeleteConfirmModal
+          isOpen={deleteModalOpen}
+          onClose={() => {
+            setDeleteModalOpen(false)
+            setUserToDelete(null)
+          }}
+          onConfirm={handleDeleteUser}
+          userName={userToDelete.name}
+          loading={deleteLoading}
+        />
+      )}
+
+      {/* Bulk Delete Confirmation Modal */}
+      <BulkDeleteConfirmModal
+        isOpen={bulkDeleteModalOpen}
+        onClose={() => setBulkDeleteModalOpen(false)}
+        onConfirm={handleDeleteSelected}
+        count={selectedUsers.length}
+        loading={deleteLoading}
+      />
     </div>
   )
 }
