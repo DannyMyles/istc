@@ -60,7 +60,7 @@ export default function BlogManagementPage() {
       setLoading(true)
       const response = await blogService.getAllBlogs({
         limit: 50, // Show more blogs in admin
-        sort: '-createdAt'
+        // sort: '-createdAt'
       })
       setBlogs(response.blogs)
     } catch (error: any) {
@@ -458,10 +458,10 @@ export default function BlogManagementPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-gray-600">
+                      {/* <div className="flex items-center gap-2 text-gray-600">
                         <Calendar className="h-4 w-4" />
                         {blogService.formatDate(blog.createdAt)}
-                      </div>
+                      </div> */}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">

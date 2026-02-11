@@ -251,7 +251,11 @@ const useSafeFont = () => {
 };
 
 // Utility functions
-const formatCurrency = (cost: { display: string; amount: number }): string => {
+const formatCurrency = (cost: string | { amount?: number; currency?: string; display?: string; taxInclusive?: boolean }): string => {
+  // Handle string cost
+  if (typeof cost === 'string') {
+    return cost || 'N/A';
+  }
   // Use the display property if available, otherwise format the amount
   if (cost?.display) {
     return cost.display.replace('KSH', 'Kshs');

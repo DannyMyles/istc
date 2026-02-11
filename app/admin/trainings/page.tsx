@@ -128,7 +128,7 @@ export default function TrainingsManagementPage() {
     
     setDeleting(true)
     try {
-      await trainingService.deleteTraining(trainingToDelete.id)
+      await trainingService.deleteTraining(String(trainingToDelete.id))
       toast.success('Training deleted successfully')
       fetchTrainings() // Refresh the list
     } catch (error: any) {
@@ -148,7 +148,7 @@ export default function TrainingsManagementPage() {
 
   const handleToggleFeatured = async (training: Training) => {
     try {
-      await trainingService.updateTraining(training.id, {
+      await trainingService.updateTraining(String(training.id), {
         isFeatured: !training.isFeatured
       })
       toast.success(`Training ${!training.isFeatured ? 'added to' : 'removed from'} featured`)
@@ -190,6 +190,34 @@ export default function TrainingsManagementPage() {
       case 'health': return 'bg-blue-50 text-blue-700'
       default: return 'bg-accent-50 text-accent-700'
     }
+  }
+
+  // Helper function to parse duration JSON string
+  const parseDuration = (duration: any): string => {
+    if (!duration) return 'N/A'
+    if (typeof duration === 'string') {
+      try {
+        const parsed = JSON.parse(duration)
+        return parsed.display || 'N/A'
+      } catch {
+        return duration
+      }
+    }
+    return duration.display || 'N/A'
+  }
+
+  // Helper function to parse cost JSON string
+  const parseCost = (cost: any): string => {
+    if (!cost) return 'N/A'
+    if (typeof cost === 'string') {
+      try {
+        const parsed = JSON.parse(cost)
+        return parsed.display || 'N/A'
+      } catch {
+        return cost
+      }
+    }
+    return cost.display || 'N/A'
   }
 
   if (loading) {
@@ -406,7 +434,7 @@ export default function TrainingsManagementPage() {
               <tr className="bg-gray-50 border-b border-gray-200">
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Training Program</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Category</th>
-                <th className="px6 py-4 text-left text-sm font-semibold text-gray-900">Duration</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Duration</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Cost</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Enrollments</th>
@@ -461,14 +489,14 @@ export default function TrainingsManagementPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-gray-700">
                         <Clock className="h-4 w-4 text-gray-400" />
-                        {typeof training.duration === 'string' ? training.duration : training.duration?.display || 'N/A'}
+                        {parseDuration(training.duration)}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 font-medium">
                         {/* <DollarSign className="h-4 w-4 text-gray-400" /> */}
                         {/* Ksh. */}
-                        {typeof training.cost === 'string' ? training.cost : training.cost?.display || 'N/A'}
+                        {parseCost(training.cost)}
                       </div>
                       {training.registrationFee > 0 && (
                         <p className="text-xs text-gray-500 mt-1">
@@ -486,7 +514,7 @@ export default function TrainingsManagementPage() {
                         <Users className="h-4 w-4 text-gray-400" />
                         <span className="font-medium">{enrollments}</span>
                         <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">
-                          {training.upcomingSessions} sessions
+                          {trainingService.getUpcomingSessionsCount(training)} sessions
                         </span>
                       </div>
                     </td>

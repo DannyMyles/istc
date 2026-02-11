@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { 
   Phone, Mail, MapPin, Shield, 
   Facebook, Twitter, Linkedin, Instagram, 
-  GraduationCap, Award, Users, Clock 
+  GraduationCap, Award, Users, Clock,
+  Heart, Flame, TestTube, HardHat, Car
 } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
 import Image from 'next/image';
@@ -29,21 +30,16 @@ const Footer = () => {
           
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-4 group">
-              <div className="flex items-center justify-center w-20 h-20 bg-accent-800 rounded-xl group-hover:scale-105 transition-transform duration-300 shadow-adventure">
+              <div className="flex gap-3">
+              <Link href="/" className="flex gap-4 group">
+              <div className='w-36 h-36 bg-accent-800 rounded-2xl flex justify-center'>
                 <Image
-                  src="/footer_logo.png" 
+                  src="/header_logo.png" 
                   alt="ISTC Logo" 
-                  width={140}  
-                  height={140} 
+                  width={200}  
+                  height={200} 
                   className="object-contain"
                 />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-gray-600 -mt-1 max-w-[220px] leading-tight">
-                  International Safety Training Centre
-                </span>
               </div>
             </Link>
             </div>
@@ -123,31 +119,31 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link href="/courses/first-aid" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <Heart size={20} className="text-red-600" />
                   First Aid Training
                 </Link>
               </li>
               <li>
                 <Link href="/courses/fire-safety-course-certificate" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <Flame size={20} className="text-orange-600" />
                   Fire Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/chemical-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <TestTube size={20} className="text-green-600" />
                   Chemical Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/work-at-height" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <HardHat size={20} className="text-yellow-600" />
                   Construction Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/road-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <Car size={20} className="text-blue-600" />
                   Road Safety Training
                 </Link>
               </li>

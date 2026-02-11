@@ -1,16 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Proxy API requests to backend to avoid CORS issues in development
+  // Proxy API requests to backend to avoid CORS issues
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com';
-    
     return [
       {
         // Proxy all /api/v1/* requests to the backend
-        // This runs on the Next.js server side, so CORS doesn't apply
         source: '/api/v1/:path*',
-        destination: `${backendUrl}/api/v1/:path*`,
+        destination: 'http://localhost:8080/api/v1/:path*',
       },
     ];
   },
@@ -21,6 +18,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'istc-admin.onrender.com',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'localhost',
         pathname: '/uploads/**',
       },
       {

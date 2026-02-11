@@ -1,14 +1,15 @@
 import { api } from "../lib/api"
+import toast from 'react-hot-toast'
 
 // User interface matching the backend model
 export interface User {
-  _id: string
+  id: number
   name: string
   username: string
   email: string
   role: string
   roleId?: {
-    _id: string
+    id: number
     name: string
   }
   isActive: boolean
@@ -60,8 +61,9 @@ export const userService = {
   getAllUsers: async (): Promise<UsersResponse> => {
     try {
       return await api.admin.users.getAll()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching users:', error)
+      toast.error(error.message || 'Failed to fetch users')
       throw error
     }
   },
@@ -70,8 +72,9 @@ export const userService = {
   getUserById: async (id: string): Promise<UserResponse> => {
     try {
       return await api.admin.users.getById(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching user ${id}:`, error)
+      toast.error(error.message || 'Failed to fetch user')
       throw error
     }
   },
@@ -80,8 +83,9 @@ export const userService = {
   createUser: async (data: CreateUserRequest): Promise<UserResponse> => {
     try {
       return await api.admin.users.create(data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating user:', error)
+      toast.error(error.message || 'Failed to create user')
       throw error
     }
   },
@@ -90,8 +94,9 @@ export const userService = {
   updateUser: async (id: string, data: UpdateUserRequest): Promise<UserResponse> => {
     try {
       return await api.admin.users.update(id, data)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating user ${id}:`, error)
+      toast.error(error.message || 'Failed to update user')
       throw error
     }
   },
@@ -100,8 +105,9 @@ export const userService = {
   deleteUser: async (id: string): Promise<void> => {
     try {
       return await api.admin.users.delete(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error deleting user ${id}:`, error)
+      toast.error(error.message || 'Failed to delete user')
       throw error
     }
   },

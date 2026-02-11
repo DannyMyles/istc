@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getSession, signOut, useSession } from "next-auth/react"
+import toast from 'react-hot-toast'
 
 // Use relative paths to leverage Next.js rewrites/proxy in next.config.ts
 // This avoids CORS issues by making requests go through the same origin
@@ -161,6 +162,7 @@ class ApiClient {
         if (!token) {
           // No token available - redirect to login
           signOut({ callbackUrl: '/login' })
+          toast.error('Please sign in to continue')
           throw new Error('No authentication token found. Please log in again.')
         }
         
@@ -196,11 +198,13 @@ class ApiClient {
       } catch (refreshError) {
         // Refresh failed, redirect to login
         signOut({ callbackUrl: '/login' })
+        toast.error('Session expired. Please sign in again.')
         throw new Error('Session expired. Please sign in again.')
       }
       
       // If we got here, refresh didn't work or wasn't attempted
       signOut({ callbackUrl: '/login' })
+      toast.error('Session expired. Please sign in again.')
       throw new Error('Session expired. Please sign in again.')
     }
 
@@ -208,6 +212,7 @@ class ApiClient {
     try {
       data = await response.json();
     } catch (error) {
+      toast.error('Invalid response from server')
       throw new Error('Invalid JSON response from server');
     }
 
@@ -216,22 +221,44 @@ class ApiClient {
       
       // Handle specific HTTP errors
       if (response.status === 403) {
+        toast.error('You do not have permission to perform this action.')
         throw new Error('You do not have permission to perform this action.')
       }
       
       if (response.status === 429) {
+        toast.error('Too many requests. Please try again later.')
         throw new Error('Too many requests. Please try again later.')
       }
       
       if (response.status === 404) {
+        toast.error('The requested resource was not found.')
         throw new Error('The requested resource was not found.')
       }
       
       if (response.status >= 500) {
+        toast.error('Server error. Please try again later.')
         throw new Error('Server error. Please try again later.')
       }
       
-      throw new Error(errorData.error || errorData.message || `Request failed with status ${response.status}`)
+      // Database error handling
+      const errorMessage = errorData.error || errorData.message || `Request failed with status ${response.status}`
+      
+      // Detect common database error patterns
+      if (errorMessage.toLowerCase().includes('database') || 
+          errorMessage.toLowerCase().includes('db_') ||
+          errorMessage.toLowerCase().includes('sql') ||
+          errorMessage.toLowerCase().includes('constraint') ||
+          errorMessage.toLowerCase().includes('duplicate') ||
+          errorMessage.toLowerCase().includes('foreign key') ||
+          errorMessage.toLowerCase().includes('relation') ||
+          errorMessage.toLowerCase().includes('unique') ||
+          errorMessage.toLowerCase().includes('index')) {
+        toast.error('Database error: ' + errorMessage)
+      } else {
+        toast.error(errorMessage)
+      }
+      
+      throw new Error(errorMessage)
     }
 
     return data as T;
@@ -569,6 +596,21 @@ class ApiClient {
       }) =>
         this.request(`/api/v1/contacts/${id}/status`, {
           method: 'PATCH',
+          body: JSON.stringify(data),
+        }),
+      
+      delete: (id: string) =>
+        this.request(`/api/v1/contacts/${id}`, {
+          method: 'DELETE',
+        }),
+    },
+    roles: {
+      getAll: () =>
+        this.request('/api/v1/roles'),
+
+      create: (data: any) =>
+        this.request('/api/v1/roles', {
+          method: 'POST',
           body: JSON.stringify(data),
         }),
       

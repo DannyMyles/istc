@@ -17,7 +17,13 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Email and password are required")
           }
 
-          const backendBaseUrl = process.env.BACKEND_URL || 'https://istc-admin.onrender.com'
+          // Use localhost:8080 for local development (matching next.config.ts rewrites)
+          // In development, requests go through Next.js proxy at /api/v1/*
+          // In production, use the actual backend URL from environment
+          const isDev = process.env.NODE_ENV === 'development'
+          const backendBaseUrl = isDev 
+            ? 'http://localhost:8080'  // Direct URL for NextAuth authorize (runs server-side)
+            : (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || 'https://istc-admin.onrender.com')
           const backendUrl = `${backendBaseUrl}/api/v1/auth/login`
           
           console.log('[NextAuth] Attempting login to:', backendUrl)

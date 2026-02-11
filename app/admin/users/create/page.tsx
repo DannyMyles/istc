@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
   ArrowLeft, 
@@ -14,9 +14,11 @@ import {
   Eye,
   EyeOff,
   AlertCircle,
-  RefreshCw
+  RefreshCw,
+  Loader2
 } from 'lucide-react'
 import { userService } from '../../../api_services/userService'
+import { roleService, Role } from '../../../api_services/roleService'
 
 export default function CreateUserPage() {
   const router = useRouter()
@@ -24,6 +26,8 @@ export default function CreateUserPage() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [roleId, setRoleId] = useState('')
+  const [roles, setRoles] = useState<Role[]>([])
+  const [rolesLoading, setRolesLoading] = useState(true)
   
   // Form state - matching backend model
   const [formData, setFormData] = useState({
@@ -34,6 +38,34 @@ export default function CreateUserPage() {
     confirmPassword: '',
     isActive: true
   })
+
+  // Fetch roles from API
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        setRolesLoading(true)
+        const response = await roleService.getAllRoles()
+        const allRoles = Array.isArray(response) 
+          ? response 
+          : response && Array.isArray(response.roles)
+            ? response.roles 
+            : []
+        const activeRoles = allRoles.filter((role: Role) => role.isActive)
+        setRoles(activeRoles)
+      } catch (err: any) {
+        setRoles([
+          { id: 1, name: 'admin', description: 'Administrator', isActive: true, isDefault: false },
+          { id: 2, name: 'user', description: 'User', isActive: true, isDefault: true },
+          { id: 3, name: 'editor', description: 'Editor', isActive: true, isDefault: false },
+          { id: 4, name: 'viewer', description: 'Viewer', isActive: true, isDefault: false },
+        ])
+      } finally {
+        setRolesLoading(false)
+      }
+    }
+
+    fetchRoles()
+  }, [])
 
   const validateForm = () => {
     if (!formData.name || !formData.name.trim()) {
@@ -101,14 +133,6 @@ export default function CreateUserPage() {
       setLoading(false)
     }
   }
-
-  // Common roles - in production, these would come from the API
-  const availableRoles = [
-    { id: 'admin', name: 'Administrator' },
-    { id: 'user', name: 'User' },
-    { id: 'editor', name: 'Editor' },
-    { id: 'viewer', name: 'Viewer' }
-  ]
 
   return (
     <div className="space-y-6 p-4">
@@ -225,7 +249,7 @@ export default function CreateUserPage() {
             </div>
           </div>
 
-          {/* Role Selection */}
+            {/* Role Selection */}
           <div className="adventure-card">
             <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
               <span className="p-2 bg-purple-50 rounded-lg">
@@ -238,27 +262,37 @@ export default function CreateUserPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 User Role *
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {availableRoles.map((role) => (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => setRoleId(role.id)}
-                    className={`p-3 rounded-lg border transition-colors flex flex-col items-center gap-1 ${
-                      roleId === role.id
-                        ? 'border-accent-500 bg-accent-50 text-accent-700'
-                        : 'border-gray-300 hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    <Shield className={`h-5 w-5 ${
-                      roleId === role.id ? 'text-accent-600' : 'text-gray-400'
-                    }`} />
-                    <span className="text-sm font-medium">{role.name}</span>
-                  </button>
-                ))}
-              </div>
-              {!roleId && (
-                <p className="text-xs text-red-500 mt-2">Please select a role</p>
+              
+              {rolesLoading ? (
+                <div className="flex items-center gap-2 p-4 bg-gray-50 rounded-lg">
+                  <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+                  <span className="text-sm text-gray-500">Loading roles...</span>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {roles.map((role) => (
+                      <button
+                        key={role.id}
+                        type="button"
+                        onClick={() => setRoleId(role.id.toString())}
+                        className={`p-3 rounded-lg border transition-colors flex flex-col items-center gap-1 ${
+                          roleId === role.id.toString()
+                            ? 'border-accent-500 bg-accent-50 text-accent-700'
+                            : 'border-gray-300 hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        <Shield className={`h-5 w-5 ${
+                          roleId === role.id.toString() ? 'text-accent-600' : 'text-gray-400'
+                        }`} />
+                        <span className="text-sm font-medium">{roleService.getRoleDisplayName(role.name)}</span>
+                      </button>
+                    ))}
+                  </div>
+                  {!roleId && (
+                    <p className="text-xs text-red-500 mt-2">Please select a role</p>
+                  )}
+                </>
               )}
             </div>
 
@@ -266,10 +300,11 @@ export default function CreateUserPage() {
             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
               <h4 className="text-sm font-medium text-gray-700 mb-2">Role Descriptions</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li><strong>Administrator:</strong> Full access to all features and settings</li>
-                <li><strong>User:</strong> Standard access to the platform</li>
-                <li><strong>Editor:</strong> Can create and edit content</li>
-                <li><strong>Viewer:</strong> Read-only access</li>
+                {roles.map((role) => (
+                  <li key={role.id}>
+                    <strong>{roleService.getRoleDisplayName(role.name)}:</strong> {role.description || roleService.getRoleDescriptions()[role.name] || 'No description available'}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -371,7 +406,7 @@ export default function CreateUserPage() {
             </p>
           </div>
 
-          {/* User Preview */}
+              {/* User Preview */}
           <div className="adventure-card">
             <h3 className="text-lg font-medium text-gray-900 mb-4">User Preview</h3>
             
@@ -398,13 +433,13 @@ export default function CreateUserPage() {
                 </div>
                 <div className="flex justify-between">
                   <span>Role:</span>
-                  <span className={`font-medium ${
-                    roleId === 'admin' ? 'text-purple-600' :
-                    roleId === 'user' ? 'text-accent-600' :
-                    'text-gray-600'
-                  }`}>
-                    {availableRoles.find(r => r.id === roleId)?.name || 'Not selected'}
-                  </span>
+                  {roleId ? (
+                    <span className={`font-medium ${roleService.getRoleColor(roles.find(r => r.id.toString() === roleId)?.name || '')}`}>
+                      {roleService.getRoleDisplayName(roles.find(r => r.id.toString() === roleId)?.name || 'Unknown')}
+                    </span>
+                  ) : (
+                    <span className="font-medium text-gray-400">Not selected</span>
+                  )}
                 </div>
                 <div className="flex justify-between">
                   <span>Status:</span>

@@ -1,4 +1,5 @@
 import { api } from "../lib/api"
+import toast from 'react-hot-toast'
 
 export interface TrainingSession {
   _id: string
@@ -17,17 +18,17 @@ export interface TrainingSession {
 }
 
 export interface Training {
-  id: string
+  id: string | number
   code?: string
   title: string
   description: string
   targetGroup: string
-  duration: {
+  duration: string | {
     value: number
     unit: string
     display: string
   }
-  cost: {
+  cost: string | {
     amount: number
     currency: string
     display: string
@@ -111,8 +112,9 @@ export const trainingService = {
       }
       
       return response as TrainingResponse
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching trainings:', error)
+      toast.error(error.message || 'Failed to fetch trainings')
       throw error
     }
   },
@@ -126,8 +128,9 @@ export const trainingService = {
       // Handle both wrapped ({ training: ... }) and direct training responses
       const trainingData = (response as any).training || response
       return trainingData as Training
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching training ${id}:`, error)
+      toast.error(error.message || 'Failed to fetch training')
       throw error
     }
   },
@@ -136,8 +139,9 @@ export const trainingService = {
   createTraining: async (data: CreateTrainingRequest): Promise<Training> => {
     try {
       return await api.admin.training.create(data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating training:', error)
+      toast.error(error.message || 'Failed to create training')
       throw error
     }
   },
@@ -146,8 +150,9 @@ export const trainingService = {
   updateTraining: async (id: string, data: Partial<CreateTrainingRequest>): Promise<Training> => {
     try {
       return await api.admin.training.update(id, data)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating training ${id}:`, error)
+      toast.error(error.message || 'Failed to update training')
       throw error
     }
   },
@@ -156,8 +161,9 @@ export const trainingService = {
   deleteTraining: async (id: string): Promise<void> => {
     try {
       return await api.admin.training.delete(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error deleting training ${id}:`, error)
+      toast.error(error.message || 'Failed to delete training')
       throw error
     }
   },
@@ -213,9 +219,14 @@ export const trainingService = {
       }
       
       const nextSession = upcomingSessions[0]
+      const total = nextSession.seats.total || 0
+      const booked = nextSession.seats.booked || 0
+      // If available is not set, calculate it as total - booked
+      const available = nextSession.seats.available ?? (total - booked)
+      
       return {
-        available: nextSession.seats.available || 0,
-        total: nextSession.seats.total
+        available: available >= 0 ? available : 0,
+        total: total
       }
     } catch {
       return { available: 0, total: 0 }
@@ -257,7 +268,7 @@ export const trainingService = {
   // Calculate total revenue (placeholder - adjust based on your business logic)
   calculateRevenue: (training: Training): number => {
     const enrollments = trainingService.getTotalEnrollments(training)
-    const cost = training.cost.amount || 0
-    return enrollments * cost
+    const cost = typeof training.cost === 'object' ? training.cost.amount : 0
+    return enrollments * (cost || 0)
   }
 }

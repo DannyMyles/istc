@@ -31,7 +31,7 @@ export default function CalendarPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [expandedTraining, setExpandedTraining] = useState<string | null>(null);
+  const [expandedTraining, setExpandedTraining] = useState<string | number | null>(null);
   const [showAllCourses, setShowAllCourses] = useState(true);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
@@ -96,22 +96,6 @@ export default function CalendarPage() {
     return `${months[selectedMonth]} ${selectedYear}`;
   };
 
-  // Format currency
-  const formatCurrency = (cost: { display?: string; amount?: number }) => {
-    if (cost?.display) {
-      return cost.display.replace('KSH', 'Kshs');
-    }
-    return cost?.amount ? `Kshs ${cost.amount.toLocaleString()}` : 'N/A';
-  };
-
-  // Get duration display
-  const getDurationDisplay = (duration: { display?: string; value?: number; unit?: string }) => {
-    if (typeof duration === 'string') return duration;
-    if (duration?.display) return duration.display;
-    if (duration?.value && duration?.unit) return `${duration.value} ${duration.unit}`;
-    return 'N/A';
-  };
-
   // Get sessions for specific month (or all sessions if selectedMonth is null)
   const getSessionsForDisplay = (training: Training) => {
     if (!training.sessions) return [];
@@ -163,7 +147,7 @@ export default function CalendarPage() {
   };
 
   // Toggle training expansion
-  const toggleTrainingExpansion = (trainingId: string) => {
+  const toggleTrainingExpansion = (trainingId: string | number) => {
     setExpandedTraining(expandedTraining === trainingId ? null : trainingId);
   };
 
@@ -191,6 +175,54 @@ export default function CalendarPage() {
   const handlePDFGenerationComplete = () => {
     setIsGeneratingPDF(false);
   };
+
+  // Helper function to parse duration JSON string
+  const parseDuration = (duration: any): string => {
+    if (!duration) return 'N/A'
+    if (typeof duration === 'string') {
+      try {
+        const parsed = JSON.parse(duration)
+        return parsed.display || 'N/A'
+      } catch {
+        return duration
+      }
+    }
+    return duration.display || 'N/A'
+  }
+
+  // Helper function to parse cost JSON string
+  const parseCost = (cost: any): string => {
+    if (!cost) return 'N/A'
+    if (typeof cost === 'string') {
+      try {
+        const parsed = JSON.parse(cost)
+        return parsed.display || 'N/A'
+      } catch {
+        return cost
+      }
+    }
+    return cost.display || 'N/A'
+  }
+
+  // Helper function to parse modeOfStudy JSON string
+  const parseModeOfStudy = (modeOfStudy: any): string => {
+    if (!modeOfStudy) return ''
+    if (typeof modeOfStudy === 'string') {
+      try {
+        const parsed = JSON.parse(modeOfStudy)
+        if (Array.isArray(parsed)) {
+          return parsed.map(m => m.charAt(0).toUpperCase() + m.slice(1).replace('-', ' ')).join(', ')
+        }
+        return String(parsed)
+      } catch {
+        return modeOfStudy
+      }
+    }
+    if (Array.isArray(modeOfStudy)) {
+      return modeOfStudy.map(m => m.charAt(0).toUpperCase() + m.slice(1).replace('-', ' ')).join(', ')
+    }
+    return String(modeOfStudy)
+  }
 
   // Generate filename for PDF
   const getPDFFileName = () => {
@@ -544,11 +576,11 @@ export default function CalendarPage() {
                                 <div className="grid grid-cols-2 gap-3 mt-4">
                                   <div className="flex items-center gap-2 text-sm">
                                     <Clock size={14} className="text-accent-500 flex-shrink-0" />
-                                    <span className="text-gray-700">{getDurationDisplay(training.duration)}</span>
+                                    <span className="text-gray-700">{parseDuration(training.duration)}</span>
                                   </div>
                                   <div className="text-right">
                                     <div className="font-semibold text-gray-900">
-                                      {formatCurrency(training.cost)}
+                                      {parseCost(training.cost)}
                                     </div>
                                     <div className="text-xs text-gray-500">Excl. VAT</div>
                                   </div>
@@ -558,8 +590,8 @@ export default function CalendarPage() {
                                 <div className="mt-3">
                                   {sessions.length > 0 ? (
                                     <div className="text-sm text-gray-700">
-                                      {sessions.slice(0, 1).map((session) => (
-                                        <div key={session._id}>
+                                      {sessions.slice(0, 1).map((session, index) => (
+                                        <div key={session._id || `session-${index}`}>
                                           {session.formattedDates}
                                         </div>
                                       ))}
@@ -595,10 +627,10 @@ export default function CalendarPage() {
                               <div className="hidden md:block col-span-2 p-4">
                                 <div className="flex items-center gap-2 text-gray-700">
                                   <Clock size={14} className="text-accent-500" />
-                                  {getDurationDisplay(training.duration)}
+                                  {parseDuration(training.duration)}
                                 </div>
                                 <div className="text-sm text-gray-600 mt-1">
-                                  {training.modeOfStudy.join(', ')}
+                                  {parseModeOfStudy(training.modeOfStudy)}
                                 </div>
                               </div>
                               
@@ -606,7 +638,7 @@ export default function CalendarPage() {
                                 {sessions.length > 0 ? (
                                   <div className="space-y-1">
                                     {sessions.slice(0, 1).map((session, index) => (
-                                      <div key={session._id} className="text-gray-700">
+                                      <div key={session._id || `session-${index}`} className="text-gray-700">
                                         {session.formattedDates}
                                       </div>
                                     ))}
@@ -625,7 +657,7 @@ export default function CalendarPage() {
                               
                               <div className="hidden md:block col-span-2 p-4 text-right">
                                 <div className="font-semibold text-gray-900">
-                                  {formatCurrency(training.cost)}
+                                  {parseCost(training.cost)}
                                 </div>
                                 <div className="text-sm text-gray-600">
                                   Excl. VAT
@@ -673,9 +705,9 @@ export default function CalendarPage() {
                                         {showAllCourses ? "All Upcoming Sessions" : `Available Sessions in ${months[selectedMonth!]}`}
                                       </h4>
                                       <div className="space-y-3">
-                                        {sessions.map((session) => (
+                                        {sessions.map((session, index) => (
                                           <div 
-                                            key={session._id} 
+                                            key={session._id || `session-${index}`}
                                             className="bg-white rounded-lg p-4 border border-gray-200"
                                           >
                                             {/* Mobile: Stacked layout */}

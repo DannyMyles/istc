@@ -311,12 +311,17 @@ export default function CreateTrainingPage() {
           </div>
 
           {/* Training Sessions */}
-          <div className="adventure-card">
+          <div className={`adventure-card ${error && formData.sessions.length === 0 ? 'ring-2 ring-red-500' : ''}`}>
             <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
               <span className="p-2 bg-blue-50 rounded-lg">
                 <Calendar className="h-5 w-5 text-blue-600" />
               </span>
               Training Sessions *
+              {error && formData.sessions.length === 0 && (
+                <span className="text-red-600 text-sm font-normal ml-auto">
+                  ⚠️ At least one session is required
+                </span>
+              )}
             </h3>
             
             <div className="space-y-6">

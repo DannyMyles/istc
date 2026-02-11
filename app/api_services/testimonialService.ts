@@ -1,4 +1,5 @@
 import { api } from "../lib/api"
+import toast from 'react-hot-toast'
 
 export interface TestimonialTraining {
   _id: string
@@ -72,8 +73,9 @@ export const testimonialService = {
       }
       
       return response as TestimonialResponse
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching testimonials:', error)
+      toast.error(error.message || 'Failed to fetch testimonials')
       throw error
     }
   },
@@ -87,8 +89,9 @@ export const testimonialService = {
       // Handle both wrapped ({ testimonial: ... }) and direct responses
       const testimonialData = (response as any).testimonial || response
       return testimonialData as Testimonial
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching testimonial ${id}:`, error)
+      toast.error(error.message || 'Failed to fetch testimonial')
       throw error
     }
   },
@@ -97,8 +100,9 @@ export const testimonialService = {
   createTestimonial: async (data: CreateTestimonialRequest): Promise<Testimonial> => {
     try {
       return await api.admin.testimonial.create(data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating testimonial:', error)
+      toast.error(error.message || 'Failed to create testimonial')
       throw error
     }
   },
@@ -107,8 +111,9 @@ export const testimonialService = {
   updateTestimonial: async (id: string, data: Partial<CreateTestimonialRequest>): Promise<Testimonial> => {
     try {
       return await api.admin.testimonial.update(id, data)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating testimonial ${id}:`, error)
+      toast.error(error.message || 'Failed to update testimonial')
       throw error
     }
   },
@@ -117,8 +122,9 @@ export const testimonialService = {
   deleteTestimonial: async (id: string): Promise<void> => {
     try {
       return await api.admin.testimonial.delete(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error deleting testimonial ${id}:`, error)
+      toast.error(error.message || 'Failed to delete testimonial')
       throw error
     }
   },
@@ -127,8 +133,9 @@ export const testimonialService = {
   toggleTestimonialStatus: async (id: string, isActive: boolean): Promise<Testimonial> => {
     try {
       return await api.admin.testimonial.updateStatus(id, { isActive })
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error toggling testimonial status ${id}:`, error)
+      toast.error(error.message || 'Failed to update testimonial status')
       throw error
     }
   },
