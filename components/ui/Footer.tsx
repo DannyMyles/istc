@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { 
   Phone, Mail, MapPin, Shield, 
   Facebook, Twitter, Linkedin, Instagram, 
-  GraduationCap, Award, Users, Clock 
+  GraduationCap, Award, Users, Clock,
+  Heart, Flame, TestTube, HardHat, Car
 } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
 import Image from 'next/image';
@@ -118,31 +119,31 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link href="/courses/first-aid" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <Heart size={20} className="text-red-600" />
                   First Aid Training
                 </Link>
               </li>
               <li>
                 <Link href="/courses/fire-safety-course-certificate" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <Flame size={20} className="text-orange-600" />
                   Fire Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/chemical-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <TestTube size={20} className="text-green-600" />
                   Chemical Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/work-at-height" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <HardHat size={20} className="text-yellow-600" />
                   Construction Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/road-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <GraduationCap size={16} />
+                  <Car size={20} className="text-blue-600" />
                   Road Safety Training
                 </Link>
               </li>

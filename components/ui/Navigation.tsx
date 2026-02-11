@@ -51,7 +51,14 @@ const Navigation = () => {
   const navigation = {
     main: [
       { name: 'Home', href: '/' },
-      { name: 'About Us', href: '/about' },
+      { 
+        name: 'About', 
+        href: '/about',
+        submenu: [
+          { name: 'About ISTC', href: '/about' },
+          { name: 'Contact', href: '/contact' },
+        ]
+      },
       { 
         name: 'Courses', 
         href: '/courses',
@@ -122,10 +129,9 @@ const Navigation = () => {
           { name: 'All Services', href: '/services' },
         ]
       },
-      { name: 'Training Calendar', href: '/calendar' },
+      { name: 'Calendar', href: '/calendar' },
       { name: 'Testimonials', href: '/testimonials' },
       { name: 'Blog', href: '/blog' },
-      { name: 'Contact', href: '/contact' },
     ]
   };
 
@@ -137,16 +143,6 @@ const Navigation = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // const handleSearch = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (!optimisticQuery.trim()) return;
-
-  //   startTransition(() => {
-  //     setOptimisticQuery(optimisticQuery);
-  //     router.push(`/search?q=${encodeURIComponent(optimisticQuery)}`);
-  //   });
-  // };
 
   // Helper function to check if a link is active
   const isActiveLink = (href: string) => {
@@ -209,26 +205,8 @@ const Navigation = () => {
             
             {/* Mobile: Stack authentication at end, Desktop: Keep as before */}
             <div className="w-full md:w-auto flex justify-between md:justify-normal items-center gap-4">
-              {/* Search form - hidden on mobile */}
-              {/* <form onSubmit={handleSearch} className="relative hidden md:block">
-                <input
-                  type="text"
-                  value={optimisticQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search courses..."
-                  className="pl-10 pr-4 py-1.5 rounded-lg text-accent-900 text-sm w-48 focus:w-64 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#039AC5] focus:shadow-[0_0_0_3px_rgba(3,154,197,0.1)]"
-                  disabled={isPending}
-                />
-                <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#039AC5]" />
-                {isPending && (
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#039AC5]"></div>
-                  </div>
-                )}
-              </form> */}
-              
               {/* Authentication status in top bar */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 ml-auto md:ml-0">
                 {status === "loading" ? (
                   <div className="h-8 w-20 bg-white/20 rounded animate-pulse"></div>
                 ) : session ? (
@@ -249,10 +227,9 @@ const Navigation = () => {
                 ) : (
                   <Link
                     href="/login"
-                    className="flex items-center gap-2 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors ml-auto md:ml-0"
+                    className="flex items-center gap-2 text-sm bg-white/20 hover:bg-white/30 px-3 py-3 rounded-3xl transition-colors"
                   >
                     <KeyRound size={14} />
-                    {/* <span className="hidden md:inline">Admin Login</span> */}
                   </Link>
                 )}
               </div>
@@ -271,147 +248,147 @@ const Navigation = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Logo with enhanced branding */}
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="w-20 h-20 md:w-24 md:h-24 bg-accent-800 rounded-xl md:rounded-2xl flex items-center justify-center group-hover:scale-105 group-hover:shadow-adventure-lg transition-all duration-300 border-2 border-transparent group-hover:border-accent-light/30">
+            {/* Logo with reduced text size */}
+            <Link href="/" className="flex items-center gap-4 group shrink-0">
+              <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-accent-800 rounded-xl md:rounded-2xl group-hover:scale-105 transition-transform duration-300 shadow-adventure border-2 border-transparent group-hover:border-accent-light/30">
                 <Image
                   src="/header_logo.png" 
                   alt="ISTC Logo" 
                   width={140}
                   height={140} 
-                  className="object-contain"
+                  className="object-contain w-12 h-12 md:w-16 md:h-16"
                 />
               </div>
               <div className="hidden md:flex flex-col justify-center">
-                <span className="text-lg md:text-xl font-bold text-gray-800 leading-tight">
+                <span className="text-sm md:text-base font-bold text-gray-700 leading-tight">
                   International Safety Training Centre
                 </span>
-                <span className="text-sm text-accent-600 font-medium">
+                <span className="text-xs text-accent-600 font-medium">
                   Excellence in Safety Education
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation with enhanced interactions */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navigation.main.map((item) => {
-                // Check if item should be hidden on desktop
-                const shouldHide = ['Testimonials', 'Blog'].includes(item.name);
-                
-                return (
-                  <div 
-                    key={item.name} 
-                    className={`relative ${shouldHide ? 'hidden-on-desktop' : ''}`}
-                  >
-                    {item.submenu ? (
-                      <div className="group">
-                        <button className={`flex items-center gap-1 px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
-                          isActiveLink(item.href)
-                            ? 'text-[#039AC5] after:scale-x-100'
-                            : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
-                        }`}>
-                          {item.name}
-                          <ChevronDown size={16} className={`group-hover:rotate-180 transition-transform ${
-                            isActiveLink(item.href) ? 'text-[#039AC5]' : 'text-gray-500'
-                          }`} />
-                        </button>
-                        <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
-                          <div className="p-2">
-                            {item.submenu.map((subItem) => (
-                              hasSubitems(subItem) ? (
-                                // Nested submenu for items with subitems
-                                <div key={subItem.name} className="relative group/sub">
-                                  <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5] rounded-lg transition-colors cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                      <div className={`w-2 h-2 rounded-full ${
-                                        isActiveLink(item.href) ? 'bg-[#039AC5]' : 'bg-gray-300'
-                                      } group-hover/sub:scale-125 transition-transform`}></div>
-                                      <span className="font-medium">{subItem.name}</span>
+            {/* Desktop Navigation - centered with flex-1 */}
+            <nav className="hidden lg:flex items-center justify-center flex-1 mx-4">
+              <div className="flex items-center gap-1">
+                {navigation.main.map((item) => {
+                  // Check if item should be hidden on desktop
+                  const shouldHide = ['Testimonials', 'Blog'].includes(item.name);
+                  
+                  return (
+                    <div 
+                      key={item.name} 
+                      className={`relative ${shouldHide ? 'hidden-on-desktop' : ''}`}
+                    >
+                      {item.submenu ? (
+                        <div className="group">
+                          <button className={`flex items-center gap-1 px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
+                            isActiveLink(item.href)
+                              ? 'text-[#039AC5] after:scale-x-100'
+                              : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
+                          }`}>
+                            {item.name}
+                            <ChevronDown size={16} className={`group-hover:rotate-180 transition-transform ${
+                              isActiveLink(item.href) ? 'text-[#039AC5]' : 'text-gray-500'
+                            }`} />
+                          </button>
+                          <div className="absolute left-0 top-full mt-1 w-72 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top z-50">
+                            <div className="p-2">
+                              {item.submenu.map((subItem) => (
+                                hasSubitems(subItem) ? (
+                                  // Nested submenu for items with subitems
+                                  <div key={subItem.name} className="relative group/sub">
+                                    <div className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5] rounded-lg transition-colors cursor-pointer">
+                                      <div className="flex items-center gap-3">
+                                        <div className={`w-2 h-2 rounded-full ${
+                                          isActiveLink(item.href) ? 'bg-[#039AC5]' : 'bg-gray-300'
+                                        } group-hover/sub:scale-125 transition-transform`}></div>
+                                        <span className="font-medium">{subItem.name}</span>
+                                      </div>
+                                      <ChevronRight size={16} className="text-[#039AC5]" />
                                     </div>
-                                    <ChevronRight size={16} className="text-[#039AC5]" />
-                                  </div>
-                                  {/* Second level submenu */}
-                                  <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
-                                    <div className="p-2">
-                                      {subItem.subitems.map((nestedItem) => (
-                                        <Link
-                                          key={nestedItem.name}
-                                          href={nestedItem.href}
-                                          className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/nested ${
-                                            isActiveLink(nestedItem.href)
-                                              ? 'bg-[#039AC5]/5 text-[#039AC5]'
-                                              : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
-                                          }`}
-                                        >
-                                          <div className={`w-1.5 h-1.5 rounded-full ${
-                                            isActiveLink(nestedItem.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
-                                          } group-hover/nested:scale-125 transition-transform`}></div>
-                                          <span className="font-medium">{nestedItem.name}</span>
-                                        </Link>
-                                      ))}
+                                    {/* Second level submenu */}
+                                    <div className="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-adventure-lg border border-gray-200 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 origin-left">
+                                      <div className="p-2">
+                                        {subItem.subitems.map((nestedItem) => (
+                                          <Link
+                                            key={nestedItem.name}
+                                            href={nestedItem.href}
+                                            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/nested ${
+                                              isActiveLink(nestedItem.href)
+                                                ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                                : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                            }`}
+                                          >
+                                            <div className={`w-1.5 h-1.5 rounded-full ${
+                                              isActiveLink(nestedItem.href) ? 'bg-[#039AC5]' : 'bg-gray-400'
+                                            } group-hover/nested:scale-125 transition-transform`}></div>
+                                            <span className="font-medium">{nestedItem.name}</span>
+                                          </Link>
+                                        ))}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              ) : (
-                                // Regular submenu item
-                                <Link
-                                  key={subItem.name}
-                                  href={subItem.href!}
-                                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/sub ${
-                                    isActiveLink(subItem.href!)
-                                      ? 'bg-[#039AC5]/5 text-[#039AC5]'
-                                      : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
-                                  }`}
-                                >
-                                  <div className={`w-2 h-2 rounded-full ${
-                                    isActiveLink(subItem.href!) ? 'bg-[#039AC5] animate-pulse' : 'bg-gray-300'
-                                  } group-hover/sub:scale-125 transition-transform`}></div>
-                                  <span className="font-medium">{subItem.name}</span>
-                                </Link>
-                              )
-                            ))}
+                                ) : (
+                                  // Regular submenu item
+                                  <Link
+                                    key={subItem.name}
+                                    href={subItem.href!}
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group/sub ${
+                                      isActiveLink(subItem.href!)
+                                        ? 'bg-[#039AC5]/5 text-[#039AC5]'
+                                        : 'text-gray-700 hover:bg-[#039AC5]/5 hover:text-[#039AC5]'
+                                    }`}
+                                  >
+                                    <div className={`w-2 h-2 rounded-full ${
+                                      isActiveLink(subItem.href!) ? 'bg-[#039AC5] animate-pulse' : 'bg-gray-300'
+                                    } group-hover/sub:scale-125 transition-transform`}></div>
+                                    <span className="font-medium">{subItem.name}</span>
+                                  </Link>
+                                )
+                              ))}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={`px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
-                          isActiveLink(item.href)
-                            ? 'text-[#039AC5] after:scale-x-100'
-                            : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
-                        }`}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </div>
-                );
-              })}
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={`px-4 py-3 font-medium transition-colors relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-[#039AC5] after:rounded-full after:transition-transform ${
+                            isActiveLink(item.href)
+                              ? 'text-[#039AC5] after:scale-x-100'
+                              : 'text-gray-700 hover:text-[#039AC5] after:scale-x-0 hover:after:scale-x-100'
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </nav>
 
-            {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center gap-4">
-              {/* Admin Dashboard Button when logged in */}
+            {/* CTA Buttons - original styling preserved */}
+            <div className="hidden lg:flex items-center gap-4 shrink-0">
               {session && (
                 <Link
                   href="/admin"
                   className="flex items-center gap-2 px-3 py-3 bg-gradient-to-r from-[#039AC5] to-[#008DB8] text-white rounded-3xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"
                 >
                   <User size={18} />
-                  {/* Admin Dashboard */}
                 </Link>
               )}
               <Link
                 href="/courses"
-                className="btn-adventure flex items-center gap-2 hidden-on-desktop-btn"
+                className="btn-adventure flex items-center gap-2"
               >
                 <GraduationCap size={18} />
                 Browse Courses
               </Link>
             </div>
 
-            {/* Enhanced Mobile menu button */}
+            {/* Mobile menu button - original styling */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden p-3 rounded-xl bg-[#039AC5]/10 hover:bg-[#039AC5]/20 transition-colors relative group"
@@ -429,30 +406,10 @@ const Navigation = () => {
           </div>
         </div>
 
-        {/* Enhanced Mobile Menu with animations */}
+        {/* Mobile Menu - original styling preserved */}
         {isMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-200 animate-in slide-in-from-top duration-300">
             <div className="container mx-auto px-4 py-6">
-              {/* Mobile Search */}
-              {/* <form onSubmit={handleSearch} className="mb-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={optimisticQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search courses and resources..."
-                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#039AC5] focus:border-transparent"
-                    disabled={isPending}
-                  />
-                  <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#039AC5]" />
-                  {isPending && (
-                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#039AC5]"></div>
-                    </div>
-                  )}
-                </div>
-              </form> */}
-
               {/* Authentication section in mobile menu */}
               {status === "loading" ? (
                 <div className="mb-4 p-3 bg-gray-100 rounded-lg animate-pulse">
@@ -502,9 +459,9 @@ const Navigation = () => {
               )}
 
               {/* Mobile Navigation */}
-              <div className="space-y-1">
+              <div className="space-y-1 max-h-[70vh] overflow-y-auto">
                 {navigation.main.map((item) => (
-                  <div key={item.name} className={`border-b border-gray-100 last:border-0 ${['Blog', 'Testimonials', 'Contact'].includes(item.name) ? 'md:hidden' : ''}`}>
+                  <div key={item.name} className="border-b border-gray-100 last:border-0">
                     {item.submenu ? (
                       <details className="group">
                         <summary className={`flex items-center justify-between py-4 font-semibold cursor-pointer list-none transition-colors ${
@@ -594,7 +551,7 @@ const Navigation = () => {
                 ))}
               </div>
 
-              {/* Mobile CTA Buttons */}
+              {/* Mobile CTA Buttons - original styling */}
               <div className="mt-8 space-y-3">
                 <Link
                   href="/consultation"
@@ -606,7 +563,7 @@ const Navigation = () => {
                 <Link
                   href="/courses"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block w-full text-center border-2 border-[#039AC5] text-[#039AC5] hover:bg-[#039AC5] hover:text-white transition-colors py-3.5 rounded-lg font-semibold hidden-on-desktop-btn"
+                  className="block w-full text-center border-2 border-[#039AC5] text-[#039AC5] hover:bg-[#039AC5] hover:text-white transition-colors py-3.5 rounded-lg font-semibold"
                 >
                   Browse Courses
                 </Link>
@@ -618,14 +575,8 @@ const Navigation = () => {
 
       {/* Add custom CSS for media queries */}
       <style jsx global>{`
-        /* Hide elements on desktop (1024px and up) */
-        @media (max-width: 1536px) {
+        @media (min-width: 1024px) {
           .hidden-on-desktop {
-            display: none !important;
-          }
-          
-          /* Hide Browse Courses button on desktop */
-          .hidden-on-desktop-btn {
             display: none !important;
           }
         }
