@@ -206,7 +206,7 @@ export default function CreateTestimonialPage() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="John Karish"
+                  placeholder="Bernard Njenga"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   required
                 />

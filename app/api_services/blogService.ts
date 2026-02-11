@@ -1,6 +1,7 @@
 // blogService.ts - Complete implementation
 
 import { api } from "../lib/api"
+import toast from 'react-hot-toast'
 
 export interface Blog {
   id: string
@@ -111,8 +112,9 @@ export const blogService = {
       }
       
       return response as BlogResponse
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching blogs:', error)
+      toast.error(error.message || 'Failed to fetch blogs')
       throw error
     }
   },
@@ -122,8 +124,9 @@ export const blogService = {
     try {
       const response = await api.public.blog.getBySlug(slug)
       return response.blog
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching blog by slug ${slug}:`, error)
+      toast.error(error.message || 'Failed to fetch blog')
       throw error
     }
   },
@@ -133,8 +136,9 @@ export const blogService = {
     try {
       const response = await api.public.blog.getById(id)
       return response.blog
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching blog ${id}:`, error)
+      toast.error(error.message || 'Failed to fetch blog')
       throw error
     }
   },
@@ -144,8 +148,9 @@ export const blogService = {
     try {
       const response = await api.public.blog.getFeatured()
       return response.blogs
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching featured blogs:', error)
+      toast.error(error.message || 'Failed to fetch featured blogs')
       throw error
     }
   },
@@ -155,8 +160,9 @@ export const blogService = {
     try {
       const response = await api.public.blog.getCategories()
       return response.categories
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching blog categories:', error)
+      toast.error(error.message || 'Failed to fetch categories')
       throw error
     }
   },
@@ -166,8 +172,9 @@ export const blogService = {
     try {
       const response = await api.public.blog.getStats()
       return response.stats
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching blog stats:', error)
+      toast.error(error.message || 'Failed to fetch stats')
       throw error
     }
   },
@@ -177,8 +184,9 @@ export const blogService = {
     try {
       const response = await api.public.blog.like(id)
       return response
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error liking blog ${id}:`, error)
+      toast.error(error.message || 'Failed to like blog')
       throw error
     }
   },
@@ -232,8 +240,9 @@ getBlogImageUrl: (blog: Blog): string => {
       }
       
       return await api.admin.blog.create(formData)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating blog:', error)
+      toast.error(error.message || 'Failed to create blog')
       throw error
     }
   },
@@ -262,8 +271,9 @@ getBlogImageUrl: (blog: Blog): string => {
       }
       
       return await api.admin.blog.update(id, formData)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating blog ${id}:`, error)
+      toast.error(error.message || 'Failed to update blog')
       throw error
     }
   },
@@ -272,8 +282,9 @@ getBlogImageUrl: (blog: Blog): string => {
   deleteBlog: async (id: string): Promise<void> => {
     try {
       return await api.admin.blog.delete(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error deleting blog ${id}:`, error)
+      toast.error(error.message || 'Failed to delete blog')
       throw error
     }
   },

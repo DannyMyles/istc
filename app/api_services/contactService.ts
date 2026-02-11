@@ -1,5 +1,6 @@
 // lib/services/contactService.ts
 import { api } from "../lib/api"
+import toast from 'react-hot-toast'
 
 export interface Contact {
   id: string
@@ -55,8 +56,9 @@ export const contactService = {
   submitContactForm: async (data: CreateContactRequest): Promise<{ message: string; contactId: string }> => {
     try {
       return await api.public.contact.submit(data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting contact form:', error)
+      toast.error(error.message || 'Failed to submit contact form')
       throw error
     }
   },
@@ -65,8 +67,9 @@ export const contactService = {
   getAllContacts: async (): Promise<ContactResponse> => {
     try {
       return await api.admin.contacts.getAll()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching contacts:', error)
+      toast.error(error.message || 'Failed to fetch contacts')
       throw error
     }
   },
@@ -75,8 +78,9 @@ export const contactService = {
   getContactById: async (id: string): Promise<Contact> => {
     try {
       return await api.admin.contacts.getOne(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching contact ${id}:`, error)
+      toast.error(error.message || 'Failed to fetch contact')
       throw error
     }
   },
@@ -85,8 +89,9 @@ export const contactService = {
   updateContactStatus: async (id: string, data: UpdateContactStatusRequest): Promise<Contact> => {
     try {
       return await api.admin.contacts.updateStatus(id, data)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating contact status ${id}:`, error)
+      toast.error(error.message || 'Failed to update contact status')
       throw error
     }
   },
@@ -95,8 +100,9 @@ export const contactService = {
   deleteContact: async (id: string): Promise<void> => {
     try {
       return await api.admin.contacts.delete(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error deleting contact ${id}:`, error)
+      toast.error(error.message || 'Failed to delete contact')
       throw error
     }
   },

@@ -71,7 +71,7 @@ export default async function AdminLayout({
             </div>
 
             {/* Stats Footer */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white rounded-xl p-4 shadow-adventure border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
@@ -107,7 +107,7 @@ export default async function AdminLayout({
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </main>
         

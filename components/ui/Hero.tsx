@@ -6,9 +6,19 @@ import Link from 'next/link';
 import ImageCarousel from './ImageCarousel';
 import ReactPlayer from 'react-player';
 import { useState, useEffect } from 'react';
+import { trainingService, Training } from '@/app/api_services/trainingService';
+
+interface UpcomingSession {
+  trainingTitle: string;
+  formattedDate: string;
+  time: string;
+  startDate: Date;
+}
 
 const Hero = () => {
   const [showFallback, setShowFallback] = useState(false);
+  const [upcomingSessions, setUpcomingSessions] = useState<UpcomingSession[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // Fallback timeout in case video fails silently
@@ -18,6 +28,59 @@ const Hero = () => {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    const fetchUpcomingSessions = async () => {
+      try {
+        const response = await trainingService.getAllTrainings();
+        const trainings = response.trainings;
+
+        // Get all upcoming sessions from all trainings
+        const allUpcomingSessions: UpcomingSession[] = [];
+
+        trainings.forEach(training => {
+          training.sessions.forEach(session => {
+            const sessionDate = new Date(session.startDate);
+            if (sessionDate >= new Date()) {
+              allUpcomingSessions.push({
+                trainingTitle: training.title,
+                formattedDate: trainingService.formatDate(session.startDate),
+                time: sessionDate.toLocaleTimeString('en-US', {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true
+                }),
+                startDate: sessionDate
+              });
+            }
+          });
+        });
+
+        // Sort by date and take the next 5 upcoming sessions
+        const sortedSessions = allUpcomingSessions
+          .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
+          .slice(0, 5);
+
+        setUpcomingSessions(sortedSessions);
+      } catch (error) {
+        console.error('Error fetching upcoming sessions:', error);
+        // Keep empty array on error
+      }
+    };
+
+    fetchUpcomingSessions();
+  }, []);
+
+  // Auto-slide every 4 seconds
+  useEffect(() => {
+    if (upcomingSessions.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % upcomingSessions.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [upcomingSessions.length]);
 
   return (
     <section className="relative overflow-hidden min-h-screen">
@@ -168,16 +231,47 @@ const Hero = () => {
                   </div>
                 </div>
                 
-                {/* Overlay Class Card - Bottom Left */}
-                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg max-w-[160px] md:max-w-[200px] hover:bg-white/20 hover:scale-105 transition-all duration-300">
-                  <div>
-                    <h4 className="font-semibold text-white text-sm md:text-base drop-shadow-lg">First Aid Certification</h4>
-                    <div className="flex items-center gap-2 text-xs md:text-sm text-white/90 mt-1">
-                      <Clock size={12} className="text-white animate-pulse" />
-                      March 15, 10:00 AM
+                {/* Overlay Upcoming Training Slider - Bottom Left */}
+                {upcomingSessions.length > 0 && (
+                  <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg max-w-[160px] md:max-w-[200px] hover:bg-white/20 hover:scale-105 transition-all duration-300">
+                    <div className="relative overflow-hidden">
+                      {upcomingSessions.map((session, index) => (
+                        <div
+                          key={`${session.startDate.getTime()}-${index}`}
+                          className={`transition-all duration-500 ease-in-out ${
+                            index === currentIndex
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 translate-y-2 absolute inset-0'
+                          }`}
+                        >
+                          <h4 className="font-semibold text-white text-sm md:text-base drop-shadow-lg truncate">
+                            {session.trainingTitle}
+                          </h4>
+                          <div className="flex items-center gap-2 text-xs md:text-sm text-white/90 mt-1">
+                            <Clock size={12} className="text-white animate-pulse" />
+                            {session.formattedDate}, {session.time}
+                          </div>
+                        </div>
+                      ))}
                     </div>
+
+                    {/* Slider Indicators */}
+                      {upcomingSessions.length > 1 && (
+                      <div className="flex justify-center gap-1 mt-2">
+                        {upcomingSessions.map((session, index) => (
+                          <div
+                            key={`${session.startDate.getTime()}-${index}`}
+                            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                              index === currentIndex
+                                ? 'bg-white'
+                                : 'bg-white/40'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
+                )}
                 
                 {/* Rating Badge - Bottom Right */}
                 <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-white/10 backdrop-blur-md border border-white/20 p-2 md:p-2.5 rounded-full shadow-lg hover:bg-white/20 hover:scale-110 transition-all duration-300 cursor-pointer">
@@ -198,7 +292,7 @@ const Hero = () => {
                 <div>
                   <h3 className="text-base md:text-lg font-bold text-white mb-1 drop-shadow-lg">Our Training Success</h3>
                   <p className="text-white/80 text-xs md:text-sm">
-                    With 10+ years of experience, we've certified 1,000+ professionals across 25+ safety courses, achieving a 98% success rate through strong industry partnership
+                    With 22+ years of experience, we've certified 1,000+ professionals across 25+ safety courses, achieving a 98% success rate through strong industry partnership
                   </p>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import { api } from "../lib/api"
+import toast from 'react-hot-toast'
 
 // Role interface matching the backend model
 export interface Role {
@@ -43,8 +44,9 @@ export const roleService = {
   getAllRoles: async (): Promise<RolesResponse | Role[]> => {
     try {
       return await api.admin.roles.getAll()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching roles:', error)
+      toast.error(error.message || 'Failed to fetch roles')
       throw error
     }
   },
@@ -63,8 +65,9 @@ export const roleService = {
         throw new Error('Role not found')
       }
       return { role }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error fetching role ${id}:`, error)
+      toast.error(error.message || 'Failed to fetch role')
       throw error
     }
   },
@@ -73,8 +76,9 @@ export const roleService = {
   createRole: async (data: CreateRoleRequest): Promise<RoleResponse> => {
     try {
       return await api.admin.roles.create(data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating role:', error)
+      toast.error(error.message || 'Failed to create role')
       throw error
     }
   },
@@ -87,8 +91,9 @@ export const roleService = {
         return await (api.admin.roles as any).update(id, data)
       }
       throw new Error('Update method not implemented')
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error updating role ${id}:`, error)
+      toast.error(error.message || 'Failed to update role')
       throw error
     }
   },
@@ -97,8 +102,9 @@ export const roleService = {
   deleteRole: async (id: string): Promise<void> => {
     try {
       return await api.admin.roles.delete(id)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error deleting role ${id}:`, error)
+      toast.error(error.message || 'Failed to delete role')
       throw error
     }
   },
