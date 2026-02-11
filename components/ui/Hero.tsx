@@ -19,6 +19,7 @@ const Hero = () => {
   const [showFallback, setShowFallback] = useState(false);
   const [upcomingSessions, setUpcomingSessions] = useState<UpcomingSession[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextSession, setNextSession] = useState<UpcomingSession | null>(null);
 
   useEffect(() => {
     // Fallback timeout in case video fails silently
@@ -62,6 +63,10 @@ const Hero = () => {
           .slice(0, 5);
 
         setUpcomingSessions(sortedSessions);
+        // Set the very next session for the stats section
+        if (sortedSessions.length > 0) {
+          setNextSession(sortedSessions[0]);
+        }
       } catch (error) {
         console.error('Error fetching upcoming sessions:', error);
         // Keep empty array on error
@@ -183,11 +188,37 @@ const Hero = () => {
                 <div className="text-sm text-gray-200">Trained Professionals</div>
               </div>
               <div className="sm:border-l sm:border-white/20 sm:pl-6 md:pl-8">
-                <div className="text-base md:text-lg font-semibold text-white">First Aid Training</div>
-                <div className="flex items-center gap-2 text-sm text-gray-200 mt-1">
-                  <Clock size={14} />
-                  Next: March 15
-                </div>
+                {nextSession ? (
+                  <>
+                    <div className="text-base md:text-lg font-semibold text-white truncate">{nextSession.trainingTitle}</div>
+                    <div className="flex items-center gap-2 text-sm text-gray-200 mt-1">
+                      <Clock size={14} />
+                      Next: {nextSession.formattedDate}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-base md:text-lg font-semibold text-white">No Upcoming Training</div>
+                    <div className="flex items-center gap-2 text-sm text-gray-200 mt-1">
+                      <Clock size={14} />
+                      Next: TBA
+                    </div>
+                  </>
+                )}
+                {upcomingSessions.length > 1 && (
+                  <div className="flex justify-center gap-1 mt-2">
+                    {upcomingSessions.map((session, index) => (
+                      <div
+                        key={`${session.startDate.getTime()}-${index}`}
+                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                          index === currentIndex
+                            ? 'bg-white'
+                            : 'bg-white/40'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
                 <Link 
                   href="/contact" 
                   className="btn-adventure flex items-center justify-center text-sm md:text-sm px-1 md:px-8 py-1 md:py-4 rounded-3xl mt-1"

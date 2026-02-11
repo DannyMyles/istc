@@ -273,18 +273,21 @@ const Navigation = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo with enhanced branding */}
             <Link href="/" className="flex items-center gap-4 group">
-              <div className="flex items-center justify-center w-20 h-20 bg-accent-800 rounded-xl group-hover:scale-105 transition-transform duration-300 shadow-adventure">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-accent-800 rounded-xl md:rounded-2xl flex items-center justify-center group-hover:scale-105 group-hover:shadow-adventure-lg transition-all duration-300 border-2 border-transparent group-hover:border-accent-light/30">
                 <Image
                   src="/header_logo.png" 
                   alt="ISTC Logo" 
-                  width={140}  
+                  width={140}
                   height={140} 
                   className="object-contain"
                 />
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-gray-600 -mt-1 max-w-[220px] leading-tight">
+              <div className="hidden md:flex flex-col justify-center">
+                <span className="text-lg md:text-xl font-bold text-gray-800 leading-tight">
                   International Safety Training Centre
+                </span>
+                <span className="text-sm text-accent-600 font-medium">
+                  Excellence in Safety Education
                 </span>
               </div>
             </Link>
