@@ -254,7 +254,7 @@ const Navigation = () => {
                 />
               </div>
               <div className="hidden md:flex flex-col justify-center">
-                <span className="text-sm md:text-base font-bold text-gray-700 leading-tight">
+                <span className="text-sm md:text-base font-semibold text-gray-700 leading-tight">
                   International Safety Training Centre
                 </span>
                 <span className="text-xs text-accent-600 font-medium">
