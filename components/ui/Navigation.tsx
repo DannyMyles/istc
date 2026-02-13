@@ -51,14 +51,7 @@ const Navigation = () => {
   const navigation = {
     main: [
       { name: 'Home', href: '/' },
-      { 
-        name: 'About', 
-        href: '/about',
-        submenu: [
-          { name: 'About ISTC', href: '/about' },
-          { name: 'Contact', href: '/contact' },
-        ]
-      },
+      { name: 'About', href: '/about' },
       { 
         name: 'Courses', 
         href: '/courses',
@@ -90,6 +83,7 @@ const Navigation = () => {
           { name: 'Chemical Safety', href: '/courses/chemical-safety' },
           { name: 'Disaster & Emergency Preparedness', href: '/courses/disaster-emergency-preparedness' },
           { name: 'Road Safety', href: '/courses/road-safety' },
+          { name: 'Training Calendar', href: '/calendar' },
           { name: 'All Courses', href: '/courses' },
         ]
       }, 
@@ -129,9 +123,9 @@ const Navigation = () => {
           { name: 'All Services', href: '/services' },
         ]
       },
-      { name: 'Calendar', href: '/calendar' },
-      { name: 'Testimonials', href: '/testimonials' },
-      { name: 'Blog', href: '/blog' },
+      // { name: 'Testimonials', href: '/testimonials' },
+      { name: 'Contact', href: '/contact'},
+      // { name: 'Blog', href: '/blog' },
     ]
   };
 

@@ -40,7 +40,7 @@ export default function FireSafetyCourseCertificate() {
   const currentCourse = courses[selectedCourse as keyof typeof courses];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="bg-gradient-to-r from-red-700 to-red-600 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">

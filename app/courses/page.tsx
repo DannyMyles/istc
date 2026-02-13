@@ -330,7 +330,7 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="pt-8">
+    <div >
       {/* Hero Section with Background Image */}
       <div ref={setHeroRef}>
         <section className="relative py-28 md:py-32 overflow-hidden">
