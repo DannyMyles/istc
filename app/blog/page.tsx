@@ -237,7 +237,7 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="pt-8">
+    <div >
       {/* Hero Section with Background Image */}
       <section className="relative py-28 md:py-64 overflow-hidden">
         {/* Background Image with Overlay */}

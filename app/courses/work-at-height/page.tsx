@@ -53,7 +53,7 @@ export default function WorkAtHeight() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">

@@ -267,7 +267,7 @@ export default function ServicesPage() {
   const featuredServices = services.filter(service => service.featured);
 
   return (
-    <div className="pt-8">
+    <div >
       {/* Hero Section with Background Image */}
       <div ref={setHeroRef}>
         <section className="relative py-28 md:py-62 overflow-hidden">

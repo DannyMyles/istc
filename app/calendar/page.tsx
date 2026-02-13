@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, Users, MapPin, CreditCard, ChevronLeft, ChevronRight, Filter, Download, Mail, Phone, CheckCircle, BookOpen } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin, CreditCard, ChevronLeft, ChevronRight, Filter, Download, Mail, Phone, CheckCircle, BookOpen, DivideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Training, TrainingResponse, trainingService } from '../api_services/trainingService';
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -263,7 +263,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="pt-4">
+    <DivideIcon>
       {/* Hero Section with Background Image */}
       <section className="relative py-28 md:py-32 overflow-hidden">
         {/* Background Image with Overlay */}
@@ -995,6 +995,6 @@ export default function CalendarPage() {
           </div>
         </div>
       </section>
-    </div>
+    </DivideIcon>
   );
 }
