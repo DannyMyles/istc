@@ -52,8 +52,19 @@ export default function OccupationalSafetyHealthCertificate() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <div className="bg-gradient-to-r from-green-800 to-green-700 text-white py-12">
-        <div className="container mx-auto px-4">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-r from-green-800 to-green-700 text-white py-12 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/12.jpg')"
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 to-green-700/60"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
               <Link href="/courses" className="text-green-200 hover:text-white flex items-center gap-2">
@@ -87,9 +98,10 @@ export default function OccupationalSafetyHealthCertificate() {
                     <p className="text-green-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
+                  
                   <Link 
                     href="/contact"
-                    className="btn-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
+                    className="block w-full bg-white text-green-600 hover:bg-green-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
@@ -162,7 +174,7 @@ export default function OccupationalSafetyHealthCertificate() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Topics</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courseData.courseTopics.map((topic, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4">
+                      <div key={index} className="flex items-start gap-3 bg-white" style={{ transition: 'none' }}>
                         <div className="bg-accent-100 p-2 rounded-lg">
                           <CheckCircle className="text-accent-600" size={20} />
                         </div>

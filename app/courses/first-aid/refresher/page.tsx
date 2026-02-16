@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function FirstAidRefresher() {
   const course = {
     title: 'Occupational First Aid Refresher',
-    duration: '1 day',
+    duration: '2 days',
     description: 'For people intending to requalify in their role as first aiders in the workplace.',
     content: [
       'CPR refresher',
@@ -19,8 +19,19 @@ export default function FirstAidRefresher() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <div className="bg-gradient-to-r from-red-600 to-red-500 text-white py-12">
-        <div className="container mx-auto px-4">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-r from-red-600 to-red-500 text-white py-12 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/11.jpg')"
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-red-900/80 to-red-700/60"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
               <Link href="/courses/first-aid" className="text-red-200 hover:text-white flex items-center gap-2">
@@ -126,7 +137,7 @@ export default function FirstAidRefresher() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {course.content.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4">
+                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4" style={{ transition: 'none' }}>
                         <div className="bg-red-100 p-2 rounded-lg">
                           <CheckCircle className="text-red-600" size={20} />
                         </div>

@@ -29,7 +29,7 @@ export default function FirstAid() {
     },
     {
       title: 'First Aid Refresher',
-      duration: '1 day',
+      duration: '2 days',
       description: 'For people intending to requalify in their role as first aiders in the workplace.',
       href: '/courses/first-aid/refresher',
       icon: Heart
@@ -39,8 +39,18 @@ export default function FirstAid() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-red-600 to-red-500 text-white py-16">
-        <div className="container mx-auto px-4">
+      <div className="relative bg-gradient-to-r from-red-600 to-red-500 text-white py-16 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/7.jpg')"
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-red-900/80 to-red-700/60"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
               <Link href="/courses" className="text-red-200 hover:text-white flex items-center gap-2">

@@ -57,9 +57,20 @@ export default function OccupationalSafetyHealthDiploma() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-8">
-      <div className="bg-gradient-to-r from-teal-800 to-teal-700 text-white py-12">
-        <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-r from-teal-800 to-teal-700 text-white py-12 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/13.jpg')"
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-900/80 to-teal-700/60"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
               <Link href="/courses" className="text-teal-200 hover:text-white flex items-center gap-2">
@@ -95,7 +106,7 @@ export default function OccupationalSafetyHealthDiploma() {
                   
                   <Link 
                     href="/contact"
-                    className="btn-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
+                    className="block w-full bg-white text-green-600 hover:bg-green-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
@@ -171,7 +182,8 @@ export default function OccupationalSafetyHealthDiploma() {
                       <Link 
                         key={index} 
                         href={module.route}
-                        className="flex items-start gap-3 bg-white adventure-card p-4 hover:shadow-md transition-shadow cursor-pointer"
+                        className="flex items-start gap-3 bg-white p-4 cursor-pointer"
+                        style={{ transition: 'none' }}
                       >
                         <div className="bg-teal-100 p-2 rounded-lg">
                           <CheckCircle className="text-teal-600" size={20} />
