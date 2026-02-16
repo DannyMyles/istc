@@ -68,7 +68,7 @@ const CourseCard = ({
         </div>
         <Link href="/calendar" className="flex items-center gap-2 hover:text-accent-600 transition-colors">
           <Calendar size={16} className="text-accent-600" />
-          <span className="text-sm text-green-600">View Dates</span>
+          <span className="text-sm text-[#039AC5]">View Dates</span>
         </Link>
       </div>
 
