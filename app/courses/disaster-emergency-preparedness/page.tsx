@@ -54,8 +54,19 @@ export default function DisasterEmergencyPreparedness() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white py-12">
-        <div className="container mx-auto px-4">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-r from-amber-600 to-amber-500 text-white py-48 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+          style={{
+            backgroundImage: "url('/images/4.jpg')"
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-900/80 to-amber-700/60"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
               <Link href="/courses" className="text-amber-200 hover:text-white flex items-center gap-2">
