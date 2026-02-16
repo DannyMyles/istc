@@ -140,13 +140,6 @@ export default function CustomizedSafetySolutions() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-[#8E44AD]" size={20} />
-                        <div>
-                          <div className="font-semibold text-gray-900">Duration</div>
-                          <div className="text-gray-600">{serviceData.duration}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
                         <Clock className="text-[#8E44AD]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>

@@ -9,7 +9,6 @@ export default function OccupationalSafetyHealthAudit() {
     description: 'A quantified audit process to test your health and safety performance against latest legislation, recognized standards, and best practice techniques.',
     overview: 'We provide the most comprehensive, contemporary, quantified audit process available. It goes beyond basic compliance with the Occupational Safety and Health Act (2007) to evaluate your systems against five key best-practice indicators that are continually assessed throughout the audit process.',
     
-    duration: '2-5 days (depending on facility size)',
     format: 'On-site Audit & Documentation Review',
     level: 'Comprehensive Compliance Audit',
     nextIntake: 'Schedule anytime',
@@ -114,13 +113,6 @@ export default function OccupationalSafetyHealthAudit() {
                     </p>
                     
                     <div className="grid grid-cols-2 gap-6">
-                      <div className="flex items-center gap-3">
-                        <Calendar className="text-blue-600" size={20} />
-                        <div>
-                          <div className="font-semibold text-gray-900">Duration</div>
-                          <div className="text-gray-600">{serviceData.duration}</div>
-                        </div>
-                      </div>
                       <div className="flex items-center gap-3">
                         <Clock className="text-blue-600" size={20} />
                         <div>

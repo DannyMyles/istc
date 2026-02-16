@@ -282,7 +282,7 @@ export default function ContactPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 bg-accent-500/10 backdrop-blur-sm border border-accent-500/20 text-white px-6 py-2 rounded-full text-sm font-medium mb-8">
                 <Send size={16} />
-                <span>24/7 Support Available</span>
+                <span>Support Available</span>
               </div>
               
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -296,10 +296,6 @@ export default function ContactPage() {
               {/* Quick Contact Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-white mb-2">24/7</div>
-                  <div className="text-gray-300">Support Line</div>
-                </div>
-                <div className="text-center">
                   <div className="text-3xl font-bold text-white mb-2">1-2 Hrs</div>
                   <div className="text-gray-300">Response Time</div>
                 </div>
@@ -310,6 +306,10 @@ export default function ContactPage() {
                 <div className="text-center">
                   <div className="text-3xl font-bold text-white mb-2">100%</div>
                   <div className="text-gray-300">Confidential</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-white mb-2">Expert</div>
+                  <div className="text-gray-300">Team</div>
                 </div>
               </div>
             </div>

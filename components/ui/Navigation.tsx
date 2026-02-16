@@ -258,7 +258,7 @@ const Navigation = () => {
                   International Safety Training Centre
                 </span>
                 <span className="text-xs text-accent-600 font-medium">
-                  Excellence in Safety Education
+                  Secure Your Future
                 </span>
               </div>
             </Link>

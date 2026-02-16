@@ -29,7 +29,7 @@ export default function FirstAid() {
     },
     {
       title: 'First Aid Refresher',
-      duration: '1 day',
+      duration: '2 days',
       description: 'For people intending to requalify in their role as first aiders in the workplace.',
       href: '/courses/first-aid/refresher',
       icon: Heart

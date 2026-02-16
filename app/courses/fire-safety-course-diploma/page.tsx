@@ -163,7 +163,7 @@ export default function FireSafetyCourseDiploma() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
                   <div className="space-y-6">
                     {courseData.courseContent.map((section, index) => (
-                      <div key={index} className="bg-white adventure-card p-6">
+                      <div key={index} className="bg-white p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">{section.section}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {section.topics.map((topic, idx) => (

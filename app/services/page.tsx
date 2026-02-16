@@ -701,11 +701,7 @@ export default function ServicesPage() {
                 </Link>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-white/80">
-                <div className="text-center">
-                  <div className="text-2xl font-bold mb-2">24/7 Support</div>
-                  <p className="text-sm">Dedicated client support team</p>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white/80">
                 <div className="text-center">
                   <div className="text-2xl font-bold mb-2">Quick Response</div>
                   <p className="text-sm">Same-day quote available</p>

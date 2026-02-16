@@ -171,7 +171,8 @@ export default function OccupationalSafetyHealthDiploma() {
                       <Link 
                         key={index} 
                         href={module.route}
-                        className="flex items-start gap-3 bg-white adventure-card p-4 hover:shadow-md transition-shadow cursor-pointer"
+                        className="flex items-start gap-3 bg-white p-4 cursor-pointer"
+                        style={{ transition: 'none' }}
                       >
                         <div className="bg-teal-100 p-2 rounded-lg">
                           <CheckCircle className="text-teal-600" size={20} />

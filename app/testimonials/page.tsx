@@ -525,12 +525,12 @@ export default function TestimonialsPage() {
                   <p className="text-sm">Client Satisfaction Rate</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold mb-2">24/7</div>
-                  <p className="text-sm">Support Available</p>
-                </div>
-                <div className="text-center">
                   <div className="text-2xl font-bold mb-2">Custom</div>
                   <p className="text-sm">Training Solutions</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold mb-2">Expert</div>
+                  <p className="text-sm">Instructors</p>
                 </div>
               </div>
             </div>

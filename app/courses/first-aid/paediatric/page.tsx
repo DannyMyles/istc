@@ -127,7 +127,7 @@ export default function PaediatricFirstAid() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {course.content.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4">
+                      <div key={index} className="flex items-start gap-3 bg-whites p-4">
                         <div className="bg-red-100 p-2 rounded-lg">
                           <CheckCircle className="text-red-600" size={20} />
                         </div>
