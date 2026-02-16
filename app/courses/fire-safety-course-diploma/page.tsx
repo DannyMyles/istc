@@ -49,7 +49,7 @@ export default function FireSafetyCourseDiploma() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-orange-700 to-orange-600 text-white py-48 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-orange-700 to-orange-600 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"

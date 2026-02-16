@@ -70,7 +70,7 @@ export default function ErgonomicsAudit() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-indigo-600 to-indigo-500 text-white py-48 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-indigo-600 to-indigo-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"

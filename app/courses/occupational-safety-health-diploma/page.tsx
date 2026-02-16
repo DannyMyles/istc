@@ -57,9 +57,9 @@ export default function OccupationalSafetyHealthDiploma() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-8">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-teal-800 to-teal-700 text-white py-48 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-teal-800 to-teal-700 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -106,7 +106,7 @@ export default function OccupationalSafetyHealthDiploma() {
                   
                   <Link 
                     href="/contact"
-                    className="btn-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
+                    className="block w-full bg-white text-green-600 hover:bg-green-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>

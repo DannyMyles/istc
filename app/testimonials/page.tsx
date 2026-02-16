@@ -287,7 +287,7 @@ export default function TestimonialsPage() {
     <div >
       {/* Hero Section with Background Image */}
       <div ref={setHeroRef}>
-        <section className="relative py-28 md:py-48 overflow-hidden">
+        <section className="relative py-28 md:py-12 overflow-hidden">
           {/* Background Image with Overlay */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
