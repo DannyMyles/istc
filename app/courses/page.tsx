@@ -94,7 +94,7 @@ export default function CoursesPage() {
     {
       title: 'Occupational Safety & Health Diploma',
       description: '12-month modularized distance learning programme in collaboration with Cambridge International College.',
-      duration: '12 Months',
+      duration: '8 Months',
       participants: 'Distance Learning',
       level: 'Advanced',
       nextStart: 'April 15, 2024',
@@ -107,7 +107,7 @@ export default function CoursesPage() {
     {
       title: 'Occupational Safety & Health Certificate',
       description: 'Professional certificate for workplace safety, accident prevention, and legal compliance.',
-      duration: '3 Months',
+      duration: '4 days',
       participants: 'Max 25',
       level: 'Beginner',
       nextStart: 'March 18, 2024',
@@ -187,7 +187,7 @@ export default function CoursesPage() {
     {
       title: 'First Aid Refresher',
       description: 'Requalification course for workplace first aiders.',
-      duration: '1 Day',
+      duration: '2 Day',
       participants: 'Max 20',
       level: 'Intermediate',
       nextStart: 'March 28, 2024',
