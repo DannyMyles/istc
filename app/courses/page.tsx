@@ -619,10 +619,7 @@ export default function CoursesPage() {
                     {/* Pagination */}
                     <div className="flex justify-center mt-12">
                       <nav className="flex items-center gap-2">
-                        <button className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors">
-                          Previous
-                        </button>
-                        {[1, 2, 3, 4, 5].map((page) => (
+                        {[1].map((page) => (
                           <button
                             key={page}
                             className={`px-4 py-2 rounded-lg transition-colors ${
@@ -634,9 +631,6 @@ export default function CoursesPage() {
                             {page}
                           </button>
                         ))}
-                        <button className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors">
-                          Next
-                        </button>
                       </nav>
                     </div>
                   </>

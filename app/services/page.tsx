@@ -479,10 +479,6 @@ export default function ServicesPage() {
                               
                               <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                                 <span className="flex items-center gap-1">
-                                  <Clock size={16} />
-                                  {service.duration}
-                                </span>
-                                <span className="flex items-center gap-1">
                                   <Award size={16} />
                                   {service.level}
                                 </span>
@@ -553,10 +549,6 @@ export default function ServicesPage() {
                     <p className="text-gray-600 mb-6">{service.description}</p>
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Clock size={16} />
-                          {service.duration}
-                        </span>
                       </div>
                       <Link 
                         href={service.href}
@@ -609,7 +601,7 @@ export default function ServicesPage() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2">Proven Results</h4>
-                        <p className="text-gray-600">98% success rate with thousands of satisfied clients across industries.</p>
+                        <p className="text-gray-600">Strong completion and certification record with thousands of satisfied clients across industries.</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">

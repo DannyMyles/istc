@@ -213,14 +213,14 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: 'Phone Number',
-      details: ['+254 700 364 722', '+254 720 123 456'],
+      details: ['+254 700 364 722'],
       action: 'tel:+254700364722',
       color: 'from-blue-500 to-blue-600'
     },
     {
       icon: Mail,
       title: 'Email Address',
-      details: ['hsetraining@istc.co.ke', 'training@istc.co.ke'],
+      details: ['hsetraining@istc.co.ke'],
       action: 'mailto:hsetraining@istc.co.ke',
       color: 'from-green-500 to-green-600'
     },
@@ -399,23 +399,31 @@ export default function ContactPage() {
                   ))}
                 </div>
 
-                {/* Emergency Contact */}
+                {/* Partner Contacts */}
                 <div className="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
                       <AlertCircle className="text-white" size={24} />
                     </div>
-                    <h3 className="font-bold text-white">Emergency Contact</h3>
+                    <h3 className="font-bold text-white">Partner contacts</h3>
                   </div>
                   <p className="text-red-100 mb-4">
-                    For immediate safety emergencies or urgent training needs
+                    Emergency partner contacts for your safety needs
                   </p>
-                  <a 
-                    href="tel:+254711222333" 
-                    className="block text-center bg-white text-red-600 py-3 rounded-lg font-semibold hover:bg-red-50 hover:scale-[1.02] transition-all duration-300 shadow-md"
-                  >
-                    Call Emergency: +254 711 222 333
-                  </a>
+                  <div className="space-y-2">
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <span className="font-semibold">Fire</span> - Nairobi County - <a href="tel:0202344599" className="underline">0202344599</a> / <a href="tel:0202222181" className="underline">0202222181</a>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <span className="font-semibold">Police</span> - <a href="tel:999" className="underline">999</a> or <a href="tel:911" className="underline">911</a>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <span className="font-semibold">Ophthalmologist</span> - Baus Optical - <a href="tel:0709709000" className="underline">0709-709-000</a>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-3">
+                      <span className="font-semibold">Paediatric Safety & Health</span> - Baby Boma - <a href="tel:0745339959" className="underline">0745 339959</a>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -597,7 +605,7 @@ export default function ContactPage() {
                       <button
                         type="submit"
                         disabled={isSubmitting || isRateLimited}
-                        className="bg-gradient-to-r from-accent-500 to-accent-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-accent-600 hover:to-accent-700 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-300 shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center"
+                        className="bg-gradient-to-r from-accent-500 to-accent-600 px-8 py-3 rounded-lg font-semibold hover:from-accent-600 hover:to-accent-700 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-300 shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center"
                       >
                         <Send size={20} />
                         {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -633,7 +641,7 @@ export default function ContactPage() {
                 <div className="relative h-[450px] w-full">
                   {/* Google Maps Embed */}
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8199999999997!2d36.8172!3d-1.2864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f6d3445433444%3A0x1234567890abcdef!2sOccidental%20House%2C%20Baricho%20Road%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1699999999999!5m2!1sen!2ske"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8199999999997!2d36.835!3d-1.255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f117e0e5e3a3b%3A0x1234567890abcdef!2sOccidental%20House%2C%20Baricho%20Road%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1699999999999!5m2!1sen!2ske"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -731,7 +739,7 @@ export default function ContactPage() {
                         <svg className="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
-                        <span>Easy access from CBD</span>
+                        <span>Easy access</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <svg className="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -11,7 +11,7 @@ export default function WorkAtHeight() {
     description: 'Designed for anyone working immediately above ground level and any processes that can lead to workers falling even from ground level.',
     overview: 'Participants will learn to manage risks from working at height, steps to avoid, prevent or reduce risks and accidents.',
     
-    duration: '2 days',
+    duration: '3 days',
     format: 'Practical & Classroom Training',
     level: 'Specialized Training',
     nextIntake: 'Every Monday',
@@ -55,7 +55,7 @@ export default function WorkAtHeight() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-orange-600 to-orange-500 text-white py-28 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -140,31 +140,35 @@ export default function WorkAtHeight() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-orange-600" size={20} />
+                        <Calendar className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-orange-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Award className="text-orange-600" size={20} />
+                        <Award className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-orange-600" size={20} />
+                        <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          <div className="text-gray-600">
+                            <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                              View Training Calendar
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -175,9 +179,9 @@ export default function WorkAtHeight() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courseData.courseContent.map((content, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4">
-                        <div className="bg-orange-100 p-2 rounded-lg">
-                          <CheckCircle className="text-orange-600" size={20} />
+                      <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-lg border border-gray-100">
+                        <div className="bg-[#039AC5]/10 p-2 rounded-lg">
+                          <CheckCircle className="text-[#039AC5]" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{content}</span>
                       </div>
@@ -192,7 +196,7 @@ export default function WorkAtHeight() {
                   <ul className="space-y-3">
                     {courseData.targetIndustries.map((industry, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-orange-600 rounded-full mt-2"></div>
+                        <div className="w-2 h-2 bg-[#039AC5] rounded-full mt-2"></div>
                         <span className="text-gray-600">{industry}</span>
                       </li>
                     ))}
@@ -201,8 +205,8 @@ export default function WorkAtHeight() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-orange-50 p-4 rounded-xl">
-                    <Award className="text-orange-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Award className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>

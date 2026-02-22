@@ -12,7 +12,7 @@ export default function OccupationalSafetyHealthDiploma() {
     description: 'A comprehensive 12 months modularized distance learning programme with occasional tutorial classes offered in collaboration with Cambridge International College.',
     overview: 'This programme covers a wide scope of safety practices and standards applicable both locally and internationally, designed to provide advanced education in Occupational Safety and Health systems and practices.',
     
-    duration: '12 months',
+    duration: '3 weeks',
     format: 'Distance learning with occasional tutorial classes',
     level: 'Advanced Diploma',
     partnership: 'In collaboration with Cambridge International College',
@@ -144,31 +144,35 @@ export default function OccupationalSafetyHealthDiploma() {
                     
                     <div className="grid grid-cols-2 gap-6 mb-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-teal-600" size={20} />
+                        <Calendar className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-teal-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Award className="text-teal-600" size={20} />
+                        <Award className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-teal-600" size={20} />
+                        <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          <div className="text-gray-600">
+                            <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                              View Training Calendar
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -182,11 +186,10 @@ export default function OccupationalSafetyHealthDiploma() {
                       <Link 
                         key={index} 
                         href={module.route}
-                        className="flex items-start gap-3 bg-white p-4 cursor-pointer"
-                        style={{ transition: 'none' }}
+                        className="flex items-start gap-3 bg-white p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       >
-                        <div className="bg-teal-100 p-2 rounded-lg">
-                          <CheckCircle className="text-teal-600" size={20} />
+                        <div className="bg-[#039AC5]/10 p-2 rounded-lg">
+                          <CheckCircle className="text-[#039AC5]" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{module.name}</span>
                       </Link>
@@ -201,7 +204,7 @@ export default function OccupationalSafetyHealthDiploma() {
                   <ul className="space-y-3">
                     {courseData.entryRequirements.map((requirement, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <GraduationCap className="text-teal-600 mt-1" size={18} />
+                        <GraduationCap className="text-[#039AC5] mt-1" size={18} />
                         <span className="text-gray-600">{requirement}</span>
                       </li>
                     ))}
@@ -210,8 +213,8 @@ export default function OccupationalSafetyHealthDiploma() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-teal-50 p-4 rounded-xl">
-                    <Award className="text-teal-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Award className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>

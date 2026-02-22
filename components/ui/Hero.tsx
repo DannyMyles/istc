@@ -184,8 +184,8 @@ const Hero = () => {
             {/* Stats - Arranged like reference image */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 pt-6 md:pt-8 border-t border-white/20">
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white">1K+</div>
-                <div className="text-sm text-gray-200">Trained Professionals</div>
+                  <div className="text-2xl md:text-3xl font-bold text-white">38k+ trained.</div>
+                <div className="text-sm text-gray-200">trained</div>
               </div>
               <div className="sm:border-l sm:border-white/20 sm:pl-6 md:pl-8">
                 {nextSession ? (
@@ -229,7 +229,7 @@ const Hero = () => {
               <div className="sm:border-l sm:border-white/20 sm:pl-6 md:pl-8">
                 <div className="text-base md:text-lg font-semibold text-white">Our Success</div>
                 <p className="text-sm text-gray-200 mt-1 line-clamp-2">
-                  98% certification success rate with industry...
+                  Strong completion and certification record...
                 </p>
               </div>
             </div>
@@ -257,8 +257,8 @@ const Hero = () => {
                 {/* Overlay Stats Card - Top Right */}
                 <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg max-w-[150px] md:max-w-[180px] hover:bg-white/20 hover:scale-105 transition-all duration-300">
                   <div className="text-center">
-                    <div className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">1K+</div>
-                    <div className="text-xs md:text-sm text-white/90 font-medium">Professionals Trained</div>
+                    <div className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">38k+</div>
+                    <div className="text-xs md:text-sm text-white/90 font-medium">trained</div>
                   </div>
                 </div>
                 
@@ -323,7 +323,7 @@ const Hero = () => {
                 <div>
                   <h3 className="text-base md:text-lg font-bold text-white mb-1 drop-shadow-lg">Our Training Success</h3>
                   <p className="text-white/80 text-xs md:text-sm">
-                    With 22+ years of experience, we've certified 1,000+ professionals across 25+ safety courses, achieving a 98% success rate through strong industry partnership
+                    With over 2 decades of experience, we've certified thousands of professionals across various safety courses, achieving a strong completion and certification record through industry partnerships.
                   </p>
                 </div>
               </div>
