@@ -244,7 +244,7 @@ const Navigation = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo with reduced text size */}
-            <Link href="/" className="flex items-center gap-4 group shrink-0">
+            <Link href="/" className="flex items-center gap-2 group shrink-0">
               <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-accent-800 rounded-xl md:rounded-2xl group-hover:scale-105 transition-transform duration-300 shadow-adventure border-2 border-transparent group-hover:border-accent-light/30">
                 <Image
                   src="/header_logo.png" 
@@ -255,10 +255,10 @@ const Navigation = () => {
                 />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="text-sm md:text-base font-semibold text-gray-700 leading-tight">
-                  International Safety Training Centre
+                <span className="text-md md:text-sm font-semibold text-gray-700 leading-tight">
+                  ISTC
                 </span>
-<span className="text-xs text-accent-600 font-medium font-serif italic" style={{ fontFamily: 'Holiday, cursive' }}>
+                  <span className="text-sm text-accent-600 font-medium italic">
                   Secure your future
                 </span>
               </div>
