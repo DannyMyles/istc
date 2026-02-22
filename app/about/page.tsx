@@ -3,6 +3,7 @@
 import { Shield, Target, Users, Globe, Award, Clock, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function AboutPage() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -112,13 +113,19 @@ export default function AboutPage() {
     }
   ];
 
-  const certifications = [
-    'NEMA Certified',
-    'NITA Approved',
-    'OSHA Standards Compliant',
-    'First Aid International',
-    'Fire Safety Certified',
-    'Environmental Compliance'
+  const accreditations = [
+    {
+      name: 'DOSHS',
+      image: '/about/about_1.jpeg',
+    },
+    {
+      name: 'NITA',
+      image: '/about/about_2.jpeg',
+    },
+    {
+      name: 'Cambridge International College',
+      image: '/about/about_3.jpeg',
+    }
   ];
 
   return (
@@ -154,16 +161,16 @@ export default function AboutPage() {
             
             <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-12">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">22+</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">Over 2 decades</div>
                 <div className="text-sm text-gray-300">Years Experience</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">1000+</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">38k+</div>
                 <div className="text-sm text-gray-300">Professionals Trained</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
-                <div className="text-sm text-gray-300">Success Rate</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">Strong</div>
+                <div className="text-sm text-gray-300">completion and certification record</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
@@ -286,7 +293,7 @@ export default function AboutPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-100 rounded-2xl mb-6 mx-auto">
                   <Clock className="text-accent-600" size={32} />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">22+ Years Experience</h3>
+                <h3 className="text-xl font-semibold mb-4">Over 2 decades Experience</h3>
                 <p className="text-gray-600">
                   Extensive experience in safety training across various industries including construction, manufacturing, oil & gas, and healthcare.
                 </p>
@@ -295,18 +302,18 @@ export default function AboutPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-100 rounded-2xl mb-6 mx-auto">
                   <Users className="text-accent-600" size={32} />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">1000+ Trained</h3>
+                <h3 className="text-xl font-semibold mb-4">38k+ Trained</h3>
                 <p className="text-gray-600">
-                  Professionals and organizations who have benefited from our training programs, with 92% reporting improved safety performance.
+                  Professionals and organizations who have benefited from our training programs, with strong completion and certification record.
                 </p>
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-100 rounded-2xl mb-6 mx-auto">
                   <Award className="text-accent-600" size={32} />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">98% Success Rate</h3>
-                <p className="text-gray-600">
-                  High certification success rate and client satisfaction, with industry-recognized accreditations and partnerships.
+                <h3 className="text-xl font-semibold mb-4">Strong Record</h3>
+<p className="text-gray-600">
+                  Strong completion and certification record, with industry-recognized accreditations and partnerships.
                 </p>
               </div>
             </div>
@@ -336,16 +343,22 @@ export default function AboutPage() {
               <p className="text-lg text-gray-600 text-center mb-8 max-w-2xl mx-auto">
                 We maintain the highest standards of quality and compliance with industry regulations.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {certifications.map((cert, index) => (
+              
+              {/* Accreditation Logos */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
+                {accreditations.map((accreditation, index) => (
                   <div 
                     key={index} 
-                    className="flex items-center gap-3 bg-gray-50 p-5 rounded-xl hover:bg-accent-50 hover:shadow-md transition-all duration-300 group"
+                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center"
                   >
-                    <div className="flex-shrink-0">
-                      <CheckCircle className="text-green-500 group-hover:text-green-600" size={24} />
+                    <div className="relative w-full h-32 mb-4">
+                      <Image
+                        src={accreditation.image}
+                        alt={accreditation.name}
+                        fill
+                        className="object-contain"
+                      />
                     </div>
-                    <span className="font-medium text-gray-800 group-hover:text-gray-900">{cert}</span>
                   </div>
                 ))}
               </div>

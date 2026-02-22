@@ -11,7 +11,7 @@ export default function OccupationalSafetyHealthCertificate() {
     description: 'A short professional certificate intended to equip participants with necessary knowledge and skills on matters of Occupational Safety and Health.',
     overview: 'Designed to educate on occupational safety and health systems and practices with the aim of reducing or achieving zero accident levels and understanding applicable legislation.',
     
-    duration: '3 months',
+    duration: '2 weeks',
     format: 'Classroom & Practical Sessions',
     level: 'Professional Certificate',
     nextIntake: 'Monthly Intakes Available',
@@ -139,31 +139,35 @@ export default function OccupationalSafetyHealthCertificate() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-accent-600" size={20} />
+                        <Calendar className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-accent-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Award className="text-accent-600" size={20} />
+                        <Award className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-accent-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          <div className="text-gray-600">
+                            <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                              View Training Calendar
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -174,9 +178,9 @@ export default function OccupationalSafetyHealthCertificate() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Topics</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courseData.courseTopics.map((topic, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white" style={{ transition: 'none' }}>
-                        <div className="bg-accent-100 p-2 rounded-lg">
-                          <CheckCircle className="text-accent-600" size={20} />
+                      <div key={index} className="flex items-start gap-3 bg-white p-4 hover:bg-gray-50 transition-colors">
+                        <div className="bg-[#039AC5]/10 p-2 rounded-lg">
+                          <CheckCircle className="text-[#039AC5]" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{topic}</span>
                       </div>
@@ -200,8 +204,8 @@ export default function OccupationalSafetyHealthCertificate() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-accent-50 p-4 rounded-xl">
-                    <Award className="text-accent-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Award className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>

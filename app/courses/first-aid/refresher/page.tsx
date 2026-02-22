@@ -137,9 +137,9 @@ export default function FirstAidRefresher() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {course.content.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white adventure-card p-4" style={{ transition: 'none' }}>
-                        <div className="bg-red-100 p-2 rounded-lg">
-                          <CheckCircle className="text-red-600" size={20} />
+                      <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-lg border border-gray-100">
+                        <div className="bg-[#039AC5]/10 p-2 rounded-lg">
+                          <CheckCircle className="text-[#039AC5]" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{item}</span>
                       </div>
@@ -178,8 +178,8 @@ export default function FirstAidRefresher() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-red-50 p-4 rounded-xl">
-                    <Award className="text-red-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Award className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">First Aid Certificate valid for 2 years upon successful completion.</p>
                   </div>
                 </div>
@@ -191,4 +191,3 @@ export default function FirstAidRefresher() {
     </div>
   );
 }
-

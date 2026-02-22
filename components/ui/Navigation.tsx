@@ -83,6 +83,7 @@ const Navigation = () => {
           { name: 'Chemical Safety', href: '/courses/chemical-safety' },
           { name: 'Disaster & Emergency Preparedness', href: '/courses/disaster-emergency-preparedness' },
           { name: 'Road Safety', href: '/courses/road-safety' },
+          { name: 'Construction Safety', href: '/courses/construction-safety' },
           { name: 'Training Calendar', href: '/calendar' },
           { name: 'All Courses', href: '/courses' },
         ]
@@ -253,12 +254,12 @@ const Navigation = () => {
                   className="object-contain w-12 h-12 md:w-16 md:h-16"
                 />
               </div>
-              <div className="hidden md:flex flex-col justify-center">
+              <div className="flex flex-col justify-center">
                 <span className="text-sm md:text-base font-semibold text-gray-700 leading-tight">
                   International Safety Training Centre
                 </span>
-                <span className="text-xs text-accent-600 font-medium">
-                  Secure Your Future
+<span className="text-xs text-accent-600 font-medium font-serif italic" style={{ fontFamily: 'Holiday, cursive' }}>
+                  Secure your future
                 </span>
               </div>
             </Link>
@@ -404,6 +405,27 @@ const Navigation = () => {
         {isMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-200 animate-in slide-in-from-top duration-300">
             <div className="container mx-auto px-4 py-6">
+              {/* Logo and Company Name - Visible on Mobile */}
+              <div className="flex items-center gap-1 mb-4 pb-4 border-b border-gray-200">
+                <div className="flex items-center justify-center w-12 h-12 bg-accent-800 rounded-lg">
+                  <Image
+                    src="/header_logo.png" 
+                    alt="ISTC Logo" 
+                    width={140}
+                    height={140} 
+                    className="object-contain w-10 h-10"
+                  />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <span className="text-sm font-semibold text-gray-700 leading-tight">
+                    International Safety Training Centre
+                  </span>
+<span className="text-xs text-accent-600 font-medium font-serif italic" style={{ fontFamily: 'Holiday, cursive' }}>
+                    Secure your future
+                  </span>
+                </div>
+              </div>
+
               {/* Authentication section in mobile menu */}
               {status === "loading" ? (
                 <div className="mb-4 p-3 bg-gray-100 rounded-lg animate-pulse">
@@ -580,3 +602,4 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
