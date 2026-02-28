@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // Enable trailing slashes for better SEO
+  trailingSlash: true,
+
   // images configuration for external domains
   images: {
     remotePatterns: [

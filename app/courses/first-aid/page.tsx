@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Calendar, Clock, Award, Heart, Phone, Mail, ArrowRight } from 'lucide-react';
@@ -39,7 +38,7 @@ export default function FirstAid() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-red-600 to-red-500 text-white py-16 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-16 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -47,13 +46,13 @@ export default function FirstAid() {
             backgroundImage: "url('/images/7.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-red-900/80 to-red-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-red-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-cyan-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -61,7 +60,7 @@ export default function FirstAid() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <Heart className="text-red-200" size={24} />
+                  <Heart className="text-cyan-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     First Aid Training
                   </span>
@@ -70,35 +69,35 @@ export default function FirstAid() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   First Aid Training Programs
                 </h1>
-                <p className="text-xl text-red-100 mb-6">
+                <p className="text-xl text-cyan-100 mb-6">
                   Comprehensive emergency response training for all levels
                 </p>
-                <p className="text-red-200 text-lg">
+                <p className="text-cyan-200 text-lg">
                   Choose from our range of first aid courses designed for different needs and environments. All courses lead to certification valid for 2 years.
                 </p>
               </div>
               
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                 <div className="text-center mb-6">
-                  <Award className="text-red-200 mx-auto mb-3" size={48} />
+                  <Award className="text-cyan-200 mx-auto mb-3" size={48} />
                   <h3 className="text-xl font-semibold text-white">Certification</h3>
-                  <p className="text-red-200 mt-2">All courses include certification valid for 2 years</p>
+                  <p className="text-cyan-200 mt-2">All courses include certification valid for 2 years</p>
                 </div>
                 
                 <Link 
                   href="/contact"
-                  className="block w-full bg-white text-red-600 hover:bg-red-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                  className="block w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                 >
                   Enquire Now
                 </Link>
                 
                 <div className="mt-6 pt-6 border-t border-white/20">
                   <div className="flex items-center justify-center gap-6">
-                    <a href="tel:+254700364722" className="flex items-center gap-2 text-red-200 hover:text-white">
+                    <a href="tel:+254700364722" className="flex items-center gap-2 text-cyan-200 hover:text-white">
                       <Phone size={18} />
                       <span>Call Now</span>
                     </a>
-                    <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-red-200 hover:text-white">
+                    <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-cyan-200 hover:text-white">
                       <Mail size={18} />
                       <span>Email Us</span>
                     </a>
@@ -123,11 +122,11 @@ export default function FirstAid() {
                 <Link
                   key={index}
                   href={course.href}
-                  className="bg-white adventure-card p-6 hover:shadow-lg transition-all duration-300 group"
+                  className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="bg-red-100 p-3 rounded-xl group-hover:bg-red-600 transition-colors">
-                      <course.icon className="text-red-600 group-hover:text-white transition-colors" size={24} />
+                    <div className="bg-cyan-100 p-3 rounded-xl group-hover:bg-cyan-600 transition-colors">
+                      <course.icon className="text-cyan-600 group-hover:text-white transition-colors" size={24} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
@@ -138,7 +137,7 @@ export default function FirstAid() {
                         </div>
                       </div>
                       <p className="text-gray-600 mb-4">{course.description}</p>
-                      <div className="flex items-center gap-2 text-red-600 font-medium group-hover:gap-3 transition-all">
+                      <div className="flex items-center gap-2 text-cyan-600 font-medium group-hover:gap-3 transition-all">
                         <span>View Course Details</span>
                         <ArrowRight size={18} />
                       </div>
@@ -156,25 +155,25 @@ export default function FirstAid() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white adventure-card p-6 text-center">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="text-red-600" size={32} />
+              <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+                <div className="bg-cyan-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="text-cyan-600" size={32} />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Weekly Intakes</h3>
                 <p className="text-gray-600">Courses run every week with flexible scheduling to accommodate your needs.</p>
               </div>
               
-              <div className="bg-white adventure-card p-6 text-center">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="text-red-600" size={32} />
+              <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+                <div className="bg-cyan-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="text-cyan-600" size={32} />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Certified Training</h3>
                 <p className="text-gray-600">All courses are certified and recognized for workplace safety compliance.</p>
               </div>
               
-              <div className="bg-white adventure-card p-6 text-center">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Heart className="text-red-600" size={32} />
+              <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+                <div className="bg-cyan-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Heart className="text-cyan-600" size={32} />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Hands-On Learning</h3>
                 <p className="text-gray-600">Practical training with real-world scenarios and CPR/AED equipment.</p>

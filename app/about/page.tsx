@@ -156,12 +156,12 @@ export default function AboutPage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-              For over 2 decades, we have been at the forefront of safety training and certification in Kenya and beyond, transforming workplaces through excellence.
+              For 2+ decades, we have been at the forefront of safety training and certification in Kenya and beyond, transforming workplaces through excellence.
             </p>
             
             <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-12">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">Over 2 decades</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">2+ decades</div>
                 <div className="text-sm text-gray-300">Years Experience</div>
               </div>
               <div className="text-center">
@@ -293,7 +293,7 @@ export default function AboutPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-100 rounded-2xl mb-6 mx-auto">
                   <Clock className="text-accent-600" size={32} />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Over 2 decades Experience</h3>
+                <h3 className="text-xl font-semibold mb-4">2+ decades</h3>
                 <p className="text-gray-600">
                   Extensive experience in safety training across various industries including construction, manufacturing, oil & gas, and healthcare.
                 </p>
@@ -323,7 +323,7 @@ export default function AboutPage() {
                 <h4 className="text-lg font-semibold mb-2">Industry Partnerships</h4>
                 <p className="opacity-90">Collaborations with leading industry bodies and government agencies</p>
               </div>
-              <div className="bg-gradient-to-r from-[#771440] to-[#BE2D6B] text-[#ffffff] rounded-xl p-6">
+              <div className="bg-gradient-to-r from-[#039AC5] to-[#116783] text-[#ffffff] rounded-xl p-6">
                 <h4 className="text-lg font-semibold mb-2">Modern Facilities</h4>
                 <p className="opacity-90">State-of-the-art training facilities with real-world simulation equipment</p>
               </div>

@@ -58,7 +58,7 @@ export default function FireSafetyAudit() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -66,13 +66,13 @@ export default function FireSafetyAudit() {
             backgroundImage: "url('/images/7.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/80 to-orange-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/services" className="text-orange-200 hover:text-white flex items-center gap-2">
+              <Link href="/services" className="text-cyan-200 hover:text-white flex items-center gap-2">
                 <ArrowLeft size={20} /> Back to all services
               </Link>
             </div>
@@ -80,7 +80,7 @@ export default function FireSafetyAudit() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Flame className="text-orange-200" size={24} />
+                  <Flame className="text-cyan-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Fire Risk Management
                   </span>
@@ -89,10 +89,10 @@ export default function FireSafetyAudit() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {serviceData.title}
                 </h1>
-                <p className="text-xl text-orange-100 mb-6">
+                <p className="text-xl text-cyan-100 mb-6">
                   {serviceData.subtitle}
                 </p>
-                <p className="text-orange-200 text-lg">
+                <p className="text-cyan-200 text-lg">
                   {serviceData.description}
                 </p>
               </div>
@@ -100,20 +100,20 @@ export default function FireSafetyAudit() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <h3 className="text-xl font-bold mb-4">Request Fire Safety Audit</h3>
-                  <p className="text-orange-200 text-sm mb-6">Get a customized quote based on your premises size and complexity.</p>
+                  <p className="text-cyan-200 text-sm mb-6">Get a customized quote based on your premises size and complexity.</p>
                   
-                  <Link
+                  <Link 
                     href="/contact"
-                    className="w-full bg-white text-orange-600 hover:bg-orange-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
+                    className="block w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Request Quote
+                    Enquire Now
                   </Link>
                   
                   <div className="space-y-3">
-                    <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-orange-200 hover:text-white py-2">
+                    <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">
                       <Phone size={18} /> +254 700 364 722
                     </a>
-                    <a href="mailto:hsetraining@istc.co.ke" className="flex items-center justify-center gap-2 text-orange-200 hover:text-white py-2">
+                    <a href="mailto:hsetraining@istc.co.ke" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">
                       <Mail size={18} /> hsetraining@istc.co.ke
                     </a>
                   </div>
@@ -138,21 +138,21 @@ export default function FireSafetyAudit() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Clock className="text-orange-600" size={20} />
+                        <Clock className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{serviceData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Flame className="text-orange-600" size={20} />
+                        <Flame className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{serviceData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-orange-600" size={20} />
+                        <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Availability</div>
                           <div className="text-gray-600">{serviceData.nextIntake}</div>
@@ -166,9 +166,9 @@ export default function FireSafetyAudit() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Focus Areas of Audit</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {serviceData.auditFocusAreas.map((item, index) => (
-                      <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-orange-100">
+                      <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-cyan-100">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="bg-orange-100 p-2 rounded-lg">
+                          <div className="bg-cyan-100 p-2 rounded-lg text-cyan-600">
                             {item.icon}
                           </div>
                           <h3 className="font-bold text-gray-900">{item.area}</h3>
@@ -181,25 +181,25 @@ export default function FireSafetyAudit() {
               </div>
 
               <div className="lg:col-span-1 space-y-8">
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-orange-100">
+                <div className="bg-white rounded-2xl shadow-lg p-6 border border-cyan-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Who This Service Is For</h3>
                   <ul className="space-y-3">
                     {serviceData.whoItsFor.map((item, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-orange-600 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-gray-600">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-orange-100">
+                <div className="bg-white rounded-2xl shadow-lg p-6 border border-cyan-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Service Deliverables</h3>
                   <div className="space-y-3">
                     {serviceData.deliverables.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
-                        <div className="bg-orange-100 p-1 rounded">
-                          <CheckCircle size={16} className="text-orange-600" />
+                      <div key={index} className="flex items-start gap-3 p-3 bg-cyan-50 rounded-lg">
+                        <div className="bg-cyan-100 p-1 rounded">
+                          <CheckCircle size={16} className="text-cyan-600" />
                         </div>
                         <span className="text-gray-700 text-sm">{item}</span>
                       </div>
@@ -207,14 +207,14 @@ export default function FireSafetyAudit() {
                   </div>
                 </div>
 
-                <div className="bg-orange-600 text-white rounded-2xl p-6">
+                <div className="bg-cyan-600 text-white rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-4">Need Immediate Assistance?</h3>
-                  <p className="text-orange-100 mb-6">
+                  <p className="text-cyan-100 mb-6">
                     Contact our fire safety experts for urgent consultations or to schedule an audit.
                   </p>
                   <a 
                     href="tel:+254700364722"
-                    className="flex items-center justify-center gap-2 bg-white text-orange-600 hover:bg-orange-50 py-3 rounded-xl font-semibold transition-colors"
+                    className="flex items-center justify-center gap-2 bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold transition-colors"
                   >
                     <Phone size={18} />
                     Call Fire Safety Team
@@ -228,3 +228,4 @@ export default function FireSafetyAudit() {
     </div>
   );
 }
+

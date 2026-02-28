@@ -82,7 +82,7 @@ export default function EnvironmentalImpactAssessment() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-emerald-600 to-emerald-500 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -90,13 +90,13 @@ export default function EnvironmentalImpactAssessment() {
             backgroundImage: "url('/images/5.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/80 to-emerald-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/services" className="text-emerald-200 hover:text-white flex items-center gap-2">
+              <Link href="/services" className="text-cyan-200 hover:text-white flex items-center gap-2">
                 <ArrowLeft size={20} /> Back to all services
               </Link>
             </div>
@@ -104,7 +104,7 @@ export default function EnvironmentalImpactAssessment() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Globe className="text-emerald-200" size={24} />
+                  <Globe className="text-cyan-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Regulatory Compliance
                   </span>
@@ -113,10 +113,10 @@ export default function EnvironmentalImpactAssessment() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {serviceData.title}
                 </h1>
-                <p className="text-xl text-emerald-100 mb-6">
+                <p className="text-xl text-cyan-100 mb-6">
                   {serviceData.subtitle}
                 </p>
-                <p className="text-emerald-200 text-lg">
+                <p className="text-cyan-200 text-lg">
                   {serviceData.description}
                 </p>
               </div>
@@ -124,20 +124,20 @@ export default function EnvironmentalImpactAssessment() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <h3 className="text-xl font-bold mb-4">Request EIA Services</h3>
-                  <p className="text-emerald-200 text-sm mb-6">Contact us for project-specific EIA consultation and pricing.</p>
+                  <p className="text-cyan-200 text-sm mb-6">Contact us for project-specific EIA consultation and pricing.</p>
                   
-                  <Link
+                  <Link 
                     href="/contact"
-                    className="w-full bg-white text-emerald-600 hover:bg-emerald-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
+                    className="block w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Get EIA Proposal
+                    Enquire Now
                   </Link>
                   
                   <div className="space-y-3">
-                    <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-emerald-200 hover:text-white py-2">
+                    <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">
                       <Phone size={18} /> +254 700 364 722
                     </a>
-                    <a href="mailto:hsetraining@istc.co.ke" className="flex items-center justify-center gap-2 text-emerald-200 hover:text-white py-2">
+                    <a href="mailto:hsetraining@istc.co.ke" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">
                       <Mail size={18} /> hsetraining@istc.co.ke
                     </a>
                   </div>
@@ -162,21 +162,21 @@ export default function EnvironmentalImpactAssessment() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Clock className="text-emerald-600" size={20} />
+                        <Clock className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{serviceData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Globe className="text-emerald-600" size={20} />
+                        <Globe className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{serviceData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-emerald-600" size={20} />
+                        <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Timing</div>
                           <div className="text-gray-600">{serviceData.nextIntake}</div>
@@ -190,9 +190,9 @@ export default function EnvironmentalImpactAssessment() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Impact Assessment Areas</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {serviceData.impactAreas.map((item, index) => (
-                      <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-emerald-100">
+                      <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-cyan-100">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="bg-emerald-100 p-2 rounded-lg">
+                          <div className="bg-cyan-100 p-2 rounded-lg text-cyan-600">
                             {item.icon}
                           </div>
                           <h3 className="font-bold text-gray-900">{item.area}</h3>
@@ -208,10 +208,10 @@ export default function EnvironmentalImpactAssessment() {
                   <div className="space-y-4">
                     {serviceData.processStages.map((stage, index) => (
                       <div key={index} className="flex items-start gap-4">
-                        <div className="bg-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                        <div className="bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
                           {index + 1}
                         </div>
-                        <div className="bg-emerald-50 p-4 rounded-xl flex-1">
+                        <div className="bg-cyan-50 p-4 rounded-xl flex-1">
                           <p className="text-gray-700 font-medium">{stage}</p>
                         </div>
                       </div>
@@ -221,38 +221,38 @@ export default function EnvironmentalImpactAssessment() {
               </div>
 
               <div className="lg:col-span-1 space-y-8">
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+                <div className="bg-white rounded-2xl shadow-lg p-6 border border-cyan-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Types Requiring EIA</h3>
                   <ul className="space-y-3">
                     {serviceData.projectTypes.map((type, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-gray-600 text-sm">{type}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+                <div className="bg-white rounded-2xl shadow-lg p-6 border border-cyan-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Legal Requirements</h3>
                   <div className="space-y-3">
                     {serviceData.legalRequirements.map((requirement, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <FileText className="text-emerald-500 mt-1 flex-shrink-0" size={16} />
+                        <FileText className="text-cyan-600 mt-1 flex-shrink-0" size={16} />
                         <span className="text-gray-700 text-sm">{requirement}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-emerald-600 text-white rounded-2xl p-6">
+                <div className="bg-cyan-600 text-white rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-4">Critical Timing</h3>
-                  <p className="text-emerald-100 mb-6">
+                  <p className="text-cyan-100 mb-6">
                     EIAs must be conducted BEFORE project commencement. Delays can cause significant project setbacks.
                   </p>
                   <a 
                     href="tel:+254700364722"
-                    className="flex items-center justify-center gap-2 bg-white text-emerald-600 hover:bg-emerald-50 py-3 rounded-xl font-semibold transition-colors"
+                    className="flex items-center justify-center gap-2 bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold transition-colors"
                   >
                     <Phone size={18} />
                     Urgent EIA Consultation

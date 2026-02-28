@@ -115,11 +115,11 @@ export default function IndoorAirQualityIAQ() {
                   <h3 className="text-xl font-bold mb-4">Request IAQ Assessment</h3>
                   <p className="text-cyan-200 text-sm mb-6">Get a comprehensive air quality evaluation for your building.</p>
                   
-                  <Link
+                  <Link 
                     href="/contact"
-                    className="w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
+                    className="block w-full bg-white text-[#039AC5] hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Get Air Quality Quote
+                    Enquire Now
                   </Link>
                   
                   <div className="space-y-3">

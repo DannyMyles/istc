@@ -42,7 +42,7 @@ export default function FireSafetyCourseCertificate() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-red-700 to-red-600 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -50,13 +50,13 @@ export default function FireSafetyCourseCertificate() {
             backgroundImage: "url('/images/5.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-red-900/80 to-red-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-red-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-blue-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -64,7 +64,7 @@ export default function FireSafetyCourseCertificate() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Flame className="text-red-200" size={24} />
+                  <Flame className="text-blue-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Fire Safety Certification
                   </span>
@@ -73,10 +73,10 @@ export default function FireSafetyCourseCertificate() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   Fire Safety Certificate Courses
                 </h1>
-                <p className="text-xl text-red-100 mb-6">
+                <p className="text-xl text-blue-100 mb-6">
                   Professional Fire Safety Training
                 </p>
-                <p className="text-red-200 text-lg">
+                <p className="text-blue-200 text-lg">
                   Choose from our range of fire safety courses designed for different roles and responsibilities.
                 </p>
               </div>
@@ -84,23 +84,23 @@ export default function FireSafetyCourseCertificate() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <p className="text-red-200 text-sm">Duration: {currentCourse.duration}</p>
+                    <p className="text-blue-200 text-sm">Duration: {currentCourse.duration}</p>
                   </div>
                   
                   <Link 
                     href="/contact"
-                    className="block w-full bg-white text-red-600 hover:bg-red-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                    className="block w-full bg-white text-[#039AC5] hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
-                      <a href="tel:+254700364722" className="flex items-center gap-2 text-red-200 hover:text-white">
+                      <a href="tel:+254700364722" className="flex items-center gap-2 text-blue-200 hover:text-white">
                         <Phone size={18} />
                         <span>Call Now</span>
                       </a>
-                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-red-200 hover:text-white">
+                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-blue-200 hover:text-white">
                         <Mail size={18} />
                         <span>Email Us</span>
                       </a>
@@ -124,7 +124,7 @@ export default function FireSafetyCourseCertificate() {
                   onClick={() => setSelectedCourse(key)}
                   className={`px-6 py-3 rounded-xl font-medium transition-colors ${
                     selectedCourse === key
-                      ? 'bg-red-600 text-white'
+                      ? 'bg-[#039AC5] text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -150,28 +150,28 @@ export default function FireSafetyCourseCertificate() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-red-600" size={20} />
+                        <Calendar className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{currentCourse.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-red-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">Classroom & Practical</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Award className="text-red-600" size={20} />
+                        <Award className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">Certificate</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-red-600" size={20} />
+                        <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
                           <div className="text-gray-600">Weekly</div>
@@ -186,8 +186,8 @@ export default function FireSafetyCourseCertificate() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {currentCourse.content.map((item, index) => (
                       <div key={index} className="flex items-start gap-3 bg-white p-4" style={{ transition: 'none' }}>
-                        <div className="bg-red-100 p-2 rounded-lg">
-                          <CheckCircle className="text-red-600" size={20} />
+                        <div className="bg-[#039AC5]/10 p-2 rounded-lg">
+                          <CheckCircle className="text-[#039AC5]" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{item}</span>
                       </div>
@@ -205,7 +205,7 @@ export default function FireSafetyCourseCertificate() {
                         key={key}
                         onClick={() => setSelectedCourse(key)}
                         className={`p-4 rounded-xl cursor-pointer transition-colors ${
-                          selectedCourse === key ? 'bg-red-50 border border-red-200' : 'hover:bg-gray-50'
+                          selectedCourse === key ? 'bg-blue-50 border border-[#039AC5]/20' : 'hover:bg-gray-50'
                         }`}
                       >
                         <div className="font-medium text-gray-900 mb-1">{course.title}</div>
@@ -217,8 +217,8 @@ export default function FireSafetyCourseCertificate() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-red-50 p-4 rounded-xl">
-                    <Award className="text-red-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Award className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">Fire Safety Certificate upon successful completion.</p>
                   </div>
                 </div>

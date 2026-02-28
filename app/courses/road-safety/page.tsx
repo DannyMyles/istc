@@ -55,7 +55,7 @@ export default function RoadSafety() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-blue-500 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -63,7 +63,7 @@ export default function RoadSafety() {
             backgroundImage: "url('/images/14.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -102,7 +102,7 @@ export default function RoadSafety() {
                   
                   <Link 
                     href="/contact"
-                    className="block w-full bg-white text-blue-600 hover:bg-blue-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                    className="block w-full bg-white text-[#039AC5] hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
@@ -140,28 +140,28 @@ export default function RoadSafety() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-blue-600" size={20} />
+                        <Calendar className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-blue-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Shield className="text-blue-600" size={20} />
+                        <Shield className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-blue-600" size={20} />
+                        <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
                           <div className="text-gray-600">{courseData.nextIntake}</div>
@@ -176,8 +176,8 @@ export default function RoadSafety() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courseData.courseContent.map((content, index) => (
                       <div key={index} className="flex items-start gap-3 bg-white p-4">
-                        <div className="bg-blue-100 p-2 rounded-lg">
-                          <CheckCircle className="text-blue-600" size={20} />
+                        <div className="bg-[#039AC5]/10 p-2 rounded-lg">
+                          <CheckCircle className="text-[#039AC5]" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{content}</span>
                       </div>
@@ -192,7 +192,7 @@ export default function RoadSafety() {
                   <ul className="space-y-3">
                     {courseData.targetParticipants.map((participant, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
+                        <div className="w-2 h-2 bg-[#039AC5] rounded-full mt-2"></div>
                         <span className="text-gray-600">{participant}</span>
                       </li>
                     ))}
@@ -201,8 +201,8 @@ export default function RoadSafety() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-blue-50 p-4 rounded-xl">
-                    <Shield className="text-blue-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Shield className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>

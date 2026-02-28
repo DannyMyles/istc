@@ -184,8 +184,7 @@ const Hero = () => {
             {/* Stats - Arranged like reference image */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 pt-6 md:pt-8 border-t border-white/20">
               <div>
-                  <div className="text-2xl md:text-3xl font-bold text-white">38k+ trained.</div>
-                <div className="text-sm text-gray-200">trained</div>
+                  <div className="text-2xl md:text-3xl font-bold text-white">38k+ trained</div>
               </div>
               <div className="sm:border-l sm:border-white/20 sm:pl-6 md:pl-8">
                 {nextSession ? (

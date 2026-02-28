@@ -55,7 +55,7 @@ export default function ChemicalSafety() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-purple-600 to-purple-500 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -63,13 +63,13 @@ export default function ChemicalSafety() {
             backgroundImage: "url('/images/3.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-purple-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-purple-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-cyan-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -77,7 +77,7 @@ export default function ChemicalSafety() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <FlaskConical className="text-purple-200" size={24} />
+                  <FlaskConical className="text-cyan-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Hazardous Materials
                   </span>
@@ -86,10 +86,10 @@ export default function ChemicalSafety() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {courseData.title}
                 </h1>
-                <p className="text-xl text-purple-100 mb-6">
+                <p className="text-xl text-cyan-100 mb-6">
                   {courseData.subtitle}
                 </p>
-                <p className="text-purple-200 text-lg">
+                <p className="text-cyan-200 text-lg">
                   {courseData.description}
                 </p>
               </div>
@@ -97,23 +97,23 @@ export default function ChemicalSafety() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <p className="text-purple-200 text-sm">Duration: {courseData.duration}</p>
+                    <p className="text-cyan-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <Link 
                     href="/contact"
-                    className="block w-full bg-white text-purple-600 hover:bg-purple-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                    className="block w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
-                      <a href="tel:+254700364722" className="flex items-center gap-2 text-purple-200 hover:text-white">
+                      <a href="tel:+254700364722" className="flex items-center gap-2 text-cyan-200 hover:text-white">
                         <Phone size={18} />
                         <span>Call Now</span>
                       </a>
-                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-purple-200 hover:text-white">
+                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-cyan-200 hover:text-white">
                         <Mail size={18} />
                         <span>Email Us</span>
                       </a>
@@ -133,35 +133,35 @@ export default function ChemicalSafety() {
               <div className="lg:col-span-2 space-y-12">
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Overview</h2>
-                  <div className="bg-white adventure-card p-8">
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
                     <p className="text-gray-700 text-lg mb-6">
                       {courseData.overview}
                     </p>
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-purple-600" size={20} />
+                        <Calendar className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-purple-600" size={20} />
+                        <Clock className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Shield className="text-purple-600" size={20} />
+                        <Shield className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-purple-600" size={20} />
+                        <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
                           <div className="text-gray-600">{courseData.nextIntake}</div>
@@ -175,9 +175,9 @@ export default function ChemicalSafety() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courseData.courseContent.map((content, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-white p-4" style={{ transition: 'none' }}>
-                        <div className="bg-purple-100 p-2 rounded-lg">
-                          <CheckCircle className="text-purple-600" size={20} />
+                      <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm">
+                        <div className="bg-cyan-100 p-2 rounded-lg">
+                          <CheckCircle className="text-cyan-600" size={20} />
                         </div>
                         <span className="text-gray-700 font-medium">{content}</span>
                       </div>
@@ -187,22 +187,22 @@ export default function ChemicalSafety() {
               </div>
 
               <div className="lg:col-span-1 space-y-8">
-                <div className="bg-white adventure-card p-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Target Professions</h3>
                   <ul className="space-y-3">
                     {courseData.targetProfessions.map((profession, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                        <div className="w-2 h-2 bg-cyan-600 rounded-full mt-2"></div>
                         <span className="text-gray-600">{profession}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-white adventure-card p-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-purple-50 p-4 rounded-xl">
-                    <Shield className="text-purple-600 mb-3" size={24} />
+                  <div className="bg-cyan-50 p-4 rounded-xl">
+                    <Shield className="text-cyan-600 mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>
@@ -214,3 +214,4 @@ export default function ChemicalSafety() {
     </div>
   );
 }
+
