@@ -406,7 +406,7 @@ const Navigation = () => {
           <div className="lg:hidden bg-white border-t border-gray-200 animate-in slide-in-from-top duration-300">
             <div className="container mx-auto px-4 py-6">
               {/* Logo and Company Name - Visible on Mobile */}
-              <div className="flex items-center gap-1 mb-4 pb-4 border-b border-gray-200">
+              {/* <div className="flex items-center gap-1 mb-4 pb-4 border-b border-gray-200">
                 <div className="flex items-center justify-center w-12 h-12 bg-accent-800 rounded-lg">
                   <Image
                     src="/header_logo.png" 
@@ -424,7 +424,7 @@ const Navigation = () => {
                     Secure your future
                   </span>
                 </div>
-              </div>
+              </div> */}
 
               {/* Authentication section in mobile menu */}
               {status === "loading" ? (
