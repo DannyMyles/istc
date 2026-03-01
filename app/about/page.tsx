@@ -345,13 +345,13 @@ export default function AboutPage() {
               </p>
               
               {/* Accreditation Logos */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12 justify-items-center items-start">
                 {accreditations.map((accreditation, index) => (
                   <div 
                     key={index} 
-                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center"
+                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center w-full max-w-xs"
                   >
-                    <div className="relative w-full h-32 mb-4">
+                    <div className="relative w-full h-24 mb-4 flex items-center justify-center">
                       <Image
                         src={accreditation.image}
                         alt={accreditation.name}
