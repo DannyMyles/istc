@@ -570,13 +570,6 @@ const Navigation = () => {
               {/* Mobile CTA Buttons - original styling */}
               <div className="mt-8 space-y-3">
                 <Link
-                  href="/consultation"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block w-full text-center bg-[#039AC5] text-white hover:bg-[#0284B4] transition-colors py-3.5 rounded-lg font-semibold"
-                >
-                  Schedule Free Consultation
-                </Link>
-                <Link
                   href="/courses"
                   onClick={() => setIsMenuOpen(false)}
                   className="block w-full text-center border-2 border-[#039AC5] text-[#039AC5] hover:bg-[#039AC5] hover:text-white transition-colors py-3.5 rounded-lg font-semibold"
