@@ -407,7 +407,7 @@ export default function ServicesPage() {
                   )}
                 </div>
               </div>
-
+ 
               {/* Category Filters */}
               <div className="flex flex-wrap gap-3 justify-center mb-12">
                 {categories.map((category) => (
@@ -416,7 +416,7 @@ export default function ServicesPage() {
                     onClick={() => setActiveCategory(category)}
                     className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                       activeCategory === category
-                        ? 'bg-accent-600 text-white shadow-lg hover:bg-accent-700'
+                        ? 'bg-[#039AC5] text-white shadow-lg hover:bg-accent-700'
                         : 'border border-gray-300 bg-white hover:border-accent-600 hover:bg-accent-50 text-gray-700 hover:text-accent-700'
                     }`}
                   >
