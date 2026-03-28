@@ -45,7 +45,7 @@ export default function OccupationalSafetyHealthAudit() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-blue-500 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -53,13 +53,13 @@ export default function OccupationalSafetyHealthAudit() {
             backgroundImage: "url('/images/10.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/services" className="text-blue-200 hover:text-white flex items-center gap-2">
+              <Link href="/services" className="text-cyan-200 hover:text-white flex items-center gap-2">
                 <ArrowLeft size={20} /> Back to all services
               </Link>
             </div>
@@ -67,7 +67,7 @@ export default function OccupationalSafetyHealthAudit() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Shield className="text-blue-200" size={24} />
+                  <Shield className="text-cyan-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     OSHA 2007 Compliance
                   </span>
@@ -76,10 +76,10 @@ export default function OccupationalSafetyHealthAudit() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {serviceData.title}
                 </h1>
-                <p className="text-xl text-blue-100 mb-6">
+                <p className="text-xl text-cyan-100 mb-6">
                   {serviceData.subtitle}
                 </p>
-                <p className="text-blue-200 text-lg">
+                <p className="text-cyan-200 text-lg">
                   {serviceData.description}
                 </p>
               </div>
@@ -87,20 +87,20 @@ export default function OccupationalSafetyHealthAudit() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <h3 className="text-xl font-bold mb-4">Request This Service</h3>
-                  <p className="text-blue-200 text-sm mb-6">Contact us for a customized proposal based on your facility size and needs.</p>
+                  <p className="text-cyan-200 text-sm mb-6">Contact us for a customized proposal based on your facility size and needs.</p>
                   
-                  <Link
+                  <Link 
                     href="/contact"
-                    className="w-full bg-white text-blue-600 hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
+                    className="block w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Get Quote
+                    Enquire Now
                   </Link>
                   
                   <div className="space-y-3">
-                    <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-blue-200 hover:text-white py-2">
+                    <a href="tel:+254700364722" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">
                       <Phone size={18} /> +254 700 364 722
                     </a>
-                    <a href="mailto:hsetraining@istc.co.ke" className="flex items-center justify-center gap-2 text-blue-200 hover:text-white py-2">
+                    <a href="mailto:hsetraining@istc.co.ke" className="flex items-center justify-center gap-2 text-cyan-200 hover:text-white py-2">
                       <Mail size={18} /> hsetraining@istc.co.ke
                     </a>
                   </div>
@@ -125,21 +125,21 @@ export default function OccupationalSafetyHealthAudit() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Clock className="text-blue-600" size={20} />
+                        <Clock className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{serviceData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Shield className="text-blue-600" size={20} />
+                        <Shield className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{serviceData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-blue-600" size={20} />
+                        <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Availability</div>
                           <div className="text-gray-600">{serviceData.nextIntake}</div>
@@ -153,9 +153,9 @@ export default function OccupationalSafetyHealthAudit() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Best Practice Indicators Assessed</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {serviceData.bestPracticeIndicators.map((indicator, index) => (
-                      <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-blue-100">
+                      <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-cyan-100">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="bg-blue-100 p-2 rounded-lg">
+                          <div className="bg-cyan-100 p-2 rounded-lg text-cyan-600">
                             {indicator.icon}
                           </div>
                           <h3 className="font-bold text-gray-900">{indicator.name}</h3>
@@ -170,8 +170,8 @@ export default function OccupationalSafetyHealthAudit() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Key Benefits</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {serviceData.benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-start gap-3 bg-blue-50 p-4 rounded-xl">
-                        <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <div key={index} className="flex items-start gap-3 bg-cyan-50 p-4 rounded-xl">
+                        <CheckCircle className="text-cyan-600 mt-1 flex-shrink-0" size={20} />
                         <span className="text-gray-700">{benefit}</span>
                       </div>
                     ))}
@@ -180,26 +180,26 @@ export default function OccupationalSafetyHealthAudit() {
               </div>
 
               <div className="lg:col-span-1 space-y-8">
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100">
+                <div className="bg-white rounded-2xl shadow-lg p-6 border border-cyan-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Service Deliverables</h3>
                   <ul className="space-y-3">
                     {serviceData.deliverables.map((item, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-gray-600">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-blue-600 text-white rounded-2xl p-6">
+                <div className="bg-cyan-600 text-white rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-4">Ready for Compliance?</h3>
-                  <p className="text-blue-100 mb-6">
+                  <p className="text-cyan-100 mb-6">
                     Schedule your OSH audit today and ensure your workplace meets all legal requirements and best practices.
                   </p>
                   <a 
                     href="tel:+254700364722"
-                    className="flex items-center justify-center gap-2 bg-white text-blue-600 hover:bg-blue-50 py-3 rounded-xl font-semibold transition-colors mb-3"
+                    className="flex items-center justify-center gap-2 bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold transition-colors mb-3"
                   >
                     <Phone size={18} />
                     Call to Schedule
@@ -220,3 +220,4 @@ export default function OccupationalSafetyHealthAudit() {
     </div>
   );
 }
+

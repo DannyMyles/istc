@@ -58,7 +58,7 @@ export default function ConstructionSafety() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -66,13 +66,13 @@ export default function ConstructionSafety() {
             backgroundImage: "url('/images/10.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/80 to-orange-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-orange-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-blue-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -80,7 +80,7 @@ export default function ConstructionSafety() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <HardHat className="text-orange-200" size={24} />
+                  <HardHat className="text-blue-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     Specialized Training
                   </span>
@@ -89,10 +89,10 @@ export default function ConstructionSafety() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {courseData.title}
                 </h1>
-                <p className="text-xl text-orange-100 mb-6">
+                <p className="text-xl text-blue-100 mb-6">
                   {courseData.subtitle}
                 </p>
-                <p className="text-orange-200 text-lg">
+                <p className="text-blue-200 text-lg">
                   {courseData.description}
                 </p>
               </div>
@@ -100,23 +100,23 @@ export default function ConstructionSafety() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <p className="text-orange-200 text-sm">Duration: {courseData.duration}</p>
+                    <p className="text-blue-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <Link 
                     href="/contact"
-                    className="block w-full bg-white text-orange-600 hover:bg-orange-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                    className="block w-full bg-white text-[#039AC5] hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
-                      <a href="tel:+254700364722" className="flex items-center gap-2 text-orange-200 hover:text-white">
+                      <a href="tel:+254700364722" className="flex items-center gap-2 text-blue-200 hover:text-white">
                         <Phone size={18} />
                         <span>Call Now</span>
                       </a>
-                      <a href="mailto:hsetraining@istc.co.ke" className="flex items-center gap-2 text-orange-200 hover:text-white">
+                      <a href="mailto:hsetraining@istc.co.ke" className="flex items-center gap-2 text-blue-200 hover:text-white">
                         <Mail size={18} />
                         <span>Email Us</span>
                       </a>
@@ -186,7 +186,7 @@ export default function ConstructionSafety() {
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {courseData.targetProfessions.map((profession, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={18} />
+                          <CheckCircle className="text-[#039AC5] mt-1 flex-shrink-0" size={18} />
                           <span className="text-gray-700">{profession}</span>
                         </li>
                       ))}
@@ -214,7 +214,7 @@ export default function ConstructionSafety() {
                     <ul className="space-y-4">
                       {courseData.learningOutcomes.map((outcome, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={18} />
+                          <CheckCircle className="text-[#039AC5] mt-1 flex-shrink-0" size={18} />
                           <span className="text-gray-700">{outcome}</span>
                         </li>
                       ))}

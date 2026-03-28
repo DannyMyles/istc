@@ -49,7 +49,7 @@ export default function FireSafetyCourseDiploma() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-orange-700 to-orange-600 text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -57,13 +57,13 @@ export default function FireSafetyCourseDiploma() {
             backgroundImage: "url('/images/6.jpg')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/80 to-orange-700/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <Link href="/courses" className="text-orange-200 hover:text-white flex items-center gap-2">
+              <Link href="/courses" className="text-blue-200 hover:text-white flex items-center gap-2">
                 ← Back to all courses
               </Link>
             </div>
@@ -71,7 +71,7 @@ export default function FireSafetyCourseDiploma() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <Flame className="text-orange-200" size={24} />
+                  <Flame className="text-blue-200" size={24} />
                   <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
                     IFE Certified
                   </span>
@@ -80,10 +80,10 @@ export default function FireSafetyCourseDiploma() {
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {courseData.title}
                 </h1>
-                <p className="text-xl text-orange-100 mb-6">
+                <p className="text-xl text-blue-100 mb-6">
                   {courseData.subtitle}
                 </p>
-                <p className="text-orange-200 text-lg">
+                <p className="text-blue-200 text-lg">
                   {courseData.description}
                 </p>
               </div>
@@ -91,23 +91,23 @@ export default function FireSafetyCourseDiploma() {
               <div className="lg:col-span-1">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                   <div className="mb-6">
-                    <p className="text-orange-200 text-sm">Duration: {courseData.duration}</p>
+                    <p className="text-blue-200 text-sm">Duration: {courseData.duration}</p>
                   </div>
                   
                   <Link 
                     href="/contact"
-                    className="block w-full bg-white text-orange-600 hover:bg-orange-100 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
+                    className="block w-full bg-white text-[#039AC5] hover:bg-blue-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
                     Enquire Now
                   </Link>
                   
                   <div className="mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-center gap-4">
-                      <a href="tel:+254700364722" className="flex items-center gap-2 text-orange-200 hover:text-white">
+                      <a href="tel:+254700364722" className="flex items-center gap-2 text-blue-200 hover:text-white">
                         <Phone size={18} />
                         <span>Call Now</span>
                       </a>
-                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-orange-200 hover:text-white">
+                      <a href="mailto:info@istc.co.ke" className="flex items-center gap-2 text-blue-200 hover:text-white">
                         <Mail size={18} />
                         <span>Email Us</span>
                       </a>
@@ -134,28 +134,28 @@ export default function FireSafetyCourseDiploma() {
                     
                     <div className="grid grid-cols-2 gap-6 mb-6">
                       <div className="flex items-center gap-3">
-                        <Clock className="text-orange-600" size={20} />
+                        <Clock className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Duration</div>
                           <div className="text-gray-600">{courseData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <BookOpen className="text-orange-600" size={20} />
+                        <BookOpen className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{courseData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Award className="text-orange-600" size={20} />
+                        <Award className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-orange-600" size={20} />
+                        <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
                           <div className="text-gray-600">{courseData.nextIntake}</div>
@@ -163,8 +163,8 @@ export default function FireSafetyCourseDiploma() {
                       </div>
                     </div>
                     
-                    <div className="bg-orange-50 p-4 rounded-xl">
-                      <div className="font-semibold text-orange-800 mb-2">Partnership</div>
+                    <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                      <div className="font-semibold text-[#039AC5] mb-2">Partnership</div>
                       <p className="text-gray-700">{courseData.partnership}</p>
                     </div>
                   </div>
@@ -179,7 +179,7 @@ export default function FireSafetyCourseDiploma() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {section.topics.map((topic, idx) => (
                             <div key={idx} className="flex items-center gap-3">
-                              <CheckCircle className="text-orange-600" size={16} />
+                              <CheckCircle className="text-[#039AC5]" size={16} />
                               <span className="text-gray-700">{topic}</span>
                             </div>
                           ))}
@@ -195,7 +195,7 @@ export default function FireSafetyCourseDiploma() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Schedule Options</h3>
                   <div className="space-y-4">
                     {courseData.scheduleOptions.map((option, index) => (
-                      <div key={index} className="border border-orange-200 rounded-xl p-4">
+                      <div key={index} className="border border-[#039AC5]/20 rounded-xl p-4">
                         <div className="font-medium text-gray-900 mb-2">{option.type}</div>
                         <div className="text-sm text-gray-600">
                           <div className="flex items-center gap-2 mb-1">
@@ -214,8 +214,8 @@ export default function FireSafetyCourseDiploma() {
 
                 <div className="bg-white adventure-card p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
-                  <div className="bg-orange-50 p-4 rounded-xl">
-                    <Award className="text-orange-600 mb-3" size={24} />
+                  <div className="bg-[#039AC5]/10 p-4 rounded-xl">
+                    <Award className="text-[#039AC5] mb-3" size={24} />
                     <p className="text-gray-700">{courseData.certification}</p>
                   </div>
                 </div>

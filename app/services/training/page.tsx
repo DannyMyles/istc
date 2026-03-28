@@ -71,7 +71,7 @@ export default function TrainingProgramDevelopment() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section with Background Image */}
-      <div className="relative bg-gradient-to-r from-[#039AC5] to-[#008DB8] text-white py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-12 overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
@@ -115,11 +115,11 @@ export default function TrainingProgramDevelopment() {
                   <h3 className="text-xl font-bold mb-4">Customize Your Training</h3>
                   <p className="text-cyan-200 text-sm mb-6">Let us design a training program that fits your unique requirements.</p>
                   
-                  <Link
+                  <Link 
                     href="/contact"
-                    className="w-full bg-white text-[#039AC5] hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 flex items-center justify-center"
+                    className="block w-full bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold text-lg transition-colors mb-4 text-center"
                   >
-                    Discuss Your Needs
+                    Enquire Now
                   </Link>
                   
                   <div className="space-y-3">
@@ -151,28 +151,28 @@ export default function TrainingProgramDevelopment() {
                     
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex items-center gap-3">
-                        <Calendar className="text-[#039AC5]" size={20} />
+                        <Calendar className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Development Time</div>
                           <div className="text-gray-600">{serviceData.duration}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="text-[#039AC5]" size={20} />
+                        <Clock className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Format</div>
                           <div className="text-gray-600">{serviceData.format}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <GraduationCap className="text-[#039AC5]" size={20} />
+                        <GraduationCap className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Level</div>
                           <div className="text-gray-600">{serviceData.level}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Users className="text-[#039AC5]" size={20} />
+                        <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Scheduling</div>
                           <div className="text-gray-600">{serviceData.nextIntake}</div>
@@ -188,7 +188,7 @@ export default function TrainingProgramDevelopment() {
                     {serviceData.services.map((item, index) => (
                       <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-cyan-100">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="bg-cyan-100 p-2 rounded-lg text-[#039AC5]">
+                          <div className="bg-cyan-100 p-2 rounded-lg text-cyan-600">
                             {item.icon}
                           </div>
                           <h3 className="font-bold text-gray-900">{item.title}</h3>
@@ -204,7 +204,7 @@ export default function TrainingProgramDevelopment() {
                   <div className="space-y-4">
                     {serviceData.processSteps.map((step, index) => (
                       <div key={index} className="flex items-start gap-4">
-                        <div className="bg-[#039AC5] text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                        <div className="bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
                           {index + 1}
                         </div>
                         <div className="bg-cyan-50 p-4 rounded-xl flex-1">
@@ -222,7 +222,7 @@ export default function TrainingProgramDevelopment() {
                   <ul className="space-y-3">
                     {serviceData.legalRequirements.map((requirement, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-[#039AC5] rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-gray-600 text-sm">{requirement}</span>
                       </li>
                     ))}
@@ -234,21 +234,21 @@ export default function TrainingProgramDevelopment() {
                   <div className="space-y-3">
                     {serviceData.benefits.map((benefit, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <CheckCircle className="text-[#039AC5] mt-1 flex-shrink-0" size={18} />
+                        <CheckCircle className="text-cyan-600 mt-1 flex-shrink-0" size={18} />
                         <span className="text-gray-700 text-sm">{benefit}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-[#039AC5] text-white rounded-2xl p-6">
+                <div className="bg-cyan-600 text-white rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-4">Tailored Learning</h3>
                   <p className="text-cyan-100 mb-6">
                     Get training programs designed specifically for your organization's unique challenges.
                   </p>
                   <a 
                     href="mailto:hsetraining@istc.co.ke"
-                    className="flex items-center justify-center gap-2 bg-white text-[#039AC5] hover:bg-cyan-50 py-3 rounded-xl font-semibold transition-colors"
+                    className="flex items-center justify-center gap-2 bg-white text-cyan-600 hover:bg-cyan-50 py-3 rounded-xl font-semibold transition-colors"
                   >
                     <Mail size={18} />
                     Start Development
