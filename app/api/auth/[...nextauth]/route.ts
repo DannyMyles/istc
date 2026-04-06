@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
           const isDev = process.env.NODE_ENV === 'development'
           const backendBaseUrl = isDev 
             ? 'http://localhost:8080'  // Direct URL for NextAuth authorize (runs server-side)
-            : (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || 'https://istc-admin.onrender.com')
+            : (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || 'https://admin.istc.co.ke')
           const backendUrl = `${backendBaseUrl}/api/v1/auth/login`
           
           console.log('[NextAuth] Attempting login to:', backendUrl)
@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
             }),
           })
 
-          console.log('[NextAuth] Login response status:', response.status)
+          console.log('[NextAuth] Login response status:', response.status, 'to', backendUrl)
           
           // Read raw response first
           const responseText = await response.text()
