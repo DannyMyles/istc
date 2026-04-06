@@ -32,7 +32,7 @@ export async function POST() {
     const session = await getServerSession(authOptions)
     
     // Call backend logout endpoint to invalidate the token
-    const backendBaseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'https://istc-admin.onrender.com'
+    const backendBaseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'https://admin.istc.co.ke'
     
     try {
       if (session?.user?.accessToken) {

@@ -263,7 +263,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <DivideIcon>
+    <div>
       {/* Hero Section with Background Image */}
       <section className="relative py-28 md:py-32 overflow-hidden">
         {/* Background Image with Overlay */}
@@ -995,6 +995,6 @@ export default function CalendarPage() {
           </div>
         </div>
       </section>
-    </DivideIcon>
+    </div>
   );
 }

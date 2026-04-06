@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       {
         // Proxy all /api/v1/* requests to the backend
         source: '/api/v1/:path*',
-        destination: 'http://localhost:8080/api/v1/:path*',
+        destination: 'https://admin.istc.co.ke/api/v1/:path*',
       },
     ];
   },
@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'istc-admin.onrender.com',
+        hostname: 'admin.istc.co.ke',
         pathname: '/uploads/**',
       },
       {

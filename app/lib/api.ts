@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 // Use relative paths to leverage Next.js rewrites/proxy in next.config.ts
 // This avoids CORS issues by making requests go through the same origin
-const API_BASE_URL = ''
+const API_BASE_URL = 'https://admin.istc.co.ke'
 
 interface ApiOptions extends RequestInit {
   requiresAuth?: boolean

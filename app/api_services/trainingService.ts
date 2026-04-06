@@ -2,7 +2,7 @@ import { api } from "../lib/api"
 import toast from 'react-hot-toast'
 
 export interface TrainingSession {
-  _id: string
+  _id?: string
   startDate: string
   endDate: string
   seats: {
@@ -12,9 +12,9 @@ export interface TrainingSession {
   }
   venue: string
   instructor?: string
-  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled'
-  formattedDates: string
-  durationInDays: number
+  status?: 'scheduled' | 'ongoing' | 'completed' | 'cancelled'
+  formattedDates?: string
+  durationInDays?: number
 }
 
 export interface Training {
