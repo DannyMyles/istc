@@ -417,12 +417,6 @@ export default function ContactPage() {
                     <div className="bg-white/10 rounded-lg p-3">
                       <span className="font-semibold">Police</span> - <a href="tel:999" className="underline">999</a> or <a href="tel:911" className="underline">911</a>
                     </div>
-                    <div className="bg-white/10 rounded-lg p-3">
-                      <span className="font-semibold">Ophthalmologist</span> - Baus Optical - <a href="tel:0709709000" className="underline">0709-709-000</a>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-3">
-                      <span className="font-semibold">Paediatric Safety & Health</span> - Baby Boma - <a href="tel:0745339959" className="underline">0745 339959</a>
-                    </div>
                   </div>
                 </div>
               </div>
