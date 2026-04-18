@@ -119,9 +119,9 @@ export default async function AdminLayout({
                 <p>© {new Date().getFullYear()} International Safety Training Centre. All rights reserved.</p>
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-600">
-                <a href="#" className="hover:text-[#008DB8] transition-colors">Privacy Policy</a>
+                {/* <a href="#" className="hover:text-[#008DB8] transition-colors">Privacy Policy</a>
                 <a href="#" className="hover:text-[#008DB8] transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-[#008DB8] transition-colors">Support</a>
+                <a href="#" className="hover:text-[#008DB8] transition-colors">Support</a> */}
               </div>
             </div>
           </div>
