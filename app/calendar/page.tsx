@@ -729,7 +729,7 @@ export default function CalendarPage() {
                                               <div>
                                                 <div className="text-xs text-gray-500">Instructor</div>
                                                 <div className="font-medium text-sm">
-                                                  {session.instructor || 'TBD'}
+                                                  {session.instructor || 'ISTC Certified Trainers'}
                                                 </div>
                                               </div>
                                               <div className="pt-2 flex gap-2">
@@ -766,14 +766,14 @@ export default function CalendarPage() {
                                               </div>
                                             </div>
                                             
-                                            <div className="hidden md:flex mt-4 justify-end space-x-3 bg-amber-600">
+                                            {/* <div className="hidden md:flex mt-4 justify-end space-x-3 bg-amber-600">
                                               <Link href={`/courses/${training.slug}`} className="text-sm text-accent-600 hover:text-accent-800 font-medium py-2 px-3 border border-accent-600 rounded-lg inline-flex items-center justify-center transition-colors">
                                                 View Details
                                               </Link>
                                               <Link href="/contact" className="text-sm bg-accent-600  px-4 py-2 rounded-lg font-medium hover:bg-accent-700 transition-colors inline-flex items-center justify-center">
                                                 Register Now
                                               </Link>
-                                            </div>
+                                            </div> */}
                                           </div>
                                         ))}
                                       </div>
