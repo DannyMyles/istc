@@ -279,7 +279,7 @@ const Hero = () => {
                           </h4>
                           <div className="flex items-center gap-2 text-xs md:text-sm text-white/90 mt-1">
                             <Clock size={12} className="text-white animate-pulse" />
-                            {session.formattedDate}, {session.time}
+                            {session.formattedDate}
                           </div>
                         </div>
                       ))}

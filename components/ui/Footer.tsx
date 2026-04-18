@@ -136,7 +136,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/courses/work-at-height" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
+                <Link href="/courses/construction-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
                   <HardHat size={20} className="text-yellow-600" />
                   Construction Safety
                 </Link>
@@ -186,7 +186,7 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Subscription */}
-        <div className="bg-accent-800/50 rounded-xl p-6 mb-8">
+        {/* <div className="bg-accent-800/50 rounded-xl p-6 mb-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h4 className="text-xl font-bold mb-2">Stay Updated with Safety News</h4>
@@ -206,7 +206,7 @@ const Footer = () => {
               </button>
             </form>
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom Bar */}
         <div className="border-t border-accent-800 pt-8">
