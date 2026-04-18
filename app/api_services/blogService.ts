@@ -168,16 +168,48 @@ export const blogService = {
   },
 
   // Get blog statistics
-  getBlogStats: async (): Promise<BlogStats> => {
+getBlogStats: async (): Promise<BlogStats> => {
     try {
       const response = await api.public.blog.getStats()
-      return response.stats
+      console.log('Raw blog stats response:', response) // Debug log
+      
+      // Handle backend's actual structure: {totalBlogs: N, stats: {...}}
+      if (response && typeof response === 'object') {
+        if ('stats' in response && response.stats) {
+          return response.stats as BlogStats
+        }
+        if ('totalBlogs' in response) {
+          // Merge top-level totalBlogs with defaults
+          return {
+            totalBlogs: (response as any).totalBlogs || 0,
+            blogsWithImages: 0,
+            totalImageSize: 0,
+            avgImageSize: 0,
+            maxImageSize: 0
+          }
+        }
+      }
+      
+      return {
+        totalBlogs: 0,
+        blogsWithImages: 0,
+        totalImageSize: 0,
+        avgImageSize: 0,
+        maxImageSize: 0
+      }
     } catch (error: any) {
       console.error('Error fetching blog stats:', error)
       toast.error(error.message || 'Failed to fetch stats')
-      throw error
+      return {
+        totalBlogs: 0,
+        blogsWithImages: 0,
+        totalImageSize: 0,
+        avgImageSize: 0,
+        maxImageSize: 0
+      }
     }
   },
+
 
   // Like a blog
   likeBlog: async (id: string): Promise<{ likes: number }> => {
@@ -207,7 +239,7 @@ getBlogImageUrl: (blog: Blog): string => {
     }
     
     // For production, construct full URL
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://admin.istc.co.ke';
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
     return `${baseUrl}${blog.imageInfo.url}`;
   }
   
