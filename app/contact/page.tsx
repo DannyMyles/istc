@@ -52,18 +52,28 @@ export default function ContactPage() {
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Ignore navigation keys inside text inputs to allow normal typing
+      const target = e.target as HTMLElement;
+      const isTextInput = target.tagName === 'TEXTAREA' || 
+                         target.tagName === 'INPUT' || 
+                         target.isContentEditable;
+      
       if (e.key === 'ArrowDown' || e.key === ' ') {
-        e.preventDefault();
-        scrollToNextSection();
+        if (!isTextInput) {
+          e.preventDefault();
+          scrollToNextSection();
+        }
       }
       if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prevSection = (currentSection - 1 + sections.length) % sections.length;
-        setCurrentSection(prevSection);
-        sectionsRef.current[prevSection]?.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
+        if (!isTextInput) {
+          e.preventDefault();
+          const prevSection = (currentSection - 1 + sections.length) % sections.length;
+          setCurrentSection(prevSection);
+          sectionsRef.current[prevSection]?.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
       }
     };
 
