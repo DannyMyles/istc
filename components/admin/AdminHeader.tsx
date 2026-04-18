@@ -97,7 +97,7 @@ export default function AdminHeader({ user }: AdminHeaderProps) {
                       </div>
                       
                       {/* Menu Items */}
-                      <div className="py-2">
+                      {/* <div className="py-2">
                         <Link
                           href="/admin/profile"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-accent-50 transition-colors text-gray-700 hover:text-gray-900"
@@ -114,7 +114,7 @@ export default function AdminHeader({ user }: AdminHeaderProps) {
                           <Settings className="h-4 w-4 text-accent-500" />
                           <span>Settings</span>
                         </Link>
-                      </div>
+                      </div> */}
                       
                       {/* Divider */}
                       <div className="border-t border-accent-100 my-2"></div>
