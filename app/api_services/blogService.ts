@@ -25,8 +25,9 @@ export interface Blog {
     contentType?: string
     filename?: string
     size?: number
-    url: string
+    url?: string  // Made optional per backend reality
   }
+  imageUrl?: string  // Add missing field
   featured: boolean
   views: number
   likes: number
@@ -225,24 +226,24 @@ getBlogStats: async (): Promise<BlogStats> => {
   // Get blog image URL
   // Update in blogService.ts
 getBlogImageUrl: (blog: Blog): string => {
+  // Direct /uploads/ path (works with Next.js proxy)
+  if (blog.imageInfo?.filename) {
+    return `/uploads/${blog.imageInfo.filename}`;
+  }
+  
   if (blog.imageInfo?.url) {
-    // Check if it's already a full URL
     if (blog.imageInfo.url.startsWith('http')) {
       return blog.imageInfo.url;
     }
-    
-    // For local development, use relative path to avoid CORS
-    if (process.env.NODE_ENV === 'development') {
-      // Use relative path to the API server
-      return `/api/v1/blogs/${blog.id}/image`;
-    }
-    
-    // For production, construct full URL
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://admin.istc.co.ke';
-    return `${baseUrl}${blog.imageInfo.url}`;
+    return `/uploads/${blog.imageInfo.filename || blog.imageInfo.url}`;
   }
   
-  // Fallback image
+  // External imageUrl fallback
+  if (blog.imageUrl && blog.imageUrl !== 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0') {
+    return blog.imageUrl;
+  }
+  
+  // Default fallback
   return 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0';
 },
 

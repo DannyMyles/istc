@@ -2,11 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Proxy API requests to backend to avoid CORS issues
-  async rewrites() {
+async rewrites() {
     return [
       {
         // Proxy all /api/v1/* requests to the backend
         source: '/api/v1/:path*',
+        destination: 'https://admin.istc.co.ke/api/v1/:path*',
+      },
+      {
+        // Proxy /uploads/* to backend uploads folder
+        source: '/uploads/:path*',
         destination: 'https://admin.istc.co.ke/api/v1/:path*',
       },
     ];
