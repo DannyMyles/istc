@@ -782,9 +782,9 @@ export default function CalendarPage() {
                                   
                                   {/* Action Buttons */}
                                   <div className="flex flex-wrap gap-3 pt-3 md:pt-4 border-t border-gray-200">
-                                    <button className="flex-1 min-w-[140px] btn-adventure text-sm py-2.5">
+                                    <Link href="/contact" className="flex-1 min-w-[140px] btn-adventure text-sm py-2.5">
                                       Register for Course
-                                    </button>
+                                    </Link>
                                   </div>
                                 </div>
                               </div>
