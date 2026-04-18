@@ -733,12 +733,12 @@ export default function CalendarPage() {
                                                 </div>
                                               </div>
                                               <div className="pt-2 flex gap-2">
-                                                <button className="flex-1 text-sm text-accent-600 hover:text-accent-800 font-medium py-2 px-3 border border-accent-600 rounded-lg">
+                                                <Link href={`/courses/${training.slug}`} className="flex-1 text-sm text-accent-600 hover:text-accent-800 font-medium py-2 px-3 border border-accent-600 rounded-lg inline-flex items-center justify-center transition-colors">
                                                   View Details
-                                                </button>
-                                                <button className="flex-1 text-sm bg-accent-600 text-white py-2 px-3 rounded-lg font-medium hover:bg-accent-700 transition-colors">
+                                                </Link>
+                                                <Link href="/contact" className="flex-1 text-sm bg-accent-600 text-white py-2 px-3 rounded-lg font-medium hover:bg-accent-700 transition-colors inline-flex items-center justify-center">
                                                   Register Now
-                                                </button>
+                                                </Link>
                                               </div>
                                             </div>
                                             
@@ -767,12 +767,12 @@ export default function CalendarPage() {
                                             </div>
                                             
                                             <div className="hidden md:flex mt-4 justify-end space-x-3">
-                                              <button className="text-sm text-accent-600 hover:text-accent-800 font-medium">
+                                              <Link href={`/courses/${training.slug}`} className="text-sm text-accent-600 hover:text-accent-800 font-medium py-2 px-3 border border-accent-600 rounded-lg inline-flex items-center justify-center transition-colors">
                                                 View Details
-                                              </button>
-                                              <button className="text-sm bg-accent-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-accent-700 transition-colors">
+                                              </Link>
+                                              <Link href="/contact" className="text-sm bg-accent-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-accent-700 transition-colors inline-flex items-center justify-center">
                                                 Register Now
-                                              </button>
+                                              </Link>
                                             </div>
                                           </div>
                                         ))}
