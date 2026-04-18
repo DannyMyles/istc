@@ -210,7 +210,6 @@ getBlogStats: async (): Promise<BlogStats> => {
     }
   },
 
-
   // Like a blog
   likeBlog: async (id: string): Promise<{ likes: number }> => {
     try {
@@ -239,7 +238,7 @@ getBlogImageUrl: (blog: Blog): string => {
     }
     
     // For production, construct full URL
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://admin.istc.co.ke';
     return `${baseUrl}${blog.imageInfo.url}`;
   }
   
