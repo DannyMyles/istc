@@ -858,7 +858,7 @@ export default function CalendarPage() {
               {/* Registration Info */}
               <div>
                 <h2 className="text-3xl font-bold mb-6">How to Register</h2>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="flex items-start gap-3">
                     <div className="bg-white/20 rounded-full p-2">
                       <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
@@ -866,9 +866,9 @@ export default function CalendarPage() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">Download Registration Form</h4>
+                      <h4 className="font-semibold mb-1">Visit Contact Form</h4>
                       <p className="opacity-90">
-                        Visit our website www.istc.co.ke to download the registration form
+                        Navigate to our <Link href="/contact" className="text-white underline hover:no-underline font-medium">Contact page</Link>
                       </p>
                     </div>
                   </div>
@@ -880,9 +880,9 @@ export default function CalendarPage() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">Fill & Submit</h4>
+                      <h4 className="font-semibold mb-1">Fill Course Details</h4>
                       <p className="opacity-90">
-                        Complete the form and email it to hsetraining@istc.co.ke
+                        Select course, enter your details, and specify preferred dates
                       </p>
                     </div>
                   </div>
@@ -894,9 +894,9 @@ export default function CalendarPage() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">Confirmation & Payment</h4>
+                      <h4 className="font-semibold mb-1">Submit & Confirm</h4>
                       <p className="opacity-90">
-                        Receive confirmation and make payment to secure your seat
+                        Submit form. We will contact you with confirmation & payment details
                       </p>
                     </div>
                   </div>
