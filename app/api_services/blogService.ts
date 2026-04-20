@@ -246,29 +246,26 @@ getBlogStats: async (): Promise<BlogStats> => {
     }
   },
 
-  // Get blog image URL
-  // Update in blogService.ts
-getBlogImageUrl: (blog: Blog): string => {
-  // Direct /uploads/ path (works with Next.js proxy)
-  if (blog.imageInfo?.filename) {
-    return `/uploads/${blog.imageInfo.filename}`;
-  }
-  
-  if (blog.imageInfo?.url) {
-    if (blog.imageInfo.url.startsWith('http')) {
+  // Get blog image URL - Updated for local static serving
+  getBlogImageUrl: (blog: Blog): string => {
+    // Priority 1: Local uploaded image (hasImage && filename) - serve from public/uploads static
+    if (blog.imageInfo?.hasImage && blog.imageInfo.filename && blog.imageInfo.type === 'uploaded') {
+      return `/uploads/${blog.imageInfo.filename}`;
+    }
+    
+    // Priority 2: External URL
+    if (blog.imageInfo?.url && blog.imageInfo.url.startsWith('http')) {
       return blog.imageInfo.url;
     }
-    return `/uploads/${blog.imageInfo.filename || blog.imageInfo.url}`;
-  }
-  
-  // External imageUrl fallback
-  if (blog.imageUrl && blog.imageUrl !== 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0') {
-    return blog.imageUrl;
-  }
-  
-  // Default fallback
-  return 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0';
-},
+    
+    // Priority 3: imageUrl field (external fallback)
+    if (blog.imageUrl && !blog.imageUrl.includes('dribbble.com')) {
+      return blog.imageUrl;
+    }
+    
+    // Default fallback image
+    return 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0';
+  },
 
   // Create blog (admin only)
   createBlog: async (data: CreateBlogRequest): Promise<Blog> => {
