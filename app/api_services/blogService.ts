@@ -246,25 +246,27 @@ getBlogStats: async (): Promise<BlogStats> => {
     }
   },
 
-  // Get blog image URL - Updated for local static serving
+  // Get blog image URL - Fixed 404s with local fallback + better handling
   getBlogImageUrl: (blog: Blog): string => {
-    // Priority 1: Local uploaded image (hasImage && filename) - serve from public/uploads static
+    // Priority 1: Local uploaded image from public/uploads/
     if (blog.imageInfo?.hasImage && blog.imageInfo.filename && blog.imageInfo.type === 'uploaded') {
-      return `/uploads/${blog.imageInfo.filename}`;
+      const localUrl = `/uploads/${blog.imageInfo.filename}`;
+      // For now return local (placeholder exists); prod can proxy via next.config
+      return localUrl;
     }
     
-    // Priority 2: External URL
+    // Priority 2: Backend/external URL
     if (blog.imageInfo?.url && blog.imageInfo.url.startsWith('http')) {
       return blog.imageInfo.url;
     }
     
-    // Priority 3: imageUrl field (external fallback)
+    // Priority 3: imageUrl field
     if (blog.imageUrl && !blog.imageUrl.includes('dribbble.com')) {
       return blog.imageUrl;
     }
     
-    // Default fallback image
-    return 'https://cdn.dribbble.com/userupload/41784969/file/still-f9b1bc8254d3e952592927149caef80f.gif?resize=400x0';
+    // Safe fallback
+    return '/images/1.jpg'; // Local fallback image always available
   },
 
   // Create blog (admin only)
