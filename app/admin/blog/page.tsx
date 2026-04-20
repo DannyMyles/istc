@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Plus, Search, Filter, MoreVertical, Edit, Trash2, Eye, Calendar, X, RefreshCw } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Blog, blogService } from '@/app/api_services/blogService'
+import { normalizeTags } from '@/app/api_services/blogService'
 
 interface BlogStats {
   totalBlogs: number
@@ -121,7 +122,7 @@ export default function BlogManagementPage() {
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          blog.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         blog.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                         normalizeTags(blog.tags).some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
                          blog.author.toLowerCase().includes(searchQuery.toLowerCase())
     
     const matchesFilter = filter === 'all' || 

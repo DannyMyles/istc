@@ -31,7 +31,7 @@ export interface Blog {
   featured: boolean
   views: number
   likes: number
-  tags?: string[] | null
+  tags?: string | string[] | null
   metaTitle?: string
   metaDescription?: string
   createdAt: string
@@ -81,6 +81,26 @@ export interface CreateBlogRequest {
 
 export interface UpdateBlogRequest extends Partial<CreateBlogRequest> {}
 
+export const normalizeTags = (rawTags: any): string[] => {
+  if (Array.isArray(rawTags)) {
+    return rawTags.filter((tag): tag is string => typeof tag === 'string');
+  }
+  if (typeof rawTags === 'string') {
+    try {
+      const parsed = JSON.parse(rawTags);
+      return Array.isArray(parsed) ? parsed.filter((tag): tag is string => typeof tag === 'string') : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+};
+
+const normalizeBlog = (blog: any): Blog => ({
+  ...blog,
+  tags: normalizeTags(blog.tags),
+});
+
 export const blogService = {
   // Get all blogs with pagination and filters
   getAllBlogs: async (params?: {
@@ -101,7 +121,7 @@ export const blogService = {
       // If blogs is an array, construct the proper response
       if (Array.isArray(blogsData)) {
         return {
-          blogs: blogsData,
+          blogs: blogsData.map(normalizeBlog),
           pagination: {
             currentPage: 1,
             totalPages: 1,
@@ -112,7 +132,10 @@ export const blogService = {
         }
       }
       
-      return response as BlogResponse
+      return {
+        ...response,
+        blogs: (response as BlogResponse).blogs?.map(normalizeBlog) || []
+      } as BlogResponse
     } catch (error: any) {
       console.error('Error fetching blogs:', error)
       toast.error(error.message || 'Failed to fetch blogs')
@@ -136,7 +159,7 @@ export const blogService = {
   getBlogById: async (id: string): Promise<Blog> => {
     try {
       const response = await api.public.blog.getById(id)
-      return response.blog
+      return normalizeBlog(response.blog)
     } catch (error: any) {
       console.error(`Error fetching blog ${id}:`, error)
       toast.error(error.message || 'Failed to fetch blog')
@@ -148,7 +171,7 @@ export const blogService = {
   getFeaturedBlogs: async (): Promise<Blog[]> => {
     try {
       const response = await api.public.blog.getFeatured()
-      return response.blogs
+      return (response.blogs || []).map(normalizeBlog)
     } catch (error: any) {
       console.error('Error fetching featured blogs:', error)
       toast.error(error.message || 'Failed to fetch featured blogs')

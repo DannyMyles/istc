@@ -17,7 +17,7 @@ import {
   Link,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { blogService, UpdateBlogRequest } from "@/app/api_services/blogService";
+import { blogService, UpdateBlogRequest, normalizeTags } from "@/app/api_services/blogService";
 
 export default function EditBlogPage() {
   const router = useRouter();
@@ -54,12 +54,6 @@ export default function EditBlogPage() {
       setLoading(true);
       const blog = await blogService.getBlogById(id);
 
-      // Normalize tags to ensure it's always an array
-      const normalizedTags = Array.isArray(blog.tags) ? blog.tags : [];
-      if (blog.tags && !Array.isArray(blog.tags)) {
-        console.warn(`Non-array tags detected for blog ${id}:`, blog.tags, '- normalized to empty array');
-      }
-      
       setFormData({
         title: blog.title,
         excerpt: blog.excerpt,
@@ -69,7 +63,7 @@ export default function EditBlogPage() {
         readTime: blog.readTime,
         featured: blog.featured,
         published: blog.published !== false,
-        tags: normalizedTags,
+        tags: normalizeTags(blog.tags),
         metaTitle: blog.metaTitle || "",
         metaDescription: blog.metaDescription || "",
         imageUrl: blog.imageInfo?.type === "external" ? blog.imageInfo.url : "",

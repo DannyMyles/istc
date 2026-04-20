@@ -23,6 +23,7 @@ import {
   ChevronRight
 } from 'lucide-react'
 import { Blog, blogService } from '@/app/api_services/blogService'
+import { normalizeTags } from '@/app/api_services/blogService'
 
 export default function BlogDetailPage() {
   const params = useParams()
@@ -397,11 +398,11 @@ export default function BlogDetailPage() {
               </article>
 
               {/* Tags */}
-              {blog.tags && (Array.isArray(blog.tags) ? blog.tags : []).length > 0 && (
+              {normalizeTags(blog.tags || []).length > 0 && (
                 <div className="mb-12">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Tags</h3>
                   <div className="flex flex-wrap gap-2">
-                    {(Array.isArray(blog.tags) ? blog.tags : []).map((tag, index) => (
+                    {normalizeTags(blog.tags).map((tag, index) => (
                       <span
                         key={index}
                         className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer"
