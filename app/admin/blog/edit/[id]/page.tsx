@@ -54,6 +54,12 @@ export default function EditBlogPage() {
       setLoading(true);
       const blog = await blogService.getBlogById(id);
 
+      // Normalize tags to ensure it's always an array
+      const normalizedTags = Array.isArray(blog.tags) ? blog.tags : [];
+      if (blog.tags && !Array.isArray(blog.tags)) {
+        console.warn(`Non-array tags detected for blog ${id}:`, blog.tags, '- normalized to empty array');
+      }
+      
       setFormData({
         title: blog.title,
         excerpt: blog.excerpt,
@@ -63,7 +69,7 @@ export default function EditBlogPage() {
         readTime: blog.readTime,
         featured: blog.featured,
         published: blog.published !== false,
-        tags: blog.tags || [],
+        tags: normalizedTags,
         metaTitle: blog.metaTitle || "",
         metaDescription: blog.metaDescription || "",
         imageUrl: blog.imageInfo?.type === "external" ? blog.imageInfo.url : "",
@@ -558,7 +564,7 @@ export default function EditBlogPage() {
               Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-3">
-              {(formData.tags || []).map((tag) => (
+              {(Array.isArray(formData.tags) ? formData.tags : []).map((tag) => (
                 <span
                   key={tag}
                   className="inline-flex items-center gap-1 px-3 py-1 bg-accent-50 text-accent-700 rounded-full text-sm"

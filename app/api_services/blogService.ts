@@ -31,7 +31,7 @@ export interface Blog {
   featured: boolean
   views: number
   likes: number
-  tags: string[]
+  tags?: string[] | null
   metaTitle?: string
   metaDescription?: string
   createdAt: string
