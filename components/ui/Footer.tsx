@@ -119,31 +119,31 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link href="/courses/first-aid" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <Heart size={20} className="text-red-600" />
+                  <Heart size={20} className="text-cyan-700" />
                   First Aid Training
                 </Link>
               </li>
               <li>
                 <Link href="/courses/fire-safety-course-certificate" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <Flame size={20} className="text-orange-600" />
+                  <Flame size={20} className="text-cyan-700" />
                   Fire Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/chemical-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <TestTube size={20} className="text-green-600" />
+                  <TestTube size={20} className="text-cyan-700" />
                   Chemical Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/construction-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <HardHat size={20} className="text-yellow-600" />
+                  <HardHat size={20} className="text-cyan-700" />
                   Construction Safety
                 </Link>
               </li>
               <li>
                 <Link href="/courses/road-safety" className="text-accent-200 hover:text-[#039AC5] transition-colors flex items-center gap-2">
-                  <Car size={20} className="text-blue-600" />
+                  <Car size={20} className="text-cyan-700" />
                   Road Safety Training
                 </Link>
               </li>

@@ -193,15 +193,22 @@ export default function CalendarPage() {
   // Helper function to parse cost JSON string
   const parseCost = (cost: any): string => {
     if (!cost) return 'N/A'
+    let parsed: any
     if (typeof cost === 'string') {
       try {
-        const parsed = JSON.parse(cost)
-        return parsed.display || 'N/A'
+        parsed = JSON.parse(cost)
       } catch {
         return cost
       }
+    } else {
+      parsed = cost
     }
-    return cost.display || 'N/A'
+    const amount = parsed.amount
+    const currency = parsed.currency || 'KSH'
+    if (typeof amount === 'number') {
+      return `${amount.toLocaleString()} ${currency}`
+    }
+    return parsed.display || 'N/A'
   }
 
   // Helper function to parse modeOfStudy JSON string
@@ -282,7 +289,7 @@ export default function CalendarPage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-accent-500/10 backdrop-blur-sm border border-accent-500/20 text-white px-6 py-2 rounded-full text-sm font-medium mb-8">
               <Calendar size={16} />
-              <span>2026 Training Schedule</span>
+              <span>{new Date().getFullYear()} Training Schedule</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
@@ -629,9 +636,6 @@ export default function CalendarPage() {
                                   <Clock size={14} className="text-accent-500" />
                                   {parseDuration(training.duration)}
                                 </div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  {parseModeOfStudy(training.modeOfStudy)}
-                                </div>
                               </div>
                               
                               <div className="hidden md:block col-span-3 p-4">
@@ -686,6 +690,9 @@ export default function CalendarPage() {
                                     <p className="text-gray-600 text-sm">
                                       {training.description}
                                     </p>
+                                    <div className="text-sm text-gray-600 mt-1">
+                                      {parseModeOfStudy(training.modeOfStudy)}
+                                    </div>
                                     <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-600">
                                       <div className="flex items-center gap-1">
                                         <BookOpen size={14} />
@@ -723,7 +730,7 @@ export default function CalendarPage() {
                                               <div>
                                                 <div className="text-xs text-gray-500">Seats</div>
                                                 <div className="font-medium text-sm">
-                                                  {session.seats.available || 0} / {session.seats.total}
+                                                  {session.seats.available !== undefined ? session.seats.available : session.seats.booked !== undefined ? session.seats.total - session.seats.booked : session.seats.total} / {session.seats.total}
                                                 </div>
                                               </div>
                                               <div>
@@ -755,7 +762,7 @@ export default function CalendarPage() {
                                               <div>
                                                 <div className="text-sm text-gray-500">Seats Available</div>
                                                 <div className="font-medium">
-                                                  {session.seats.available || 0} / {session.seats.total}
+                                                  {session.seats.available !== undefined ? session.seats.available : session.seats.booked !== undefined ? session.seats.total - session.seats.booked : session.seats.total} / {session.seats.total}
                                                 </div>
                                               </div>
                                               <div>

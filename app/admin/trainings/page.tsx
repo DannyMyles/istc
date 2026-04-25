@@ -159,11 +159,18 @@ export default function TrainingsManagementPage() {
     }
   }
 
+  const formatCategory = (category: string): string => {
+    return category
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  }
+
   const filteredTrainings = trainings.filter(training => {
     const matchesSearch = training.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          training.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          training.targetGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         training.code?.toLowerCase().includes(searchQuery.toLowerCase())
+                         (training.code && training.code.toLowerCase().includes(searchQuery.toLowerCase()))
     
     const matchesStatus = filter === 'all' || trainingService.getTrainingStatus(training) === filter
     const matchesCategory = categoryFilter === 'all' || training.category === categoryFilter
@@ -415,7 +422,7 @@ export default function TrainingsManagementPage() {
             <option value="all">All Categories</option>
             {categories.map(category => (
               <option key={category} value={category}>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
+                {formatCategory(category)}
               </option>
             ))}
           </select>
@@ -483,7 +490,7 @@ export default function TrainingsManagementPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(training.category)}`}>
-                        {training.category.charAt(0).toUpperCase() + training.category.slice(1)}
+                        {formatCategory(training.category)}
                       </span>
                     </td>
                     <td className="px-6 py-4">

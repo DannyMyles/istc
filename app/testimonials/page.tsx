@@ -418,7 +418,7 @@ export default function TestimonialsPage() {
                 </div>
 
                 {/* Video Testimonials Section */}
-                <div className="mt-20">
+                {/* <div className="mt-20">
                   <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
                     Video Testimonials
                   </h2>
@@ -479,7 +479,7 @@ export default function TestimonialsPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>

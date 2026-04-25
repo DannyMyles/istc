@@ -225,28 +225,28 @@ export default function ContactPage() {
       title: 'Phone Number',
       details: ['+254 700 364 722'],
       action: 'tel:+254700364722',
-      color: 'from-blue-500 to-blue-600'
+      color: 'from-cyan-500 to-cyan-600'
     },
     {
       icon: Mail,
       title: 'Email Address',
       details: ['hsetraining@istc.co.ke'],
       action: 'mailto:hsetraining@istc.co.ke',
-      color: 'from-green-500 to-green-600'
+      color: 'from-cyan-500 to-cyan-600'
     },
     {
       icon: MapPin,
       title: 'Office Location',
       details: ['Occidental House, Baricho Road, Nairobi', 'Kenya'],
       action: 'https://maps.google.com/?q=Occidental House, Baricho Road,+Nairobi+Kenya',
-      color: 'from-purple-500 to-purple-600'
+      color: 'from-cyan-500 to-cyan-600'
     },
     {
       icon: Clock,
       title: 'Working Hours',
       details: ['Mon - Fri: 8:00 AM - 5:00 PM', 'Sat: 9:00 AM - 1:00 PM'],
       action: null,
-      color: 'from-orange-500 to-orange-600'
+      color: 'from-cyan-500 to-cyan-600'
     },
   ];
 
@@ -410,14 +410,14 @@ export default function ContactPage() {
                 </div>
 
                 {/* Partner Contacts */}
-                <div className="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                {/* <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
                       <AlertCircle className="text-white" size={24} />
                     </div>
                     <h3 className="font-bold text-white">Partner contacts</h3>
                   </div>
-                  <p className="text-red-100 mb-4">
+                  <p className="text-red-100 mb-4"> 
                     Emergency partner contacts for your safety needs
                   </p>
                   <div className="space-y-2">
@@ -428,7 +428,7 @@ export default function ContactPage() {
                       <span className="font-semibold">Police</span> - <a href="tel:999" className="underline">999</a> or <a href="tel:911" className="underline">911</a>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* Contact Form */}
