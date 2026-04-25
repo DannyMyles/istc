@@ -9,11 +9,11 @@ async rewrites() {
         source: '/api/v1/:path*',
         destination: 'https://admin.istc.co.ke/api/v1/:path*',
       },
-      // {
-      //   // Proxy /uploads/* to backend uploads folder [DISABLED for local static serving]
-      //   source: '/uploads/:path*',
-      //   destination: 'https://admin.istc.co.ke/api/v1/:path*',
-      // },
+      {
+        // Proxy /uploads/* to backend uploads folder
+        source: '/uploads/:path*',
+        destination: 'https://admin.istc.co.ke/uploads/:path*',
+      },
 
     ];
   },
