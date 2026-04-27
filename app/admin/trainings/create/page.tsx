@@ -55,7 +55,7 @@ export default function CreateTrainingPage() {
     duration: '',
     cost: '',
     category: 'safety',
-    modeOfStudy: ['full-time'],
+    modeOfStudy: [],
     isFeatured: false,
     registrationFee: 0,
     certification: '',
@@ -501,9 +501,9 @@ export default function CreateTrainingPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Mode of Study *
+                  Mode of Study
                 </label>
-                <div className="space-y-2">
+                <div className="space-y-2"> 
                   {modeOptions.map(mode => (
                     <label key={mode} className="flex items-center">
                       <input
@@ -541,7 +541,7 @@ export default function CreateTrainingPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                 required
               />
-            </div>
+            </div> 
           </div>
 
           {/* Additional Settings */}
@@ -554,7 +554,7 @@ export default function CreateTrainingPage() {
                   Registration Fee (KSH)
                 </label>
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-gray-400" />
+                  <span className='text-xl text-gray-400"'>KSH </span>
                   <input
                     type="number"
                     min="0"

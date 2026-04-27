@@ -631,7 +631,7 @@ export default function EditTrainingPage() {
                   Registration Fee (KSH)
                 </label>
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-gray-400" />
+                  <span className='text-xl text-gray-400"'>KSH </span>
                   <input
                     type="number"
                     min="0"

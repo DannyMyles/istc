@@ -40,7 +40,7 @@ export default function AdminHeader({ user }: AdminHeaderProps) {
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 border-accent-100 shadow-sm">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Search */}
+          {/* Search */} 
           <div className="flex-1 max-w-2xl">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -57,10 +57,10 @@ export default function AdminHeader({ user }: AdminHeaderProps) {
           {/* User Menu */}
           <div className="flex items-center gap-4">
             {/* Notifications */}
-            <button className="relative p-2 hover:bg-accent-50 rounded-lg transition-colors group">
+            {/* <button className="relative p-2 hover:bg-accent-50 rounded-lg transition-colors group">
               <Bell className="h-5 w-5 text-accent-500 group-hover:text-accent-600" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            </button> */}
 
             {/* User Dropdown */}
             <div className="relative">
@@ -117,7 +117,7 @@ export default function AdminHeader({ user }: AdminHeaderProps) {
                       </div> */}
                       
                       {/* Divider */}
-                      <div className="border-t border-accent-100 my-2"></div>
+                      {/* <div className="border-t border-accent-100 my-2"></div> */}
                       
                       {/* Logout */}
                       <div className="py-2">

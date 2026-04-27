@@ -366,10 +366,10 @@ export default function TestimonialsManagementPage() {
           <p className="mt-1 text-gray-600">Manage and showcase customer feedback</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+          {/* <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
             <MessageSquare className="h-4 w-4" />
             Import
-          </button>
+          </button> */}
           <Link
             href="/admin/testimonials/create"
             className="btn-adventure flex items-center gap-2"

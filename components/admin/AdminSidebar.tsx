@@ -56,8 +56,8 @@ const navigation = [
     children: [
       { name: 'All Testimonials', href: '/admin/testimonials' },
       { name: 'Add New', href: '/admin/testimonials/create' },
-      { name: 'Featured', href: '/admin/testimonials?filter=featured' },
-    ]
+      // { name: 'Featured', href: '/admin/testimonials?filter=featured' },
+    ] 
   },
   { 
     name: 'Users', 
@@ -276,7 +276,7 @@ export default function AdminSidebar() {
               </Link>
             </div>
           </div>
-        )}
+        )} 
 
         {/* User Profile & Back to Home - Bottom section */}
         <div className="absolute bottom-0 w-full p-3 border-t border-gray-200 bg-white">
@@ -322,23 +322,23 @@ export default function AdminSidebar() {
                       <div className="px-4 py-2 border-b border-accent-100">
                         <p className="text-xs text-gray-500 uppercase">Account</p>
                       </div>
-                      <Link
+                      {/* <Link
                         href="/admin/profile"
                         className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         onClick={() => setShowUserMenu(false)}
                       >
                         <User className="h-4 w-4 text-gray-500" />
                         <span>Profile</span>
-                      </Link>
-                      <Link
+                      </Link> */}
+                      {/* <Link
                         href="/admin/settings"
                         className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         onClick={() => setShowUserMenu(false)}
                       >
                         <Settings className="h-4 w-4 text-gray-500" />
                         <span>Settings</span>
-                      </Link>
-                      <div className="border-t border-accent-100 my-2"></div>
+                      </Link> */}
+                      {/* <div className="border-t border-accent-100 my-2"></div> */}
                       <button
                         onClick={() => signOut({ callbackUrl: window.location.origin })}
                         className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full"

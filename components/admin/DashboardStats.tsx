@@ -85,14 +85,14 @@ export default function DashboardStats() {
           icon: Calendar,
           color: 'bg-gradient-to-r from-adventure-sky to-accent-400',
         },
-        {
-          name: 'Pending Reviews',
-          value: pendingReviews,
-          change: pendingReviews > 0 ? '+' : '0',
-          trend: pendingReviews > 0 ? 'up' : 'up',
-          icon: MessageSquare,
-          color: 'bg-gradient-to-r from-adventure-fire to-red-500',
-        },
+        // {
+        //   name: 'Pending Reviews',
+        //   value: pendingReviews,
+        //   change: pendingReviews > 0 ? '+' : '0',
+        //   trend: pendingReviews > 0 ? 'up' : 'up',
+        //   icon: MessageSquare,
+        //   color: 'bg-gradient-to-r from-adventure-fire to-red-500',
+        // },
       ]
 
       setStats(statsData)
