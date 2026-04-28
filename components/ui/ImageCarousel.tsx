@@ -4,8 +4,6 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronLeft,
-  ChevronRight,
   ChevronDown,
   Zap,
   Shield,
@@ -274,37 +272,6 @@ function CarouselSlide({
   );
 }
 
-// Navigation button component
-function NavButton({
-  onClick,
-  direction,
-  disabled,
-}: {
-  onClick: () => void;
-  direction: "prev" | "next";
-  disabled: boolean;
-}) {
-  return (
-    <motion.button
-      onClick={onClick}
-      disabled={disabled}
-      className="absolute top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/80 backdrop-blur-xl border border-white/50 shadow-lg hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed"
-      whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,1)" }}
-      whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0, x: direction === "prev" ? -20 : 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.5 }}
-      aria-label={direction === "prev" ? "Previous slide" : "Next slide"}
-    >
-      {direction === "prev" ? (
-        <ChevronLeft className="w-4 h-4 text-[#039AC5]" />
-      ) : (
-        <ChevronRight className="w-4 h-4 text-[#039AC5]" />
-      )}
-    </motion.button>
-  );
-}
-
 // Main carousel component
 function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -385,23 +352,15 @@ function ImageCarousel() {
     return 6; // Even more on extra large screens
   };
 
-  // Get maximum index based on visible slides
-  const getMaxIndex = () => {
-    const max = slides.length - getVisibleSlides();
-    return max > 0 ? max : 0;
-  };
-
-  // Generate visible slides
+  // Generate visible slides with wrap-around
   const getVisibleSlidesArray = () => {
     const visibleCount = getVisibleSlides();
-    let startIndex = currentIndex;
-
-    // Adjust start index if we're near the end
-    if (currentIndex > slides.length - visibleCount) {
-      startIndex = slides.length - visibleCount;
+    const result = [];
+    for (let i = 0; i < visibleCount; i++) {
+      const slideIndex = (currentIndex + i) % slides.length;
+      result.push(slides[slideIndex]);
     }
-
-    return slides.slice(startIndex, startIndex + visibleCount);
+    return result;
   };
 
   return (
@@ -424,7 +383,7 @@ function ImageCarousel() {
           >
             <Award className="w-3 h-3" />
             Our Portfolio
-          </motion.span>
+          </motion.span> 
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white">
             Trusted by <span className="text-[#039AC5]">Industry Leaders</span>
           </h2>
@@ -439,23 +398,7 @@ function ImageCarousel() {
           onMouseEnter={() => setIsAutoPlaying(false)}
           onMouseLeave={() => setIsAutoPlaying(true)}
         >
-          {/* Navigation buttons - Closer to slides */}
-          {!isMobile && windowWidth >= 768 && (
-            <>
-              <NavButton
-                onClick={goToPrev}
-                direction="prev"
-                disabled={currentIndex === 0}
-                // style={{ left: '0.5rem' }}
-              />
-              <NavButton
-                onClick={goToNext}
-                direction="next"
-                disabled={currentIndex >= getMaxIndex()}
-                // style={{ right: '0.5rem' }}
-              />
-            </>
-          )}
+          {/* Navigation buttons removed */}
 
           {/* Slides container with tighter spacing */}
           <div
