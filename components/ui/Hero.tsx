@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, Shield, Award, Users, Clock, Star } from 'lucide-react';
+import { Play, Shield, Award, Users, Clock, Star, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ImageCarousel from './ImageCarousel';
@@ -20,6 +20,7 @@ const Hero = () => {
   const [upcomingSessions, setUpcomingSessions] = useState<UpcomingSession[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextSession, setNextSession] = useState<UpcomingSession | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   useEffect(() => {
     // Fallback timeout in case video fails silently
@@ -170,15 +171,13 @@ const Hero = () => {
                 <Award size={20} />
                 Explore Courses
               </Link>
-              <a
-                href="https://www.youtube.com/watch?v=TAD8F87NCxk"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setShowVideoModal(true)}
                 className="btn-outline flex items-center justify-center gap-2 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-lg"
               >
                 <Play size={20} />
                 Watch Introduction
-              </a>
+              </button>
             </div>
 
             {/* Stats - Arranged like reference image */}
@@ -187,14 +186,25 @@ const Hero = () => {
                   <div className="text-2xl md:text-3xl font-bold text-white">38k+ trained</div>
               </div>
               <div className="sm:border-l sm:border-white/20 sm:pl-6 md:pl-8">
-                {nextSession ? (
-                  <>
-                    <div className="text-base md:text-lg font-semibold text-white truncate">{nextSession.trainingTitle}</div>
-                    <div className="flex items-center gap-2 text-sm text-gray-200 mt-1">
-                      <Clock size={14} />
-                      Next: {nextSession.formattedDate}
-                    </div>
-                  </>
+                {upcomingSessions.length > 0 ? (
+                  <div className="relative overflow-hidden">
+                    {upcomingSessions.map((session, index) => (
+                      <div
+                        key={`${session.startDate.getTime()}-${index}`}
+                        className={`transition-all duration-500 ease-in-out ${
+                          index === currentIndex
+                            ? 'opacity-100 translate-y-0'
+                            : 'opacity-0 translate-y-2 absolute inset-0'
+                        }`}
+                      >
+                        <div className="text-base md:text-lg font-semibold text-white truncate">{session.trainingTitle}</div>
+                        <div className="flex items-center gap-2 text-sm text-gray-200 mt-1">
+                          <Clock size={14} />
+                          Next: {session.formattedDate}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
                   <>
                     <div className="text-base md:text-lg font-semibold text-white">No Upcoming Training</div>
@@ -333,6 +343,34 @@ const Hero = () => {
           <ImageCarousel />
         </div>
       </div>
+      {/* Video Modal */}
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setShowVideoModal(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowVideoModal(false)}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            >
+              <X size={24} />
+            </button>
+            <div className="aspect-video">
+              <ReactPlayer
+                src="https://www.youtube.com/watch?v=TAD8F87NCxk"
+                playing={true}
+                controls={true}
+                width="100%"
+                height="100%"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
