@@ -12,7 +12,7 @@ export default function OccupationalSafetyHealthDiploma() {
     description: 'A comprehensive 12 months modularized distance learning programme with occasional tutorial classes offered in collaboration with Cambridge International College.',
     overview: 'This programme covers a wide scope of safety practices and standards applicable both locally and internationally, designed to provide advanced education in Occupational Safety and Health systems and practices.',
     
-    duration: '3 weeks',
+duration: '12 months',
     format: 'Distance learning with occasional tutorial classes',
     level: 'Advanced Diploma',
     partnership: 'In collaboration with Cambridge International College',

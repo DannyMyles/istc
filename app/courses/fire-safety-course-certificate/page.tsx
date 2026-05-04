@@ -174,7 +174,9 @@ export default function FireSafetyCourseCertificate() {
                         <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">Weekly</div>
+                         <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>

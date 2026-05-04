@@ -11,10 +11,10 @@ export default function ConstructionSafety() {
     description: 'Designed for construction workers, supervisors, and managers to ensure safe working practices on construction sites.',
     overview: 'Participants will learn to identify hazards commonly found on construction sites, implement safety measures, and comply with relevant safety regulations and standards.',
     
-    duration: '5 days',
+    duration: '3 days',
     format: 'Classroom & Practical Training',
     level: 'Specialized Training',
-    nextIntake: 'Monthly',
+    nextIntake: 'Refer to training calendar',
     
     targetProfessions: [
       'Construction workers',
@@ -167,7 +167,10 @@ export default function ConstructionSafety() {
                         <Calendar className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          {/* <div className="text-gray-600">{courseData.nextIntake}</div> */}
+                          <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>

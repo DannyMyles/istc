@@ -14,7 +14,7 @@ export default function ChemicalSafety() {
     duration: '2 days',
     format: 'Classroom & Practical Demonstrations',
     level: 'Specialized Training',
-    nextIntake: 'Bi-weekly',
+    nextIntake: 'Refer to training calendar',
     
     targetProfessions: [
       'Pesticide handlers and applicators',
@@ -160,11 +160,14 @@ export default function ChemicalSafety() {
                           <div className="text-gray-600">{courseData.level}</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3"> 
                         <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          {/* <div className="text-gray-600">{courseData.nextIntake}</div> */}
+                          <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>

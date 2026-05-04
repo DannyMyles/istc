@@ -14,7 +14,7 @@ export default function DisasterEmergencyPreparedness() {
     duration: '3 days',
     format: 'Classroom & Scenario-Based Training',
     level: 'Professional Training',
-    nextIntake: 'Monthly',
+nextIntake: 'Refer to training calendar',
     
     targetAudience: [
       'Emergency response team members',
@@ -164,7 +164,9 @@ export default function DisasterEmergencyPreparedness() {
                         <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>

@@ -14,7 +14,7 @@ export default function RoadSafety() {
     duration: '2 days',
     format: 'Classroom & Case Studies',
     level: 'Professional Training',
-    nextIntake: 'Monthly',
+nextIntake: 'Refer to training calendar',
     
     targetParticipants: [
       'Transport managers and supervisors',
@@ -164,7 +164,9 @@ export default function RoadSafety() {
                         <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>

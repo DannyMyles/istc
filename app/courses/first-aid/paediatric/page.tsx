@@ -126,7 +126,9 @@ export default function PaediatricFirstAid() {
                         <Users className="text-cyan-600" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">Weekly</div>
+                          <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -180,7 +182,7 @@ export default function PaediatricFirstAid() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certification</h3>
                   <div className="bg-cyan-50 p-4 rounded-xl">
                     <Award className="text-cyan-600 mb-3" size={24} />
-                    <p className="text-gray-700">First Aid Certificate valid for 2 years upon successful completion.</p>
+                    First Aid Certificate valid for 1 year upon successful completion.
                   </div>
                 </div>
               </div>

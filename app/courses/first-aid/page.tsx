@@ -73,7 +73,7 @@ export default function FirstAid() {
                   Comprehensive emergency response training for all levels
                 </p>
                 <p className="text-cyan-200 text-lg">
-                  Choose from our range of first aid courses designed for different needs and environments. All courses lead to certification valid for 2 years.
+All courses lead to certification valid for 1 year.
                 </p>
               </div>
               
@@ -81,7 +81,7 @@ export default function FirstAid() {
                 <div className="text-center mb-6">
                   <Award className="text-cyan-200 mx-auto mb-3" size={48} />
                   <h3 className="text-xl font-semibold text-white">Certification</h3>
-                  <p className="text-cyan-200 mt-2">All courses include certification valid for 2 years</p>
+All courses include certification valid for 1 year
                 </div>
                 
                 <Link 

@@ -6,16 +6,16 @@ import Link from 'next/link';
 export default function FireSafetyCourseDiploma() {
   
   const courseData = {
-    title: 'IFE Level 2 Certificate in Fire Science, Operations and Safety',
+title: 'Certificate in Fire Science, Operations and Safety',
     subtitle: 'Fire Professional Diploma Programme',
-    description: 'The International Safety Training Centre in Collaboration with The Institute of Fire Engineers is offering IFE Level 2 Certificate for fire professionals.',
-    overview: 'The content and structure of the qualification has been established to reflect best professional practice and covers key knowledge in fire engineering science, fire service operations and fire safety.',
+description: 'The International Safety Training Centre, in collaboration with the Institute of Fire Engineers, is offering a Certificate in Fire Science, Operations, and Safety for fire professionals. The qualification’s content and structure have been designed to reflect best professional practices and to cover essential knowledge and understanding in the fields of fire engineering science, fire service operations, and fire safety.',
+overview: 'The qualification’s content and structure have been designed to reflect best professional practices and to cover essential knowledge and understanding in the fields of fire engineering science, fire service operations, and fire safety.',
     
-    duration: '183 contact hours',
+duration: '3 months',
     format: 'Evening & Weekend Classes',
     level: 'Professional Diploma',
     partnership: 'In collaboration with Institute of Fire Engineers',
-    nextIntake: 'Quarterly',
+nextIntake: 'Refer to training calendar',
     
     scheduleOptions: [
       { type: 'Evening Classes', time: '5:30 PM - 7:30 PM', days: 'Monday to Friday' },
@@ -37,7 +37,7 @@ export default function FireSafetyCourseDiploma() {
       }
     ],
     
-    certification: 'IFE Level 2 Certificate in Fire Science, Operations and Safety from Institute of Fire Engineers.',
+certification: 'Certificate in Fire Science, Operations and Safety from Institute of Fire Engineers.',
     
     entryRequirements: [
       'Interest in fire safety and prevention',
@@ -158,7 +158,9 @@ export default function FireSafetyCourseDiploma() {
                         <Users className="text-[#039AC5]" size={20} />
                         <div>
                           <div className="font-semibold text-gray-900">Next Intake</div>
-                          <div className="text-gray-600">{courseData.nextIntake}</div>
+                          <Link href="/calendar" className="text-[#039AC5] hover:underline">
+                            View Training Calendar
+                          </Link>
                         </div>
                       </div>
                     </div>
