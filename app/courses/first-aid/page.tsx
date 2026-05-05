@@ -43,7 +43,7 @@ export default function FirstAid() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
           style={{
-            backgroundImage: "url('/images/7.jpg')"
+            backgroundImage: "url('/images/first-aid.webp')"
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>

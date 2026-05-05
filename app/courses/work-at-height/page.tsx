@@ -60,7 +60,7 @@ export default function WorkAtHeight() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
           style={{
-            backgroundImage: "url('/images/10.jpg')"
+            backgroundImage: "url('/images/work-at-height.jpg')"
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>

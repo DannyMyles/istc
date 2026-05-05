@@ -1,12 +1,12 @@
-# Login Issue Fix - TODO
+# Hero Image Update TODO
 
-## Approved Plan Steps:
-- [x] Step 1: Read next.config.ts and .env files for proxy/env config
-- [x] Step 2: Update NextAuth authorize() to use proxied /api/v1/auth/login path instead of direct localhost:8080
-- [x] Step 3: Add enhanced logging and error handling in NextAuth
-- [ ] Step 4: Test login flow in dev
-- [ ] Step 5: Verify prod env vars if needed
-- [ ] Step 6: Complete
-
-Progress will be updated here.
-
+## Steps:
+- [x] 1. Create TODO.md
+- [x] 2. Edit chemical-safety
+- [x] 3. Edit first-aid
+- [x] 4. Edit road-safety  
+- [x] 5. Edit work-at-height
+- [x] 6. Edit first-aid/basic
+- [x] 7. Edit first-aid/occupational
+- [x] 8. Edit first-aid/paediatric
+- [x] 9. Verify & complete

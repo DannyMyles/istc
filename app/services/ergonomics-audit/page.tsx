@@ -75,7 +75,7 @@ export default function ErgonomicsAudit() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
           style={{
-            backgroundImage: "url('/images/6.jpg')"
+            backgroundImage: "url('/images/ergonomics-audit.webp')"
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
