@@ -259,7 +259,7 @@ const Navigation = () => {
                   ISTC
                 </span>
                   <span className="text-sm text-accent-600 font-medium italic">
-                  Secure your future
+                  Securing your future
                 </span>
               </div>
             </Link>
@@ -421,7 +421,7 @@ const Navigation = () => {
                     International Safety Training Centre
                   </span>
 <span className="text-xs text-accent-600 font-medium font-serif italic" style={{ fontFamily: 'Holiday, cursive' }}>
-                    Secure your future
+                    Securing your future
                   </span>
                 </div>
               </div> */}

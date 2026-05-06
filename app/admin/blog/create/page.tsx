@@ -223,7 +223,7 @@ export default function CreateBlogPage() {
             </p>
           </div>
 
-          {/* Content */}
+          {/* Content - THIS IS WHERE font-mono IS APPLIED */}
           <div className="adventure-card">
             <div className="flex items-center justify-between mb-4">
               <label className="block text-sm font-medium text-gray-700">
