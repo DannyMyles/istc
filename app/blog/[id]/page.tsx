@@ -391,10 +391,21 @@ export default function BlogDetailPage() {
 
               {/* Content */}
               <article className="prose prose-lg max-w-none mb-12">
-                <div 
-                  dangerouslySetInnerHTML={{ __html: blog.content || blog.excerpt }}
-                  className="blog-content"
-                />
+                {(() => {
+                  const raw = blog.content || blog.excerpt || ''
+                  const html = raw
+                    .split(/\r\n\r\n/g)
+                    .map((p) => p.replace(/\r\n/g, '<br />'))
+                    .map((p) => `<p>${p}</p>`)
+                    .join('')
+
+                  return (
+                    <div
+                      className="blog-content"
+                      dangerouslySetInnerHTML={{ __html: html }}
+                    />
+                  )
+                })()}
               </article>
 
               {/* Tags */}
@@ -516,17 +527,17 @@ export default function BlogDetailPage() {
                 )}
 
                 {/* Table of Contents */}
-                <div className="bg-white adventure-card">
+                {/* <div className="bg-white adventure-card"> 
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Table of Contents</h3>
                   <div className="space-y-2" id="toc-container">
                     <p className="text-gray-500 text-sm">
                       Reading the full article will show sections here.
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Newsletter */}
-                <div className="bg-gradient-to-br from-accent-600 to-accent-700 text-white rounded-2xl p-6">
+                {/* <div className="bg-gradient-to-br from-accent-600 to-accent-700 text-white rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-3">Enjoying this article?</h3>
                   <p className="text-accent-100 mb-4">
                     Subscribe to our newsletter for more safety insights and updates.
@@ -544,7 +555,7 @@ export default function BlogDetailPage() {
                       Subscribe
                     </button>
                   </form>
-                </div>
+                </div> */}
 
                 {/* Popular Tags */}
                 <div className="bg-white adventure-card">

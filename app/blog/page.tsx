@@ -782,7 +782,7 @@ export default function BlogPage() {
                 )}
 
                 {/* Newsletter */}
-                <div className="bg-gradient-to-br from-accent-600 to-accent-700 text-white rounded-2xl p-6">
+                {/* <div className="bg-gradient-to-br from-accent-600 to-accent-700 text-white rounded-2xl p-6">
                   <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full mb-4">
                     <Sparkles size={14} />
                     <span className="text-sm font-medium">Exclusive Content</span>
@@ -806,8 +806,8 @@ export default function BlogPage() {
                   </form>
                   <p className="text-xs text-accent-200 mt-3 text-center">
                     No spam. Unsubscribe anytime.
-                  </p>
-                </div>
+                  </p> 
+                </div> */}
 
                 {/* Bookmarked Articles */}
                 {bookmarkedBlogs.size > 0 && (
