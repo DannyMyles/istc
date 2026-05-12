@@ -401,7 +401,7 @@ export default function BlogDetailPage() {
 
                   return (
                     <div
-                      className="blog-content"
+                      className="blog-content [&_p]:mb-6 [&_p]:leading-8"
                       dangerouslySetInnerHTML={{ __html: html }}
                     />
                   )
