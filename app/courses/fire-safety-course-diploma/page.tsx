@@ -54,7 +54,7 @@ certification: 'Certificate in Fire Science, Operations and Safety from Institut
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
           style={{
-            backgroundImage: "url('/images/6.jpg')"
+            backgroundImage: "url('/images/8.jpg')"
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/80 to-cyan-700/60"></div>
@@ -80,9 +80,6 @@ certification: 'Certificate in Fire Science, Operations and Safety from Institut
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   {courseData.title}
                 </h1>
-                <p className="text-xl text-blue-100 mb-6">
-                  {courseData.subtitle}
-                </p>
                 <p className="text-blue-200 text-lg">
                   {courseData.description}
                 </p>

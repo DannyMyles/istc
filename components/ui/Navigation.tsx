@@ -66,7 +66,7 @@ const Navigation = () => {
           { 
             name: 'Fire Safety', 
             subitems: [
-              { name: 'IFE Level 2 Diploma', href: '/courses/fire-safety-course-diploma' },
+              { name: 'IFE Certification', href: '/courses/fire-safety-course-diploma' },
               { name: 'Certificate Courses', href: '/courses/fire-safety-course-certificate' },
             ]
           },

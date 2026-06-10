@@ -1,13 +1,13 @@
 'use client';
 
-import { Clock, Users, Award, Calendar, Star } from 'lucide-react';
+import { Clock, Award, Calendar, Star } from 'lucide-react';
 import Link from 'next/link';
 
 interface CourseCardProps {
   title: string;
   description: string;
   duration: string;
-  participants: string;
+  participants?: string;
   level: string;
   nextStart: string;
   rating: number;
@@ -21,7 +21,6 @@ const CourseCard = ({
   title,
   description,
   duration,
-  participants,
   level,
   nextStart,
   rating,
@@ -57,10 +56,6 @@ const CourseCard = ({
         <div className="flex items-center gap-2">
           <Clock size={16} className="text-accent-600" />
           <span className="text-sm text-gray-600">{duration}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Users size={16} className="text-accent-600" />
-          <span className="text-sm text-gray-600">{participants}</span>
         </div>
         <div className="flex items-center gap-2">
           <Award size={16} className="text-accent-600" />

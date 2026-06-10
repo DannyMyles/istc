@@ -369,7 +369,7 @@ export default function CreateTrainingPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Total Seats *
+                      Total Seats (Optional)
                     </label>
                     <div className="flex items-center gap-2">
                       <Users className="h-5 w-5 text-gray-400" />

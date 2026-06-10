@@ -94,7 +94,7 @@ export default function CoursesPage() {
     {
       title: 'Occupational Safety & Health Diploma',
       description: '12-month modularized distance learning programme in collaboration with Cambridge International College.',
-      duration: '8 Months',
+      duration: '12 Months',
       participants: 'Distance Learning',
       level: 'Advanced',
       nextStart: 'April 15, 2024',
