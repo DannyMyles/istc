@@ -1,30 +1,52 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Mail, AlertCircle } from 'lucide-react'
-import { contactService, Contact } from '@/app/api_services/contactService'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { AlertCircle, ArrowRight, ChevronLeft, ChevronRight, Mail } from 'lucide-react'
+import { Contact, ContactResponse, contactService } from '@/app/api_services/contactService'
 
-export default function ContactSubmissions() {
+interface ContactSubmissionsProps {
+  // When set, the list acts as a dashboard preview: fixed to page 1, this many items, no pager controls
+  limit?: number
+  // Shown as a "View all" link when previewing (limit set) and more submissions exist
+  viewAllHref?: string
+}
+
+const DEFAULT_PAGE_SIZE = 10
+
+export default function ContactSubmissions({ limit, viewAllHref }: ContactSubmissionsProps) {
+  const isPreview = Boolean(limit)
+  const pageSize = limit ?? DEFAULT_PAGE_SIZE
+
   const [contacts, setContacts] = useState<Contact[]>([])
+  const [pagination, setPagination] = useState<ContactResponse['pagination'] | null>(null)
+  const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    let cancelled = false
+
     const fetchContacts = async () => {
       try {
         setLoading(true)
         setError(null)
-        const response = await contactService.getAllContacts()
+        const response = await contactService.getAllContacts({ page, limit: pageSize })
+        if (cancelled) return
         setContacts(response.contacts || [])
+        setPagination(response.pagination || null)
       } catch {
-        setError('Failed to load contact form submissions')
+        if (!cancelled) setError('Failed to load contact form submissions')
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
 
     fetchContacts()
-  }, [])
+    return () => {
+      cancelled = true
+    }
+  }, [page, pageSize])
 
   if (loading) {
     return (
@@ -55,6 +77,9 @@ export default function ContactSubmissions() {
       </div>
     )
   }
+
+  const isTruncated = isPreview && (pagination?.totalContacts ?? 0) > pageSize
+  const showPager = !isPreview && pagination && pagination.totalPages > 1
 
   return (
     <div className="adventure-card">
@@ -87,6 +112,46 @@ export default function ContactSubmissions() {
             </li>
           ))}
         </ul>
+      )}
+
+      {isTruncated && viewAllHref && (
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <Link
+            href={viewAllHref}
+            className="flex items-center justify-center gap-2 text-center text-accent-600 hover:text-accent-700 font-medium py-2 hover:bg-accent-50 rounded-lg transition-colors"
+          >
+            View All Submissions
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      )}
+
+      {showPager && pagination && (
+        <div className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between">
+          <p className="text-sm text-gray-600">
+            Page {pagination.currentPage} of {pagination.totalPages} &middot; {pagination.totalContacts} total
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={!pagination.hasPrevPage}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-700 border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Prev
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage((p) => p + 1)}
+              disabled={!pagination.hasNextPage}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-700 border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       )}
     </div>
   )

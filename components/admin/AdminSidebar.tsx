@@ -13,6 +13,7 @@ import {
   Settings,
   BarChart3,
   MessageSquare,
+  Mail,
   Shield,
   ChevronLeft,
   ChevronRight,
@@ -59,9 +60,14 @@ const navigation = [
       // { name: 'Featured', href: '/admin/testimonials?filter=featured' },
     ] 
   },
-  { 
-    name: 'Users', 
-    href: '/admin/users', 
+  {
+    name: 'Messages',
+    href: '/admin/contacts',
+    icon: Mail
+  },
+  {
+    name: 'Users',
+    href: '/admin/users',
     icon: Users,
     children: [
       { name: 'All Users', href: '/admin/users' },

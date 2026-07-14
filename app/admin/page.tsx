@@ -42,8 +42,8 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      {/* Contact Form Submissions */}
-      <ContactSubmissions />
+      {/* Contact Form Submissions (recent preview) */}
+      <ContactSubmissions limit={5} viewAllHref="/admin/contacts" />
     </div>
   )
 }

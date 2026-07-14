@@ -64,9 +64,15 @@ export const contactService = {
   },
 
   // Get all contacts (admin only)
-  getAllContacts: async (): Promise<ContactResponse> => {
+  getAllContacts: async (params?: {
+    page?: number
+    limit?: number
+    status?: Contact['status']
+    category?: Contact['category']
+    search?: string
+  }): Promise<ContactResponse> => {
     try {
-      return await api.admin.contacts.getAll()
+      return await api.admin.contacts.getAll(params)
     } catch (error: any) {
       console.error('Error fetching contacts:', error)
       toast.error(error.message || 'Failed to fetch contacts')

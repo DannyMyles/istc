@@ -582,9 +582,26 @@ class ApiClient {
     },
 
     contacts: {
-      getAll: () =>
-        this.request('/api/v1/contacts'),
-      
+      getAll: (params?: {
+        page?: number;
+        limit?: number;
+        status?: string;
+        category?: string;
+        search?: string;
+      }) => {
+        const queryParams = new URLSearchParams();
+        if (params) {
+          Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+              queryParams.append(key, String(value));
+            }
+          });
+        }
+        const queryString = queryParams.toString();
+        const url = `/api/v1/contacts${queryString ? `?${queryString}` : ''}`;
+        return this.request(url);
+      },
+
       getOne: (id: string) =>
         this.request(`/api/v1/contacts/${id}`),
       
