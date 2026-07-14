@@ -3,6 +3,7 @@ import RecentActivity from '@/components/admin/RecentActivity'
 import DashboardStats from '@/components/admin/DashboardStats'
 import ContentOverview from '@/components/admin/ContentOverview'
 import QuickActions from '@/components/admin/QuickActions'
+import ContactSubmissions from '@/components/admin/ContactSubmissions'
 
 export default async function AdminDashboard() {
   await requireAdmin()
@@ -40,6 +41,9 @@ export default async function AdminDashboard() {
           <QuickActions />
         </div>
       </div>
+
+      {/* Contact Form Submissions */}
+      <ContactSubmissions />
     </div>
   )
 }
