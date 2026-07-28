@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle, AlertCircle, User, Building, MessageSquare, ChevronDown } from 'lucide-react';
 import { contactService, CreateContactRequest } from '../api_services/contactService';
+import { submitZohoLead } from '../lib/zohoWebToLead';
 
 // Types - Updated to use CreateContactRequest
 interface ContactFormData extends Omit<CreateContactRequest, 'category'> {
@@ -188,6 +189,18 @@ export default function ContactPage() {
         company: formData.company.trim() || undefined,
         category: formData.category
       };
+
+      // Forward the lead to Zoho CRM (fire-and-forget; runs alongside our own backend submission)
+      const [firstName, ...lastNameParts] = contactData.name.split(' ');
+      submitZohoLead({
+        firstName,
+        lastName: lastNameParts.join(' ') || firstName,
+        email: contactData.email,
+        designation: contactData.subject,
+        description: contactData.message,
+        phone: contactData.phone,
+        company: contactData.company,
+      });
 
       // Submit using service
       const response = await contactService.submitContactForm(contactData);

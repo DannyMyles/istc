@@ -4,11 +4,9 @@ const nextConfig: NextConfig = {
   // Proxy API requests to backend to avoid CORS issues
 async rewrites() {
     return [
-      {
-        // Proxy all /api/v1/* requests to the backend
-        source: '/api/v1/:path*',
-        destination: 'https://admin.istc.co.ke/api/v1/:path*',
-      },
+      // /api/v1/* is handled by app/api/v1/[...path]/route.ts instead of a
+      // plain rewrite, since the backend's CORS layer needs the Origin
+      // header adjusted when proxied from local dev (see that file).
       {
         // Proxy /uploads/* to backend uploads folder
         source: '/uploads/:path*',
